@@ -347,6 +347,7 @@
 "Assets/Scripts/CameraTarget.cs"
 "Assets/Scripts/Global.cs"
 "Assets/Scripts/itemMove.cs"
+"Assets/Scripts/ItemValue.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/posseion.cs"
 -langversion:9.0
