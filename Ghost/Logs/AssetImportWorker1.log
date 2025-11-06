@@ -207,3 +207,8 @@ Start importing Assets/Scripts/CameraTarget.cs using Guid(c00d1777011ab824bb882e
  -> (artifact id: '3bd5cf19e108578e6ecb14590c563c1c') in 0.014830 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 1
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
