@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
         {
             Cursor.lockState = CursorLockMode.Locked; 
