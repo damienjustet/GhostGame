@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using Cinemachine;
 using UnityEngine.Networking;
 
+// comment for testing - mr. frost
+
 public class Player : MonoBehaviour
 {
     //references
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour
     public CinemachineFreeLook cam;
     [SerializeField] GameObject player;
     public Transform target;
-   
+
     private void Awake()
     {
         rb = GetComponent<CharacterController>();// finds player
@@ -25,10 +27,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
         {
-            Cursor.lockState = CursorLockMode.Locked; 
+            Cursor.lockState = CursorLockMode.Locked;
             cam.m_XAxis.m_MaxSpeed = 300f;
             cam.m_YAxis.m_MaxSpeed = 2f;
         }
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour
         movement *= moveSpeed;
 
         rb.SimpleMove(movement); // moves player
-       
+
         if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
         {
             Global.Instance.isPossessed = true;
@@ -61,15 +63,15 @@ public class Player : MonoBehaviour
             player.GetComponent<Collider>().enabled = false;
             detect.GetComponent<Renderer>().enabled = false;
         }
-        
+
         else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
         {
             player.GetComponent<Renderer>().enabled = true;
             player.GetComponent<Collider>().enabled = true;
             detect.GetComponent<Renderer>().enabled = true;
             Global.Instance.isPossessed = false;
-           
-          
+
+
 
 
         }

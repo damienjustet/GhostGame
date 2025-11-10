@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638980384259066417
+      ticks: 638983892867221347
     m_Hash: 4024982763
   m_LockFileStatus:
     m_FilePath: C:/Users/ranegri000/Unity/ghost/Ghost/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638980384259190993
+      ticks: 638983891469558549
     m_Hash: 764423865
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}

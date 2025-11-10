@@ -346,6 +346,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.42f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/CameraTarget.cs"
 "Assets/Scripts/Global.cs"
+"Assets/Scripts/ItemCost.cs"
 "Assets/Scripts/itemMove.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/posseion.cs"
