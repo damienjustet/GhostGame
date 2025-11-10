@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 using Cinemachine;
 using UnityEngine.Networking;
 
-// comment for testing - mr. frost
-
 public class Player : MonoBehaviour
 {
     //references
