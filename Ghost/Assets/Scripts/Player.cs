@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject player;
     public Transform target;
 
+
     private void Awake()
     {
         rb = GetComponent<CharacterController>();// finds player
@@ -53,25 +54,26 @@ public class Player : MonoBehaviour
         movement *= moveSpeed;
 
         rb.SimpleMove(movement); // moves player
+        if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
+        {
+            // rotates player
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
+        }
 
         if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
         {
             Global.Instance.isPossessed = true;
-            player.GetComponent<Renderer>().enabled = false;
+            gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
             player.GetComponent<Collider>().enabled = false;
             detect.GetComponent<Renderer>().enabled = false;
         }
 
         else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
         {
-            player.GetComponent<Renderer>().enabled = true;
+            gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
             player.GetComponent<Collider>().enabled = true;
             detect.GetComponent<Renderer>().enabled = true;
             Global.Instance.isPossessed = false;
-
-
-
-
         }
     }
 }

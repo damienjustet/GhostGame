@@ -7,16 +7,30 @@ using Cinemachine;
 
 public class itemMove : MonoBehaviour
 {
-    CharacterController rb;
+    public CharacterController rb;
     CinemachineFreeLook cam;
     public float moveSpeed = 5;
     public float rotationSpeed = 3;
-    public Transform target;
     private void Awake()
     {
         //references
         cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
-        rb = GetComponent<CharacterController>();
+        gameObject.AddComponent<CharacterController>();
+        rb = gameObject.GetComponent<CharacterController>();
+        rb.height = 2;
+
+        if (gameObject.GetComponent<Rigidbody>() != null) //Allows you to possess rigidbodys
+        {
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        }
+
+        Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized; //move in direction of camera
+        Vector3 movement = cameraForward + Camera.main.transform.right; //so you can strafe
+
+        movement *= moveSpeed;
+
+        rb.Move(movement * Time.deltaTime);
     }
     void Update()
     {

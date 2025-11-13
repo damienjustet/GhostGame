@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
@@ -27,7 +28,7 @@ public class posseion : MonoBehaviour
     private void OnMouseOver()
     {
 
-        if (!Global.Instance.isPossessed && inArea == true)
+        if (!Global.Instance.isPossessed)// && inArea == true)
         {
             showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
@@ -62,25 +63,22 @@ public class posseion : MonoBehaviour
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
-            
-            if (gameObject.GetComponent<Rigidbody>() != null) //Allows you to possess rigidbodys
-            {
-                gameObject.GetComponent<Rigidbody>().useGravity = false; 
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            }
-            
-            
+
 
         }
-        else if (Input.GetKeyDown(KeyCode.E)) // possess object
+        else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
         {
-            Destroy(gameObject.GetComponent<itemMove>());
             if (gameObject.GetComponent<Rigidbody>() != null)
             {
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                
             }
+
+            Destroy(gameObject.GetComponent<itemMove>());
+            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
+            Destroy(gameObject.GetComponent<CharacterController>());
+            
         }
 
     }
