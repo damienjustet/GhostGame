@@ -1,29 +1,56 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 public class posseion : MonoBehaviour
 {
+    public GameObject showValueText;
+    Text shownText;
     private bool interactable = false;
-   
+
     bool inArea;
-   
+
+    void Start()
+    {
+        showValueText = (GameObject)Resources.Load("ShowValueText");
+        showValueText = Instantiate(showValueText, transform);
+        shownText = showValueText.GetComponent<Text>();
+        showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+    }
+
+
     private void OnMouseOver()
     {
- 
+
         if (!Global.Instance.isPossessed && inArea == true)
         {
+            showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
+            shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
+
             interactable = true;
             GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
             Global.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
         }
-        
+        else
+        {
+            shownText.text = "";
+            
+            GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
+
+            interactable = false;
+            Global.Instance.interact = false;
+        }
+
     }
+    
     void OnMouseExit()
     {
+        shownText.text = "";
        
         GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
