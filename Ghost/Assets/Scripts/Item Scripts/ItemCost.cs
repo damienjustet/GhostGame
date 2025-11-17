@@ -48,7 +48,7 @@ public class ItemCost : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        GetComponent<ItemSounds>().ObjectHit();
+        SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
 
         if (GetVelocityMagnitude(collision.relativeVelocity) > -10 * sensitivity + 10)
         {
