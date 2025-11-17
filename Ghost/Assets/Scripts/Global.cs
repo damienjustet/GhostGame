@@ -19,5 +19,8 @@ public class Global : MonoBehaviour
 
     //checks if the player can interact with object(This is for the player script)
     public bool interact;
+
+    // MONEY
+    public float money;
 }
 

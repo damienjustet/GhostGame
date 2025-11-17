@@ -70,10 +70,15 @@ public class Player : MonoBehaviour
 
         else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
         {
-            gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
-            player.GetComponent<Collider>().enabled = true;
-            detect.GetComponent<Renderer>().enabled = true;
-            Global.Instance.isPossessed = false;
+            Depossess();
         }
+    }
+
+    public void Depossess()
+    {
+        gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
+        player.GetComponent<Collider>().enabled = true;
+        detect.GetComponent<Renderer>().enabled = true;
+        Global.Instance.isPossessed = false;
     }
 }
