@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
         {
+            SoundManager.PlaySound(SoundType.POSSESS);
             Global.Instance.isPossessed = true;
             gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
             player.GetComponent<Collider>().enabled = false;

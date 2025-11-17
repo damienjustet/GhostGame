@@ -14,6 +14,11 @@ public class Global : MonoBehaviour
         }
         Instance = this;
     }
+
+    void Start()
+    {
+        SoundManager.PlaySound(SoundType.MUSIC);
+    }
     // checks if ghost is possessed
     public bool isPossessed = false;
 
