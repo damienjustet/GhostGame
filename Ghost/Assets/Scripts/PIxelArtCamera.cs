@@ -10,11 +10,16 @@ public class PixelArtCamera : MonoBehaviour
     [SerializeField] private int _cameraHeight;
 
     private RenderTexture _renderTexture;
+    
+    private Transform mainCam;
 
     // Start is called before the first frame update
     void Start()
     {
         UpdateRenderTexture();
+        // mainCam = GameObject.Find("Main Camera").transform;
+        // transform.position = mainCam.position;
+        // transform.rotation = mainCam.rotation;
     }
 
     public void UpdateRenderTexture()
@@ -35,5 +40,11 @@ public class PixelArtCamera : MonoBehaviour
         _rawImage.texture = _renderTexture;
 
     }
+
+    // void Update()
+    // {
+    //     transform.position = mainCam.position;
+    //     transform.rotation = mainCam.rotation;
+    // }
 
 }
