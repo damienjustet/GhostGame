@@ -10,8 +10,8 @@ public class ShowValue : MonoBehaviour
 
     void Awake()
     {
-        mainCam = Camera.main.transform;
-        canvas = GameObject.FindObjectOfType<Canvas>().transform;
+        mainCam = GameObject.Find("Main Camera").transform;
+        canvas = GameObject.Find("Floating Text Canvas").transform;
 
         transform.SetParent(canvas);
     }
