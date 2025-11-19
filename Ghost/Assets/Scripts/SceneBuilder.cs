@@ -43,6 +43,7 @@ public class SceneBuilder : MonoBehaviour
         mainCamera.GetComponent<PixelArtCamera>().UpdateRenderTexture();
         mainCamera.transform.Find("In-Game Text Camera").GetComponent<Camera>().targetTexture = mainCamera.GetComponent<Camera>().targetTexture;
 
+        Destroy(gameObject);
     }
 
 }
