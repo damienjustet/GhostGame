@@ -45,6 +45,7 @@ public class ItemCost : MonoBehaviour
 
             shownText.text = "-" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
             value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
+            // loseValueText.GetComponent<LoseValueWorldToScreenPoint>().place = transform.position;
             Instantiate(loseValueText, transform);
         }
         if (value < 0)
