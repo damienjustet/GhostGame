@@ -15,7 +15,10 @@ public class LoseValue : MonoBehaviour
 
     void Awake()
     {
-        mainCam = GameObject.Find("Main Camera").transform;
+        if (GameObject.Find("Main Camera") != null)
+        {
+            mainCam = GameObject.Find("Main Camera").transform;
+        }
         canvas = GameObject.Find("Floating Text Canvas").transform;
 
         transform.SetParent(canvas);
@@ -25,7 +28,11 @@ public class LoseValue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
+        if (GameObject.Find("Main Camera") != null && mainCam != null)
+        {
+            mainCam = GameObject.Find("Main Camera").transform;
+            transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
+        }
         if (aliveTime <= timer)
         {
             Destroy(gameObject);

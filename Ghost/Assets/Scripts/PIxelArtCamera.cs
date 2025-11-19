@@ -5,14 +5,14 @@ public class PixelArtCamera : MonoBehaviour
 {
 
     [SerializeField] private Camera _camera;
-    [SerializeField] private RawImage _rawImage;
+    [SerializeField] public RawImage _rawImage;
 
     [SerializeField] private int _cameraHeight;
 
     [HideInInspector] public RenderTexture _renderTexture;
 
-    // Start is called before the first frame update
-    void Start()
+    
+    void Awake()
     {
         UpdateRenderTexture();
     }

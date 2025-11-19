@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject player;
     public Transform target;
 
-
     private void Awake()
     {
         rb = GetComponent<CharacterController>();// finds player
@@ -26,52 +25,54 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
+        if (Global.Instance.playerLiving)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            cam.m_XAxis.m_MaxSpeed = 300f;
-            cam.m_YAxis.m_MaxSpeed = 2f;
-        }
-        else // Unlocks Cursor
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            cam.m_XAxis.m_MaxSpeed = 0f;
-            cam.m_YAxis.m_MaxSpeed = 0f;
-        }
+            if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                cam.m_XAxis.m_MaxSpeed = 300f;
+                cam.m_YAxis.m_MaxSpeed = 2f;
+            }
+            else // Unlocks Cursor
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                cam.m_XAxis.m_MaxSpeed = 0f;
+                cam.m_YAxis.m_MaxSpeed = 0f;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) //For Exiting Play to free Mouse
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
+            if (Input.GetKeyDown(KeyCode.Escape)) //For Exiting Play to free Mouse
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
 
-        float y_input = Input.GetAxis("Vertical");
-        float x_input = Input.GetAxis("Horizontal");
-        Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;// Make Camera forawrd the direction you move
-        Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input;//allows strafing
+            float y_input = Input.GetAxis("Vertical");
+            float x_input = Input.GetAxis("Horizontal");
+            Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;// Make Camera forawrd the direction you move
+            Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input;//allows strafing
 
-        movement *= moveSpeed;
+            movement *= moveSpeed;
 
-        rb.SimpleMove(movement); // moves player
-        if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
-        {
-            // rotates player
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
-        }
+            rb.SimpleMove(movement); // moves player
+            if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
+            {
+                // rotates player
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
+            }
 
-        if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
-        {
-            SoundManager.PlaySound(SoundType.POSSESS);
-            Global.Instance.isPossessed = true;
-            gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
-            player.GetComponent<Collider>().enabled = false;
-            detect.GetComponent<Renderer>().enabled = false;
-        }
+            if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
+            {
+                SoundManager.PlaySound(SoundType.POSSESS);
+                Global.Instance.isPossessed = true;
+                gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
+                player.GetComponent<Collider>().enabled = false;
+                detect.GetComponent<Renderer>().enabled = false;
+            }
 
-        else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
-        {
-            Depossess();
+            else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
+            {
+                Depossess();
+            }
         }
     }
 
@@ -82,4 +83,5 @@ public class Player : MonoBehaviour
         detect.GetComponent<Renderer>().enabled = true;
         Global.Instance.isPossessed = false;
     }
+
 }
