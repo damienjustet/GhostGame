@@ -6,6 +6,8 @@ public class Global : MonoBehaviour
 {
     //This makes script public
     public static Global Instance { get; private set; }
+    public bool playerLiving = true;
+
     private void Awake()
     {
         if (Instance != null)
@@ -13,12 +15,9 @@ public class Global : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
-    }
-
-    void Start()
-    {
         SoundManager.PlaySound(SoundType.MUSIC);
     }
+
     // checks if ghost is possessed
     public bool isPossessed = false;
 
