@@ -13,9 +13,6 @@ public class ItemCost : MonoBehaviour
     public GameObject loseValueText;
     Text shownText;
 
-    Renderer selfRenderer;
-    Material currentMaterial;
-    Material ogMaterial;
 
     float ogValue;
 
@@ -24,19 +21,8 @@ public class ItemCost : MonoBehaviour
         loseValueText = (GameObject)Resources.Load("LoseValueText");
         shownText = loseValueText.GetComponent<Text>();
         ogValue = value;
-
-        selfRenderer = gameObject.GetComponent<Renderer>();
-        currentMaterial = selfRenderer.material;
-        ogMaterial = new Material(selfRenderer.material);
     }
 
-    void Update()
-    {
-        if (ogMaterial != currentMaterial)
-        {
-            currentMaterial.color -= (currentMaterial.color - ogMaterial.color) * Time.deltaTime * 8;
-        }
-    }
 
     float GetVelocityMagnitude(Vector3 collisionVelocity)
     {
@@ -48,6 +34,7 @@ public class ItemCost : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
+        SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
 
         if (GetVelocityMagnitude(collision.relativeVelocity) > -10 * sensitivity + 10)
         {
@@ -56,7 +43,6 @@ public class ItemCost : MonoBehaviour
                 value = 0;
             }
 
-            currentMaterial.color = Color.red;
             shownText.text = "-" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
             value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
             Instantiate(loseValueText, transform);
