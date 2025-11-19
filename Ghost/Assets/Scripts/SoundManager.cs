@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        AudioSource[] sources = GetComponents<AudioSource>();
+        foreach (AudioSource s in sources)
+        {
+            DestroyImmediate(s);
+        }
         instance = this;
         foreach (SoundList sList in soundList)
         {
@@ -49,6 +55,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 #endif
+
 }
 
 [Serializable]
