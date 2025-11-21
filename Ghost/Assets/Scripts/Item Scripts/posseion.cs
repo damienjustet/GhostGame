@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -16,14 +18,20 @@ public class posseion : MonoBehaviour
 
     bool inArea;
 
+    RawImage rawImage;
+
+    Vector2 textureCoord;
+    GameObject tracker;
+
     void Start()
     {
         showValueText = (GameObject)Resources.Load("ShowValueText");
         showValueText = Instantiate(showValueText, transform);
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+        rawImage = GameObject.FindObjectOfType<RawImage>();
+        tracker = GameObject.Find("tracker");
     }
-
 
     private void OnMouseOver()
     {
@@ -60,6 +68,19 @@ public class posseion : MonoBehaviour
     }
     private void Update()
     {
+        Vector2 localPoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint);
+        RaycastHit hit;
+        Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
+        tracker.transform.position = localPoint;
+        Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            print("happen");
+            OnMouseOver();
+        }
+      
+
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
