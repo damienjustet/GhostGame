@@ -8,8 +8,14 @@ using UnityEngine;
 public enum SoundType
 {
     ITEMHIT,
-    POSSESS,
-    MUSIC
+    POSSESS
+}
+
+public enum MusicType
+{
+    LOBBY,
+    TUTORIAL,
+    LEVEL1
 }
 
 [ExecuteInEditMode]
@@ -17,7 +23,9 @@ public class SoundManager : MonoBehaviour
 {
     private static SoundManager instance;
     public SoundList[] soundList;
-    private AudioSource audioSource;
+    public SongList[] songList;
+    private AudioSource musicSource;
+    [Range(0f,1f)] public float musicVolume;
 
     void Awake()
     {
@@ -34,14 +42,25 @@ public class SoundManager : MonoBehaviour
             sList.volumeAndPitch.source.pitch = sList.volumeAndPitch.pitch;
             sList.volumeAndPitch.source.loop = sList.volumeAndPitch.loop;
         }
+        
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSource.volume = musicVolume;
+        musicSource.loop = true;
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)
     {
         AudioClip[] clips = instance.soundList[(int)sound].clips;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
-        
         instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume);
+
+    }
+    public static void StartSong(MusicType song, float volume = 1)
+    {
+        Debug.Log((int)song);
+        AudioClip clip = instance.songList[(int)song].song;
+        instance.musicSource.PlayOneShot(clip, volume);
+
     }
 
 #if UNITY_EDITOR
@@ -50,8 +69,15 @@ public class SoundManager : MonoBehaviour
         string[] names = Enum.GetNames(typeof(SoundType));
         Array.Resize(ref soundList, names.Length);
         for (int i = 0; i < soundList.Length; i++)
-        {
+        {   
             soundList[i].name = names[i];
+        }
+        
+        string[] songNames = Enum.GetNames(typeof(MusicType));
+        Array.Resize(ref songList, songNames.Length);
+        for (int i = 0; i < songNames.Length; i++)
+        {
+            songList[i].name = songNames[i];
         }
     }
 #endif
@@ -59,11 +85,18 @@ public class SoundManager : MonoBehaviour
 }
 
 [Serializable]
+public struct SongList
+{
+    [HideInInspector] public string name;
+    [SerializeField] public AudioClip song;
+}
+
+[Serializable]
 public struct SoundList
 {
     public AudioClip[] clips { get => sounds;}
     [HideInInspector] public string name;
-    [SerializeField] private AudioClip[] sounds;
-    
+    [SerializeField] public AudioClip[] sounds;
     public Sound volumeAndPitch;
 }
+

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Global : MonoBehaviour
 {
@@ -15,7 +17,16 @@ public class Global : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
-        SoundManager.PlaySound(SoundType.MUSIC);
+        MusicType song;
+        if (Enum.TryParse(SceneManager.GetActiveScene().name, out song))
+        {
+            SoundManager.StartSong(song);
+        }
+        else
+        {
+            Debug.Log("No music played");
+        }
+        
     }
 
     // checks if ghost is possessed
