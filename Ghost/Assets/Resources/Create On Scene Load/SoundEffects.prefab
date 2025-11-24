@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5747479967673908795}
   - component: {fileID: -6101247600537015191}
-  - component: {fileID: 8358436457779979030}
-  - component: {fileID: 8244869539661259346}
-  - component: {fileID: 5227001179965254965}
+  - component: {fileID: 1145550830797334730}
+  - component: {fileID: 7292459706093201891}
+  - component: {fileID: 1247234328354220440}
   m_Layer: 0
   m_Name: SoundEffects
   m_TagString: Untagged
@@ -57,7 +57,7 @@ MonoBehaviour:
       volume: 1
       pitch: 1
       loop: 0
-      source: {fileID: 8358436457779979030}
+      source: {fileID: 1145550830797334730}
   - name: POSSESS
     sounds:
     - {fileID: 8300000, guid: 2c86b543a644fc147a2334304d34a900, type: 3}
@@ -65,16 +65,16 @@ MonoBehaviour:
       volume: 0.7
       pitch: 1
       loop: 0
-      source: {fileID: 8244869539661259346}
+      source: {fileID: 7292459706093201891}
   songList:
   - name: LOBBY
-    song: {fileID: 8300000, guid: a048be470a4a49f4786d8c6cf85c69e6, type: 3}
+    song: {fileID: 8300000, guid: e6988c86274474f44ba8b77506e51dfc, type: 3}
   - name: TUTORIAL
-    song: {fileID: 8300000, guid: 326f25f5dbb76a244b8ae8b6deeabdff, type: 3}
+    song: {fileID: 8300000, guid: e6988c86274474f44ba8b77506e51dfc, type: 3}
   - name: LEVEL1
-    song: {fileID: 8300000, guid: a048be470a4a49f4786d8c6cf85c69e6, type: 3}
+    song: {fileID: 8300000, guid: ef270a6c7f758e74baf2ce7384aeb7df, type: 3}
   musicVolume: 1
---- !u!82 &8358436457779979030
+--- !u!82 &1145550830797334730
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,7 +170,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &8244869539661259346
+--- !u!82 &7292459706093201891
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,7 +266,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &5227001179965254965
+--- !u!82 &1247234328354220440
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

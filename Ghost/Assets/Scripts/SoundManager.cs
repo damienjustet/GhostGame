@@ -24,7 +24,7 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     public SoundList[] soundList;
     public SongList[] songList;
-    private AudioSource musicSource;
+    [HideInInspector] public AudioSource musicSource;
     [Range(0f,1f)] public float musicVolume;
 
     void Awake()
@@ -42,10 +42,10 @@ public class SoundManager : MonoBehaviour
             sList.volumeAndPitch.source.pitch = sList.volumeAndPitch.pitch;
             sList.volumeAndPitch.source.loop = sList.volumeAndPitch.loop;
         }
-        
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.volume = musicVolume;
         musicSource.loop = true;
+        
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)
@@ -57,9 +57,9 @@ public class SoundManager : MonoBehaviour
     }
     public static void StartSong(MusicType song, float volume = 1)
     {
-        Debug.Log((int)song);
         AudioClip clip = instance.songList[(int)song].song;
-        instance.musicSource.PlayOneShot(clip, volume);
+        instance.musicSource.clip = clip;
+        instance.musicSource.Play();
 
     }
 

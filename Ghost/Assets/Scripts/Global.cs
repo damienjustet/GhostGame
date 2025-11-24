@@ -10,8 +10,11 @@ public class Global : MonoBehaviour
     public static Global Instance { get; private set; }
     public bool playerLiving = true;
 
+    SoundManager sm;
+
     private void Awake()
     {
+        sm = GameObject.Find("SoundEffects(Clone)").GetComponent<SoundManager>();
         if (Instance != null)
         {
             Destroy(Instance);
