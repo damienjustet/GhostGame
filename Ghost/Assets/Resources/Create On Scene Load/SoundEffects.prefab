@@ -68,11 +68,12 @@ MonoBehaviour:
       source: {fileID: 7292459706093201891}
   songList:
   - name: LOBBY
-    song: {fileID: 8300000, guid: e6988c86274474f44ba8b77506e51dfc, type: 3}
+    song: {fileID: 8300000, guid: 272f38749b1d0df468b6621391a45fce, type: 3}
   - name: TUTORIAL
     song: {fileID: 8300000, guid: e6988c86274474f44ba8b77506e51dfc, type: 3}
   - name: LEVEL1
     song: {fileID: 8300000, guid: ef270a6c7f758e74baf2ce7384aeb7df, type: 3}
+  musicSource: {fileID: 0}
   musicVolume: 1
 --- !u!82 &1145550830797334730
 AudioSource:
