@@ -58,6 +58,14 @@ public class Player : MonoBehaviour
             {
                 // rotates player
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
+
+                // sound effect :)
+                SoundManager.StartSound(SoundType.PLAYERMOVE);
+            }
+            else
+            {
+                Debug.Log("hi");
+                SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
 
             if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
