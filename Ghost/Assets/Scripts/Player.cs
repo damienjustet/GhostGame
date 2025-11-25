@@ -64,7 +64,6 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Debug.Log("hi");
                 SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
 
