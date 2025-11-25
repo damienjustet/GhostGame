@@ -64,17 +64,19 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Debug.Log("hi");
+               
                 SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
-
+            print(Global.Instance.interact);
             if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
             {
                 SoundManager.PlaySound(SoundType.POSSESS);
                 Global.Instance.isPossessed = true;
-                gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
+                GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
                 player.GetComponent<Collider>().enabled = false;
                 detect.GetComponent<Renderer>().enabled = false;
+            
+               
             }
 
             else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession

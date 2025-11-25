@@ -21,7 +21,9 @@ public class posseion : MonoBehaviour
     RawImage rawImage;
 
     Vector2 textureCoord;
-    GameObject tracker;
+  
+
+    bool item;
 
     void Start()
     {
@@ -30,7 +32,7 @@ public class posseion : MonoBehaviour
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
         rawImage = GameObject.FindObjectOfType<RawImage>();
-        tracker = GameObject.Find("tracker");
+       
     }
 
     private void OnMouseOver1()
@@ -38,9 +40,9 @@ public class posseion : MonoBehaviour
 
         if (!Global.Instance.isPossessed && inArea == true)
         {
+            
             showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
-
             interactable = true;
             GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
             Global.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
@@ -65,6 +67,7 @@ public class posseion : MonoBehaviour
 
         interactable = false;
         Global.Instance.interact = false;
+        
     }
     private void Update()
     {
@@ -79,32 +82,39 @@ public class posseion : MonoBehaviour
                 Ray ray =  Camera.main.ViewportPointToRay(normalizedPoint);
        
                 Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
+                int layerMask = LayerMask.GetMask("item");
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {   
             
             if(hit.collider.gameObject == this.gameObject)
                 {
-                    
+                    item = true;
                     OnMouseOver1();
+                   
                 }
-            
         }
-            else
-            {
+        else
+                {
+                item = false;
                 OnMouseExit1();
-            }
+                print("meep");
+                
+                }
+       
+            
         }
         
       
-
+        
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
-
+           
 
         }
         else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
         {
+            
             Depossess();
             
         }
@@ -136,7 +146,6 @@ public class posseion : MonoBehaviour
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
             }
-
             Destroy(gameObject.GetComponent<itemMove>());
             gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
             gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
