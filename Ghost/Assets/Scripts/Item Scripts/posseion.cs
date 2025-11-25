@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -16,16 +18,22 @@ public class posseion : MonoBehaviour
 
     bool inArea;
 
+    RawImage rawImage;
+
+    Vector2 textureCoord;
+    GameObject tracker;
+
     void Start()
     {
         showValueText = (GameObject)Resources.Load("ShowValueText");
         showValueText = Instantiate(showValueText, transform);
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+        rawImage = GameObject.FindObjectOfType<RawImage>();
+        tracker = GameObject.Find("tracker");
     }
 
-
-    private void OnMouseOver()
+    private void OnMouseOver1()
     {
 
         if (!Global.Instance.isPossessed && inArea == true)
@@ -49,7 +57,7 @@ public class posseion : MonoBehaviour
 
     }
     
-    void OnMouseExit()
+    void OnMouseExit1()
     {
         shownText.text = "";
        
@@ -60,6 +68,35 @@ public class posseion : MonoBehaviour
     }
     private void Update()
     {
+        Vector2 localPoint;
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
+        {
+                Vector2 normalizedPoint = new Vector2(
+                (localPoint.x - rawImage.rectTransform.rect.x) / rawImage.rectTransform.rect.width,
+                (localPoint.y - rawImage.rectTransform.rect.y) / rawImage.rectTransform.rect.height
+);
+                RaycastHit hit;
+                Ray ray =  Camera.main.ViewportPointToRay(normalizedPoint);
+       
+                Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            
+            if(hit.collider.gameObject == this.gameObject)
+                {
+                    
+                    OnMouseOver1();
+                }
+            
+        }
+            else
+            {
+                OnMouseExit1();
+            }
+        }
+        
+      
+
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();

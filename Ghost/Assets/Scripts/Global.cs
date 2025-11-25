@@ -32,6 +32,12 @@ public class Global : MonoBehaviour
         
     }
 
+    public void StartGame()
+    {
+        Debug.Log("YEP");
+        SceneManager.LoadScene("LOBBY");
+    }
+
     // checks if ghost is possessed
     public bool isPossessed = false;
 

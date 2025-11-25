@@ -8,7 +8,8 @@ using UnityEngine;
 public enum SoundType
 {
     ITEMHIT,
-    POSSESS
+    POSSESS,
+    PLAYERMOVE
 }
 
 public enum MusicType
@@ -54,6 +55,38 @@ public class SoundManager : MonoBehaviour
         AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
         instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume);
 
+    }
+
+    public static void StartSound(SoundType sound)
+    {
+        if (!instance.soundList[(int)sound].volumeAndPitch.source.isPlaying)
+        {
+            AudioClip[] clips = instance.soundList[(int)sound].clips;
+            AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
+            instance.soundList[(int)sound].volumeAndPitch.source.clip = randomClip;
+            instance.soundList[(int)sound].volumeAndPitch.source.Play();
+            instance.soundList[(int)sound].volumeAndPitch.source.volume = 0;
+        }
+        if (instance.soundList[(int)sound].volumeAndPitch.source.volume < instance.soundList[(int)sound].volumeAndPitch.volume)
+        {
+            instance.soundList[(int)sound].volumeAndPitch.source.volume += 5 * Time.deltaTime;
+        }
+        else
+        {
+            instance.soundList[(int)sound].volumeAndPitch.source.volume = instance.soundList[(int)sound].volumeAndPitch.volume;
+        }
+        
+    }
+    public static void StopSound(SoundType sound)
+    {
+        if (instance.soundList[(int)sound].volumeAndPitch.source.isPlaying)
+        {
+            instance.soundList[(int)sound].volumeAndPitch.source.volume -= 5 * Time.deltaTime;
+            if (instance.soundList[(int)sound].volumeAndPitch.source.volume <= 0)
+            {
+                instance.soundList[(int)sound].volumeAndPitch.source.Stop();
+            }
+        }
     }
     public static void StartSong(MusicType song, float volume = 1)
     {
