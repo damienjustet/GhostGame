@@ -1,19 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Profiling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Global : MonoBehaviour
 {
     //This makes script public
     public static Global Instance { get; private set; }
     public bool playerLiving = true;
+    RawImage rawImage;
 
     SoundManager sm;
 
     private void Awake()
     {
+        rawImage = GameObject.Find("Camera Display").GetComponent<RawImage>();
         sm = GameObject.Find("SoundEffects(Clone)").GetComponent<SoundManager>();
         if (Instance != null)
         {
@@ -30,6 +34,31 @@ public class Global : MonoBehaviour
             Debug.Log("No music played");
         }
         
+    }
+
+    void Update()
+    {
+        Vector2 localPoint;
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
+        {
+            Vector2 normalizedPoint = new Vector2(
+            (localPoint.x - rawImage.rectTransform.rect.x) / rawImage.rectTransform.rect.width,
+            (localPoint.y - rawImage.rectTransform.rect.y) / rawImage.rectTransform.rect.height
+);
+            RaycastHit hit;
+            Ray ray =  Camera.main.ViewportPointToRay(normalizedPoint);
+    
+            Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
+            int layerMask = LayerMask.GetMask("item");
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {   
+                posseion ps = hit.collider.gameObject.GetComponent<posseion>();
+                ps.item = true;
+                ps.frame = 0;
+                ps.OnMouseOver1();
+            }
+            
+        }
     }
 
     public void StartGame()

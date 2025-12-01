@@ -11,13 +11,25 @@ public class itemMove : MonoBehaviour
     CinemachineFreeLook cam;
     public float moveSpeed = 5;
     public float rotationSpeed = 3;
+    float yValue;
+
     private void Awake()
     {
         //references
         cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
         gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<CharacterController>();
-        rb.height = 2;
+        
+        if (gameObject.GetComponent<MeshCollider>() != null)
+        {
+            rb.height = gameObject.GetComponent<MeshCollider>().bounds.size.y / transform.localScale.x;
+        }
+        else
+        {
+            rb.height = 2;
+        }
+
+        yValue = transform.position.y + rb.height/2 + 1;
 
         if (gameObject.GetComponent<Rigidbody>() != null) //Allows you to possess rigidbodys
         {
@@ -43,6 +55,7 @@ public class itemMove : MonoBehaviour
         movement *= moveSpeed;
 
         rb.Move(movement * Time.deltaTime);
+        rb.transform.position = new Vector3(rb.transform.position.x, yValue, rb.transform.position.z);
 
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Mouse1)) // Rotates possessed object
         {

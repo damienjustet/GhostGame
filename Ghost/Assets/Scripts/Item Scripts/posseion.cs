@@ -23,21 +23,27 @@ public class posseion : MonoBehaviour
     Vector2 textureCoord;
   
 
-    bool item;
+    [HideInInspector] public bool item;
+    [HideInInspector] public int frame;
 
     void Start()
     {
-        rawImage = GameObject.FindObjectOfType<RawImage>();
-       
+        
     }
 
-    private void OnMouseOver1()
+    public void OnMouseOver1()
     {
 
         if (!Global.Instance.isPossessed && inArea == true)
         {
-            
-            showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<BoxCollider>().size.y / 2, 0);
+            if (gameObject.GetComponent<BoxCollider>() != null)
+            {
+                showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<BoxCollider>().size.y / 2, 0);
+            }
+            else
+            {
+                showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
+            }
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
             interactable = true;
             GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
@@ -55,7 +61,7 @@ public class posseion : MonoBehaviour
 
     }
     
-    void OnMouseExit1()
+    public void OnMouseExit1()
     {
         shownText.text = "";
        
@@ -67,45 +73,26 @@ public class posseion : MonoBehaviour
     }
     private void Update()
     {
-        Vector2 localPoint;
-            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
+        // I moved the raycast to the global script because it was running an error
+        // It will set frame to 0 if it is in the raycast and so it checks here
+        // if mouse exits
+        
+        if (frame == 0)
         {
-                Vector2 normalizedPoint = new Vector2(
-                (localPoint.x - rawImage.rectTransform.rect.x) / rawImage.rectTransform.rect.width,
-                (localPoint.y - rawImage.rectTransform.rect.y) / rawImage.rectTransform.rect.height
-);
-                RaycastHit hit;
-                Ray ray =  Camera.main.ViewportPointToRay(normalizedPoint);
-       
-                Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
-                int layerMask = LayerMask.GetMask("item");
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-        {   
-            
-            if(hit.collider.gameObject == this.gameObject)
-                {
-                    item = true;
-                    OnMouseOver1();
-                   
-                }
+            frame = 1;
         }
-        else
-                {
-                item = false;
-                OnMouseExit1();
-                print("meep");
-                
-                }
-       
-            
+        else if (frame == 1)
+        {
+            frame = 2;
+            item = false;
+            OnMouseExit1();
+            print("meep");
         }
-        
-      
-        
+            
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
-           
+            
 
         }
         else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
@@ -150,8 +137,10 @@ public class posseion : MonoBehaviour
 
     public void CreateShownValue()
     {
+        rawImage = GameObject.FindObjectOfType<RawImage>();
         showValueText = (GameObject)Resources.Load("ShowValueText");
         showValueText = Instantiate(showValueText, transform);
+        showValueText.GetComponent<Transform>().localScale = new Vector3(0.06f,0.06f,0.06f);
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
     }
