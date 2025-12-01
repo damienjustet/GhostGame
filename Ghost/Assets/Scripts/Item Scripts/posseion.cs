@@ -27,10 +27,6 @@ public class posseion : MonoBehaviour
 
     void Start()
     {
-        showValueText = (GameObject)Resources.Load("ShowValueText");
-        showValueText = Instantiate(showValueText, transform);
-        shownText = showValueText.GetComponent<Text>();
-        showValueText.GetComponent<ShowValue>().theirParent = gameObject;
         rawImage = GameObject.FindObjectOfType<RawImage>();
        
     }
@@ -41,7 +37,7 @@ public class posseion : MonoBehaviour
         if (!Global.Instance.isPossessed && inArea == true)
         {
             
-            showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
+            showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<BoxCollider>().size.y / 2, 0);
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
             interactable = true;
             GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
@@ -150,6 +146,14 @@ public class posseion : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
             gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
             Destroy(gameObject.GetComponent<CharacterController>());
+    }
+
+    public void CreateShownValue()
+    {
+        showValueText = (GameObject)Resources.Load("ShowValueText");
+        showValueText = Instantiate(showValueText, transform);
+        shownText = showValueText.GetComponent<Text>();
+        showValueText.GetComponent<ShowValue>().theirParent = gameObject;
     }
 }
 

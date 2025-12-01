@@ -15,9 +15,9 @@ public class LoseValue : MonoBehaviour
 
     void Awake()
     {
-        if (GameObject.Find("Main Camera") != null)
+        if (GameObject.Find("Main Camera(Clone)") != null)
         {
-            mainCam = GameObject.Find("Main Camera").transform;
+            mainCam = GameObject.Find("Main Camera(Clone)").transform;
         }
         canvas = GameObject.Find("Floating Text Canvas").transform;
 
@@ -28,10 +28,10 @@ public class LoseValue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.Find("Main Camera") != null && mainCam != null)
+        if (GameObject.Find("Main Camera(Clone)") != null && mainCam != null)
         {
-            mainCam = GameObject.Find("Main Camera").transform;
-            transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
+            mainCam = GameObject.Find("Main Camera(Clone)").transform;
+            transform.rotation = mainCam.transform.rotation;
         }
         if (aliveTime <= timer)
         {

@@ -43,6 +43,17 @@ public class SceneBuilder : MonoBehaviour
         mainCamera.GetComponent<PixelArtCamera>().UpdateRenderTexture();
         mainCamera.transform.Find("In-Game Text Camera").GetComponent<Camera>().targetTexture = mainCamera.GetComponent<Camera>().targetTexture;
 
+        int layer = LayerMask.NameToLayer("item");
+        GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject go in allGameObjects)
+        {
+            if (go.layer == layer)
+            {
+                go.GetComponent<posseion>().CreateShownValue();
+            }
+        }
+
         Destroy(gameObject);
     }
 
