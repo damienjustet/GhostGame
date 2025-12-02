@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems; 
 using Cinemachine;
 using UnityEngine.Networking;
+using UnityEngine.TextCore.Text;
 
 public class Player : MonoBehaviour
 {
@@ -74,22 +75,20 @@ public class Player : MonoBehaviour
                 Global.Instance.isPossessed = true;
                 GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
                 player.GetComponent<Collider>().enabled = false;
+                player.GetComponent<CharacterController>().enabled = false;
                 detect.GetComponent<Renderer>().enabled = false;
             
                
             }
-
-            else if (Global.Instance.isPossessed == true && Input.GetKeyDown(KeyCode.E)) // Un Possession
-            {
-                Depossess();
-            }
         }
     }
 
-    public void Depossess()
+    public void Depossess(Vector3 pos)
     {
+        rb.transform.position = pos;
         gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
         player.GetComponent<Collider>().enabled = true;
+        player.GetComponent<CharacterController>().enabled = true;
         detect.GetComponent<Renderer>().enabled = true;
         Global.Instance.isPossessed = false;
     }

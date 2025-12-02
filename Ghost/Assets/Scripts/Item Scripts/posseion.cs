@@ -21,6 +21,7 @@ public class posseion : MonoBehaviour
     RawImage rawImage;
 
     Vector2 textureCoord;
+    [HideInInspector] public Vector3 depossessCoord;
   
 
     [HideInInspector] public bool item;
@@ -97,8 +98,11 @@ public class posseion : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
         {
-            
-            Depossess();
+            if (CanDepossess())
+            {
+                GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+                Depossess();
+            }
             
         }
 
@@ -125,14 +129,14 @@ public class posseion : MonoBehaviour
     public void Depossess()
     {
         if (gameObject.GetComponent<Rigidbody>() != null)
-            {
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            }
-            Destroy(gameObject.GetComponent<itemMove>());
-            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
-            Destroy(gameObject.GetComponent<CharacterController>());
+        {
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        Destroy(gameObject.GetComponent<itemMove>());
+        gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
+        gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
+        Destroy(gameObject.GetComponent<CharacterController>());
     }
 
     public void CreateShownValue()
@@ -143,6 +147,62 @@ public class posseion : MonoBehaviour
         showValueText.GetComponent<Transform>().localScale = new Vector3(0.06f,0.06f,0.06f);
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+    }
+
+    public bool CanDepossess()
+    {
+        float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
+        float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
+        float itemRad;
+        if (gameObject.GetComponent<MeshCollider>() != null)
+        {
+            itemRad = gameObject.GetComponent<MeshCollider>().bounds.size.x;
+        }
+        else if (gameObject.GetComponent<BoxCollider>() != null)
+        {
+            itemRad = gameObject.GetComponent<BoxCollider>().bounds.size.x;
+        }
+        else
+        {
+            itemRad = 0;
+        }
+        
+        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
+        for (int i = 1; i <= 4; i++)
+        {
+            Vector3 moveItemRadius = new Vector3(i % 2 * itemRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * itemRad);
+            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("item", "Walls"));
+            if (colliders.Length == 0)
+            {
+                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
+                return true;
+            }
+            else
+            {
+                foreach (Collider col in colliders)
+                {
+                    if (col.transform != transform)
+                    {
+                        return false;
+                    }
+                }
+                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
+                return true;
+            }
+        }
+        depossessCoord = transform.position;
+        return true;
+    }
+    void OnDrawGizmosSelected()
+    {
+        float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
+        float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
+        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, playerRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, playerRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, -playerRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, -playerRad), 2 * boxSize);
     }
 }
 
