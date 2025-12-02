@@ -11,7 +11,7 @@ public class ItemCost : MonoBehaviour
     posseion possessionScript;
 
     public GameObject loseValueText;
-    Text shownText;
+    public Text shownText;
 
 
     float ogValue;
@@ -51,6 +51,13 @@ public class ItemCost : MonoBehaviour
         if (value < 0)
         {
             Global.Instance.interact = false;
+            Destroy(gameObject);
+        }
+    }
+    void Update()
+    {
+        if (value <= 0)
+        {
             Destroy(gameObject);
         }
     }
