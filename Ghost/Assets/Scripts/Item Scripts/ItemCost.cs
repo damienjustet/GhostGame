@@ -50,7 +50,7 @@ public class ItemCost : MonoBehaviour
         if (value < 0)
         {
             Global.Instance.interact = false;
-            if (Global.Instance.isPossessed)
+            if (Global.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
             {
                 gameObject.GetComponent<posseion>().depossessCoord = transform.position;
                 gameObject.GetComponent<posseion>().Depossess();

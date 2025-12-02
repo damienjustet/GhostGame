@@ -153,6 +153,7 @@ public class posseion : MonoBehaviour
         float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
         float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
         float itemRad = gameObject.GetComponent<Collider>().bounds.size.x / 2;
+        Debug.Log(itemRad);
         
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         for (int i = 1; i <= 4; i++)
