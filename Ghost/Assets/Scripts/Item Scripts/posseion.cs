@@ -153,45 +153,21 @@ public class posseion : MonoBehaviour
     {
         float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
         float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
-        float itemRad;
-        if (gameObject.GetComponent<MeshCollider>() != null)
-        {
-            itemRad = gameObject.GetComponent<MeshCollider>().bounds.size.x;
-        }
-        else if (gameObject.GetComponent<BoxCollider>() != null)
-        {
-            itemRad = gameObject.GetComponent<BoxCollider>().bounds.size.x;
-        }
-        else
-        {
-            itemRad = 0;
-        }
+        float itemRad = gameObject.GetComponent<Collider>().bounds.size.x / 2;
         
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         for (int i = 1; i <= 4; i++)
         {
             Vector3 moveItemRadius = new Vector3(i % 2 * itemRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * itemRad);
             Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("item", "Walls"));
-            if (colliders.Length == 0)
+            if (colliders.Length == 0 || colliders.Length == 1)
             {
-                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
-                return true;
-            }
-            else
-            {
-                foreach (Collider col in colliders)
-                {
-                    if (col.transform != transform)
-                    {
-                        return false;
-                    }
-                }
                 depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
                 return true;
             }
         }
         depossessCoord = transform.position;
-        return true;
+        return false;
     }
     void OnDrawGizmosSelected()
     {
@@ -199,11 +175,14 @@ public class posseion : MonoBehaviour
         float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, -playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, -playerRad), 2 * boxSize);
+        float itemRad = gameObject.GetComponent<Collider>().bounds.size.x / 2;
+        
+        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, playerRad) + new Vector3(itemRad, 0, itemRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, playerRad) + new Vector3(-itemRad, 0, itemRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, -playerRad) + new Vector3(itemRad, 0, -itemRad), 2 * boxSize);
+        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, -playerRad) + new Vector3(-itemRad, 0, -itemRad), 2 * boxSize);
     }
+
 }
 
 
