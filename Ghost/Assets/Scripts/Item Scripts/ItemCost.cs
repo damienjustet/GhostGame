@@ -11,7 +11,7 @@ public class ItemCost : MonoBehaviour
     posseion possessionScript;
 
     public GameObject loseValueText;
-    Text shownText;
+    public Text shownText;
 
 
     float ogValue;
@@ -55,6 +55,13 @@ public class ItemCost : MonoBehaviour
                 gameObject.GetComponent<posseion>().depossessCoord = transform.position;
                 gameObject.GetComponent<posseion>().Depossess();
             }
+            Destroy(gameObject);
+        }
+    }
+    void Update()
+    {
+        if (value <= 0)
+        {
             Destroy(gameObject);
         }
     }

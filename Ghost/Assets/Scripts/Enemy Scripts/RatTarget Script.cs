@@ -15,8 +15,11 @@ public class RatTargetScript : MonoBehaviour
     private NavMeshAgent agent;
     private float timer;
     public GameObject item;
+    public bool scurryAway = false;
+    
+    public Transform ratHole;
 
-    int tiredness = 0;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -29,8 +32,9 @@ public class RatTargetScript : MonoBehaviour
         float distanceToItem = Vector3.Distance(transform.position, item.transform.position);
         timer += Time.deltaTime;
         Transform selfPos = transform;
-          
 
+        if (!scurryAway)
+        {
         if (timer >= wanderTimer)
         {
             if (distanceToItem <= wanderRadius)
@@ -50,6 +54,13 @@ public class RatTargetScript : MonoBehaviour
             }
             timer = 0;
         }
+            
+        }
+        else
+            {
+                ratHole = GameObject.FindGameObjectWithTag("ratHole").transform;
+                agent.SetDestination(ratHole.position);
+            }
         
     }
 
