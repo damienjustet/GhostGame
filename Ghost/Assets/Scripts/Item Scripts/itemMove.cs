@@ -20,13 +20,15 @@ public class itemMove : MonoBehaviour
         gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<CharacterController>();
         
-        if (gameObject.GetComponent<MeshCollider>() != null)
+        if (gameObject.GetComponent<Collider>() != null)
         {
-            rb.height = gameObject.GetComponent<MeshCollider>().bounds.size.y / transform.localScale.x;
+            rb.height = gameObject.GetComponent<Collider>().bounds.size.y / transform.localScale.y;
+            rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x;
         }
         else
         {
             rb.height = 2;
+            rb.radius = 0.5f;
         }
 
         yValue = transform.position.y + rb.height/2 + 1;

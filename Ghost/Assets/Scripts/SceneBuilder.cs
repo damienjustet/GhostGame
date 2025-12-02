@@ -48,7 +48,7 @@ public class SceneBuilder : MonoBehaviour
 
         foreach (GameObject go in allGameObjects)
         {
-            if (go.layer == layer)
+            if (go.layer == layer && go.GetComponent<posseion>() != null)
             {
                 go.GetComponent<posseion>().CreateShownValue();
             }
