@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneBuilder : MonoBehaviour
@@ -12,18 +14,29 @@ public class SceneBuilder : MonoBehaviour
     GameObject mainCamera;
     GameObject player;
     GameObject soundEffects;
+    GameObject moneyText;
     Transform playerSpawn;
 
     void Start()
     {
         canvas = (GameObject)Resources.Load("Create On Scene Load/Canvas");
         global = (GameObject)Resources.Load("Create On Scene Load/global");
+
         mainCamera = (GameObject)Resources.Load("Create On Scene Load/Main Camera");
         player = (GameObject)Resources.Load("Create On Scene Load/player");
         soundEffects = (GameObject)Resources.Load("Create On Scene Load/SoundEffects");
 
         player = Instantiate(player);
         canvas = Instantiate(canvas);
+        string[] scenesWithMoney = {"TUTORIAL", "LEVEL 1", "House"};
+        if (scenesWithMoney.Contains(SceneManager.GetActiveScene().name))
+        {
+            moneyText = (GameObject)Resources.Load("Create On Scene Load/MONEY");
+            moneyText = Instantiate(moneyText);
+            global.GetComponent<Global>().moneyText = moneyText;
+            moneyText.transform.SetParent(canvas.transform);
+        }
+
         soundEffects = Instantiate(soundEffects);
         global = Instantiate(global);
         mainCamera = Instantiate(mainCamera);
@@ -53,6 +66,7 @@ public class SceneBuilder : MonoBehaviour
                 go.GetComponent<posseion>().CreateShownValue();
             }
         }
+
 
         Destroy(gameObject);
     }

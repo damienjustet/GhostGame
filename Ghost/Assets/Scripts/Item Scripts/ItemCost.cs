@@ -12,6 +12,7 @@ public class ItemCost : MonoBehaviour
 
     public GameObject loseValueText;
     public Text shownText;
+    bool canDamage = true;
 
 
     float ogValue;
@@ -36,33 +37,58 @@ public class ItemCost : MonoBehaviour
     {
         SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
 
-        if (GetVelocityMagnitude(collision.relativeVelocity) > -10 * sensitivity + 10)
+        if (canDamage)
         {
-            if (fragility == 1)
+            if (GetVelocityMagnitude(collision.relativeVelocity) > -10 * sensitivity + 10)
             {
-                value = 0;
-            }
+                if (fragility == 1)
+                {
+                    value = 0;
+                }
 
-            shownText.text = "-" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
-            value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
-            Instantiate(loseValueText, transform);
-        }
-        if (value < 0)
-        {
-            Global.Instance.interact = false;
-            if (Global.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
-            {
-                gameObject.GetComponent<posseion>().depossessCoord = transform.position;
-                gameObject.GetComponent<posseion>().Depossess();
+                shownText.text = "-" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
+                value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
+                Instantiate(loseValueText, transform);
             }
+            if (value < 0)
+            {
+                Global.Instance.interact = false;
+                if (Global.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
+                {
+                    gameObject.GetComponent<posseion>().depossessCoord = transform.position;
+                    gameObject.GetComponent<posseion>().Depossess();
+                }
+                Destroy(gameObject);
+            }
+        }
+    }
+        
+    void Update()
+    {
+        if (value <= 0 && canDamage)
+        {
             Destroy(gameObject);
         }
     }
-    void Update()
+
+    public void Collect(Vector3 depossessCoord)
     {
-        if (value <= 0)
+        canDamage = false;
+        value = 0;
+        gameObject.layer = LayerMask.NameToLayer("Collected Item");
+        if (gameObject.GetComponent<itemMove>() != null)
         {
-            Destroy(gameObject);
+            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            if (gameObject.GetComponent<Rigidbody>() != null)
+            {
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            Destroy(gameObject.GetComponent<itemMove>());
+            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
+            Destroy(gameObject.GetComponent<CharacterController>());
         }
+
     }
 }

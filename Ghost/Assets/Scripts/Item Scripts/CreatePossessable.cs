@@ -10,6 +10,7 @@ public class CreatePossessable : MonoBehaviour
     void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("item");
+        gameObject.tag = "Collectable";
         
         gameObject.AddComponent<ItemCost>();
         gameObject.AddComponent<posseion>();

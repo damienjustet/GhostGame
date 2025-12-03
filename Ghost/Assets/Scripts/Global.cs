@@ -14,6 +14,11 @@ public class Global : MonoBehaviour
     RawImage rawImage;
 
     SoundManager sm;
+    public GameObject moneyText;
+    Text moneyTextText;
+    
+    // MONEY
+    public float money;
 
     private void Awake()
     {
@@ -33,6 +38,14 @@ public class Global : MonoBehaviour
         {
             Debug.Log("No music played");
         }
+
+        if (moneyText != null)
+        {
+            moneyText.transform.SetParent(GameObject.Find("Canvas(Clone)").transform);
+            moneyTextText = moneyText.GetComponent<Text>();
+            moneyTextText.text = "$0.00";
+        }
+        
         
     }
 
@@ -59,6 +72,20 @@ public class Global : MonoBehaviour
             }
             
         }
+
+        string extraMoneyText = "";
+        if (money % 1 == 0)
+        {
+            extraMoneyText = ".00";
+        }
+        else if (money * 10 % 1 == 0)
+        {
+            extraMoneyText = "0";
+        }
+        if (moneyText != null)
+        {
+            moneyTextText.text = "$" + money + extraMoneyText;
+        }
     }
 
     public void StartGame()
@@ -72,7 +99,5 @@ public class Global : MonoBehaviour
     //checks if the player can interact with object(This is for the player script)
     public bool interact;
 
-    // MONEY
-    public float money;
 }
 

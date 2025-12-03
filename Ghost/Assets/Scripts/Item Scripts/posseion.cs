@@ -26,12 +26,6 @@ public class posseion : MonoBehaviour
 
     [HideInInspector] public bool item;
     [HideInInspector] public int frame;
-
-    void Start()
-    {
-        
-    }
-
     public void OnMouseOver1()
     {
         if (!Global.Instance.isPossessed && inArea == true)
@@ -92,14 +86,10 @@ public class posseion : MonoBehaviour
         {
             gameObject.AddComponent<itemMove>();
             
-
         }
         else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
         {
-            if (CanDepossess())
-            {
-                Depossess();
-            }
+            Depossess();
             
         }
 
@@ -125,16 +115,20 @@ public class posseion : MonoBehaviour
 
     public void Depossess()
     {
-        GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
-        if (gameObject.GetComponent<Rigidbody>() != null)
+        if (CanDepossess())
         {
-            gameObject.GetComponent<Rigidbody>().useGravity = true;
-            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            if (gameObject.GetComponent<Rigidbody>() != null)
+            {
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            Destroy(gameObject.GetComponent<itemMove>());
+            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
+            Destroy(gameObject.GetComponent<CharacterController>());
         }
-        Destroy(gameObject.GetComponent<itemMove>());
-        gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
-        gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
-        Destroy(gameObject.GetComponent<CharacterController>());
+        
     }
 
     public void CreateShownValue()
