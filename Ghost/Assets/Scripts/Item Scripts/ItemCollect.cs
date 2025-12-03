@@ -9,7 +9,9 @@ public class ItemCollect : MonoBehaviour
         if (collider.gameObject.tag == "Collectable")
         {
             Global.Instance.money += collider.gameObject.GetComponent<ItemCost>().value;
-            Destroy(collider.gameObject);
+            
+            collider.GetComponent<ItemCost>().Collect(transform.position + Vector3.right);
+            
         }
     }
 }
