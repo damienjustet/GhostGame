@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class ThePOPE : MonoBehaviour
 {
        public float wanderRadius = 20f; // Radius within which the character will wander
-    public float wanderTimer = 3f;   // Time before choosing a new destination
+    public float wanderTimer = 2f;   // Time before choosing a new destination
 
     private NavMeshAgent agent;
     private float timer;
@@ -30,35 +30,30 @@ bool seePlayer;
         player = GameObject.Find("player(Clone)");
         Vector3 direction = player.transform.position - transform.position;
         RaycastHit hit;
-        int playerLayer = LayerMask.NameToLayer("player");
-        Debug.DrawRay(transform.position,direction * 1000f, Color.blue);
-        if (Physics.Raycast(transform.position, direction * 1000f, out hit, playerLayer))
-        {
-            
-                seePlayer = true;
-                print("hello");
-            
-            
-        }
-        else
-        {
-            seePlayer = false;
-        }
+        int playerLayer = LayerMask.GetMask("player");
+        Debug.DrawRay(transform.position,direction, Color.blue);
+        seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+        print(hit.collider.gameObject);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         timer += Time.deltaTime;
         Transform selfPos = transform;
-
+        
         if (!tired)
-        {
-        if (timer >= wanderTimer)
         {
             if (distanceToPlayer <= wanderRadius && seePlayer)
             {
-                agent.SetDestination(player.transform.position);
+                if (hit.collider.gameObject.name == "player(Clone)")
+                {
+                    agent.SetDestination(player.transform.position);
+                }
+                
                 
 
             }
-            else
+            else if (timer >= wanderTimer)
+        {
+            
+            
             {
 
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
