@@ -23,7 +23,7 @@ public class itemMove : MonoBehaviour
         if (gameObject.GetComponent<Collider>() != null)
         {
             rb.height = gameObject.GetComponent<Collider>().bounds.size.y / transform.localScale.y;
-            rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x;
+            rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x / 2;
         }
         else
         {
@@ -66,8 +66,8 @@ public class itemMove : MonoBehaviour
             float mousey = Input.GetAxis("Mouse Y");
 
             transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
-            transform.Rotate(Vector3.right, mousey * rotationSpeed, Space.Self);
-
+            transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
+            
             cam.m_XAxis.m_MaxSpeed = 0f;// Locks Camera while Rotating
             cam.m_YAxis.m_MaxSpeed = 0f;
 

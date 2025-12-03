@@ -5961,6 +5961,7 @@ MonoBehaviour:
   fragility: 0.076
   sensitivity: 0.373
   loseValueText: {fileID: 0}
+  shownText: {fileID: 0}
 --- !u!1 &480818497
 GameObject:
   m_ObjectHideFlags: 0
@@ -20104,6 +20105,7 @@ MonoBehaviour:
   fragility: 0.2
   sensitivity: 0.546
   loseValueText: {fileID: 0}
+  shownText: {fileID: 0}
 --- !u!64 &1141838702
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24983,31 +24985,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.4989375
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.1144208
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.6654093
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.54332286
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 56.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -440.71
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 45.48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef95fffe416046648bc97dabc54b3d8b, type: 3}
       propertyPath: m_ConstrainProportionsScale

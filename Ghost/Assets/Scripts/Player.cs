@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
                
                 SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
-            print(Global.Instance.interact);
+            
             if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
             {
                 SoundManager.PlaySound(SoundType.POSSESS);
