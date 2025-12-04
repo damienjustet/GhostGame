@@ -20,17 +20,18 @@ public class itemMove : MonoBehaviour
         gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<CharacterController>();
         
-        if (gameObject.GetComponent<Collider>() != null)
-        {
-            rb.height = gameObject.GetComponent<Collider>().bounds.size.y / transform.localScale.y;
-            rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x / 2;
-        }
-        else
-        {
-            rb.height = 2;
-            rb.radius = 0.5f;
-        }
-
+        // if (gameObject.GetComponent<Collider>() != null)
+        // {
+        //     rb.height = gameObject.GetComponent<Collider>().bounds.size.y / transform.localScale.y;
+        //     rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x / 2;
+        // }
+        // else
+        // {
+        //     rb.height = 2;
+        //     rb.radius = 0.5f;
+        // }
+        rb.height = 0;
+        rb.radius = 0;
         yValue = transform.position.y + rb.height/2 + 1;
 
         if (gameObject.GetComponent<Rigidbody>() != null) //Allows you to possess rigidbodys

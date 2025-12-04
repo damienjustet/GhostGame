@@ -65,7 +65,7 @@ public class Global : MonoBehaviour
             int layerMask = LayerMask.GetMask("item");
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {   
-                posseion ps = hit.collider.gameObject.GetComponent<posseion>();
+                posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
                 ps.item = true;
                 ps.frame = 0;
                 ps.OnMouseOver1();
