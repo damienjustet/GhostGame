@@ -26,20 +26,13 @@ public class posseion : MonoBehaviour
 
     [HideInInspector] public bool item;
     [HideInInspector] public int frame;
-
-    void Start()
-    {
-        
-    }
-
     public void OnMouseOver1()
     {
-
         if (!Global.Instance.isPossessed && inArea == true)
         {
-            if (gameObject.GetComponent<BoxCollider>() != null)
+            if (gameObject.GetComponent<Collider>() != null)
             {
-                showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<BoxCollider>().size.y / 2, 0);
+                showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<Collider>().bounds.size.y / 2, 0);
             }
             else
             {
@@ -47,14 +40,14 @@ public class posseion : MonoBehaviour
             }
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
             interactable = true;
-            GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
+            // GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
             Global.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
         }
         else
         {
             shownText.text = "";
             
-            GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
+            // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
             interactable = false;
             Global.Instance.interact = false;
@@ -66,7 +59,7 @@ public class posseion : MonoBehaviour
     {
         shownText.text = "";
        
-        GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
+        // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
         interactable = false;
         Global.Instance.interact = false;
@@ -87,22 +80,16 @@ public class posseion : MonoBehaviour
             frame = 2;
             item = false;
             OnMouseExit1();
-            print("meep");
         }
             
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
             
-
         }
         else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
         {
-            if (CanDepossess())
-            {
-                GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
-                Depossess();
-            }
+            Depossess();
             
         }
 
@@ -128,15 +115,20 @@ public class posseion : MonoBehaviour
 
     public void Depossess()
     {
-        if (gameObject.GetComponent<Rigidbody>() != null)
+        if (CanDepossess())
         {
-            gameObject.GetComponent<Rigidbody>().useGravity = true;
-            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            if (gameObject.GetComponent<Rigidbody>() != null)
+            {
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            Destroy(gameObject.GetComponent<itemMove>());
+            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
+            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
+            Destroy(gameObject.GetComponent<CharacterController>());
         }
-        Destroy(gameObject.GetComponent<itemMove>());
-        gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
-        gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
-        Destroy(gameObject.GetComponent<CharacterController>());
+        
     }
 
     public void CreateShownValue()
@@ -153,56 +145,33 @@ public class posseion : MonoBehaviour
     {
         float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
         float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
-        float itemRad;
-        if (gameObject.GetComponent<MeshCollider>() != null)
-        {
-            itemRad = gameObject.GetComponent<MeshCollider>().bounds.size.x;
-        }
-        else if (gameObject.GetComponent<BoxCollider>() != null)
-        {
-            itemRad = gameObject.GetComponent<BoxCollider>().bounds.size.x;
-        }
-        else
-        {
-            itemRad = 0;
-        }
+        float itemRad = gameObject.GetComponent<Collider>().bounds.size.x / 2;
         
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         for (int i = 1; i <= 4; i++)
         {
-            Vector3 moveItemRadius = new Vector3(i % 2 * itemRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * itemRad);
-            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("item", "Walls"));
-            if (colliders.Length == 0)
+            Vector3 moveItemRadius = new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * itemRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * itemRad);
+            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("item", "Walls"));
+            if (CollidersAreAll(colliders, gameObject.GetComponent<Collider>().name) || colliders.Length == 0)
             {
-                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
-                return true;
-            }
-            else
-            {
-                foreach (Collider col in colliders)
-                {
-                    if (col.transform != transform)
-                    {
-                        return false;
-                    }
-                }
-                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 1.5f) / Mathf.Abs(i - 1.5f) * playerRad);
+                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad);
                 return true;
             }
         }
         depossessCoord = transform.position;
-        return true;
+        return false;
     }
-    void OnDrawGizmosSelected()
+
+    bool CollidersAreAll(Collider[] colliders, string name)
     {
-        float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
-        float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
-        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(playerRad, 0, -playerRad), 2 * boxSize);
-        Gizmos.DrawWireCube(transform.position + new Vector3(-playerRad, 0, -playerRad), 2 * boxSize);
+        foreach (Collider col in colliders)
+        {
+            if (col.name != name)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
