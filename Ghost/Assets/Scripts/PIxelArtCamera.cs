@@ -35,7 +35,6 @@ public class PixelArtCamera : MonoBehaviour
             _renderTexture.Create();
             _camera.targetTexture = _renderTexture;
             _rawImage.texture = _renderTexture;
-            Debug.Log("CHEESE");
         }
     }
 

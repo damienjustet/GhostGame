@@ -32399,6 +32399,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: purse
       objectReference: {fileID: 0}
+    - target: {fileID: 3225137883779273361, guid: c48f11bffe64e264d8e133a5e624de48, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 8333901410574682565, guid: c48f11bffe64e264d8e133a5e624de48, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.61

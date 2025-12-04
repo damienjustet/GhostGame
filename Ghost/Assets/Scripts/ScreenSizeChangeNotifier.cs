@@ -8,7 +8,6 @@ public class ScreenSizeChangeNotifier : MonoBehaviour
 
     protected void OnRectTransformDimensionsChange()
     {
-        Debug.Log("helllo");
         notifyScreenSizeChange.Invoke();
     }
 }
