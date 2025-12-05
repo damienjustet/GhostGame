@@ -7,7 +7,7 @@ public class RatDespawner : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        print("hello");
+        
         if (other.gameObject.name == "Rat"){
             Destroy(other.gameObject);
         }

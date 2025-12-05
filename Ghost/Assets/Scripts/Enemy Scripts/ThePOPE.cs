@@ -33,7 +33,6 @@ bool seePlayer;
         int playerLayer = LayerMask.GetMask("player");
         Debug.DrawRay(transform.position,direction, Color.blue);
         seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
-        print(hit.collider.gameObject);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         timer += Time.deltaTime;
         Transform selfPos = transform;
@@ -55,7 +54,7 @@ bool seePlayer;
             
             
             {
-
+                
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
                 agent.SetDestination(newPos);
                 timer = 0;
