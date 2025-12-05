@@ -54,7 +54,10 @@ public class Player : MonoBehaviour
 
             movement *= moveSpeed;
 
-            rb.SimpleMove(movement); // moves player
+            if (rb.enabled)
+            {
+                rb.SimpleMove(movement); // moves player
+            }
             if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
             {
                 // rotates player

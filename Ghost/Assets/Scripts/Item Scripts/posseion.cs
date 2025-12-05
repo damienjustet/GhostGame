@@ -124,9 +124,6 @@ public class posseion : MonoBehaviour
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
             }
             Destroy(gameObject.GetComponent<itemMove>());
-            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
-            Destroy(gameObject.GetComponent<CharacterController>());
         }
         
     }

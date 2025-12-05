@@ -4,47 +4,58 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Cinemachine;
+using Unity.VisualScripting;
+using Unity.Mathematics;
 
 public class itemMove : MonoBehaviour
 {
-    public CharacterController rb;
+    public Rigidbody rb;
     CinemachineFreeLook cam;
-    public float moveSpeed = 5;
+    public float moveSpeed = 200;
     public float rotationSpeed = 3;
     float yValue;
+    float maxVelocity = 5;
+    float height;
 
     private void Awake()
     {
         //references
         cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
-        gameObject.AddComponent<CharacterController>();
-        rb = gameObject.GetComponent<CharacterController>();
+        rb = gameObject.GetComponent<Rigidbody>();
         
-        if (gameObject.GetComponent<Collider>() != null)
+        Collider[] colliders = gameObject.GetComponents<Collider>();
+        height = 0;
+        foreach (Collider collider in colliders)
         {
-            rb.height = gameObject.GetComponent<Collider>().bounds.size.y / transform.localScale.y;
-            rb.radius = gameObject.GetComponent<Collider>().bounds.size.x / transform.localScale.x / 2;
+            if (collider.bounds.size.x > height)
+            {
+                height = collider.bounds.size.x;
+            }
+            if (collider.bounds.size.y > height)
+            {
+                height = collider.bounds.size.y;
+            }
+            if (collider.bounds.size.z > height)
+            {
+                height = collider.bounds.size.z;
+            }
         }
-        else
-        {
-            rb.height = 2;
-            rb.radius = 0.5f;
-        }
+        height /= 2;
 
-        yValue = transform.position.y + rb.height/2 + 1;
+        rb.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y + 1 + height, rb.transform.position.z);
 
-        if (gameObject.GetComponent<Rigidbody>() != null) //Allows you to possess rigidbodys
-        {
-            gameObject.GetComponent<Rigidbody>().useGravity = false;
-            gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
+        CapsuleCollider cp = gameObject.AddComponent<CapsuleCollider>();
+        cp.height = (height + 1) / transform.localScale.y;
+        cp.radius = 0.001f;
+        cp.center = - new Vector3(0, height / transform.localScale.y, 0);
 
         Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized; //move in direction of camera
         Vector3 movement = cameraForward + Camera.main.transform.right; //so you can strafe
 
         movement *= moveSpeed;
+        movement.y = 0;
 
-        rb.Move(movement * Time.deltaTime);
+        rb.velocity = movement * Time.deltaTime;
     }
     void Update()
     {
@@ -54,10 +65,10 @@ public class itemMove : MonoBehaviour
         Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized; //move in direction of camera
         Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input; //so you can strafe
 
-        movement *= moveSpeed;
-
-        rb.Move(movement * Time.deltaTime);
-        rb.transform.position = new Vector3(rb.transform.position.x, yValue, rb.transform.position.z);
+        movement *= moveSpeed;        
+        movement.y = 0;
+        
+        rb.velocity = movement * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Mouse1)) // Rotates possessed object
         {

@@ -19,7 +19,7 @@ public class PixelArtCamera : MonoBehaviour
 
     public void UpdateRenderTexture()
     {
-        if (gameObject.tag == "MainCamera")
+        if (gameObject.name == "Main Camera(Clone)")
         {
             if(_renderTexture != null)
             {
@@ -36,7 +36,6 @@ public class PixelArtCamera : MonoBehaviour
             _camera.targetTexture = _renderTexture;
             _rawImage.texture = _renderTexture;
         }
-        
     }
 
     void Update()
