@@ -32395,6 +32395,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 593322297159593044, guid: c48f11bffe64e264d8e133a5e624de48, type: 3}
+      propertyPath: sensitivity
+      value: 0.774
+      objectReference: {fileID: 0}
     - target: {fileID: 2600770542901662357, guid: c48f11bffe64e264d8e133a5e624de48, type: 3}
       propertyPath: m_Name
       value: purse
