@@ -58,11 +58,11 @@ bool seePlayer;
 
                 Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
                 agent.SetDestination(newPos);
-                
+                timer = 0;
                 
 
             }
-            timer = 0;
+            
         }
             
         }

@@ -20,6 +20,8 @@ public class Global : MonoBehaviour
     // MONEY
     public float money;
 
+    public float health = 100;
+
     private void Awake()
     {
         rawImage = GameObject.Find("Camera Display").GetComponent<RawImage>();
@@ -85,6 +87,10 @@ public class Global : MonoBehaviour
         if (moneyText != null)
         {
             moneyTextText.text = "$" + money + extraMoneyText;
+        }
+        if (health <= 0)
+        {
+            print("You Lose");
         }
     }
 
