@@ -13,10 +13,11 @@ public class HelpINeedToFindThisObject : MonoBehaviour
         for (int i = 0; i < childeren; i++)
         {
             Light daLight = transform.GetChild(i).GetComponent<Light>();
-            daLight.type = LightType.Spot;
-            daLight.innerSpotAngle = 157.7142f;
+            daLight.type = LightType.Point;
+            daLight.lightmapBakeType = LightmapBakeType.Mixed;
             daLight.range = 9;
-            daLight.intensity = 0.6f;
+            daLight.intensity = 0.33f;
+            daLight.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
         }
         DestroyImmediate(gameObject.GetComponent<HelpINeedToFindThisObject>());
     }

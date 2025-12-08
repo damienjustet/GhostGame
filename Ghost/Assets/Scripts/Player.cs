@@ -10,7 +10,7 @@ using UnityEngine.TextCore.Text;
 public class Player : MonoBehaviour
 {
     //references
-    CharacterController rb;
+    CharacterController rib;
     public GameObject detect;
     public float moveSpeed = 5;
     public CinemachineFreeLook cam;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<CharacterController>();// finds player
+        rib = GetComponent<CharacterController>();// finds player
         Cursor.lockState = CursorLockMode.Confined; // confines cursor to window(Might need to click screen to get it to work)
     }
 
@@ -54,9 +54,9 @@ public class Player : MonoBehaviour
 
             movement *= moveSpeed;
 
-            if (rb.enabled)
+            if (rib.enabled)
             {
-                rb.SimpleMove(movement); // moves player
+                rib.SimpleMove(movement); // moves player
             }
             if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
             {
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
 
     public void Depossess(Vector3 pos)
     {
-        rb.transform.position = pos;
+        rib.transform.position = pos;
         gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
         player.GetComponent<Collider>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;

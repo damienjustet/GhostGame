@@ -22,6 +22,7 @@ public class posseion : MonoBehaviour
 
     Vector2 textureCoord;
     [HideInInspector] public Vector3 depossessCoord;
+    bool thisIsPossessed = false;
   
 
     [HideInInspector] public bool item;
@@ -85,10 +86,12 @@ public class posseion : MonoBehaviour
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
+            thisIsPossessed = true;
             
         }
-        else if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<CharacterController>() != null) // depossess object
+        else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
         {
+            Debug.Log("WRONG");
             Depossess();
             
         }
@@ -124,6 +127,7 @@ public class posseion : MonoBehaviour
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
             }
             Destroy(gameObject.GetComponent<itemMove>());
+            thisIsPossessed = false;
         }
         
     }
