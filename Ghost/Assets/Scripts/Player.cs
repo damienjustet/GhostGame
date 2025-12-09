@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Global.Instance.playerLiving)
+        if (LevelLogic.Instance.playerLiving)
         {
             if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
             {
@@ -72,10 +72,10 @@ public class Player : MonoBehaviour
                 SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
             
-            if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
+            if (Input.GetKeyDown(KeyCode.E) && !LevelLogic.Instance.isPossessed && LevelLogic.Instance.interact) // Possession
             {
                 SoundManager.PlaySound(SoundType.POSSESS);
-                Global.Instance.isPossessed = true;
+                LevelLogic.Instance.isPossessed = true;
                 GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
                 player.GetComponent<Collider>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         player.GetComponent<Collider>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;
         detect.GetComponent<Renderer>().enabled = true;
-        Global.Instance.isPossessed = false;
+        LevelLogic.Instance.isPossessed = false;
     }
 
 }

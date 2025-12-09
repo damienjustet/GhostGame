@@ -29,7 +29,7 @@ public class posseion : MonoBehaviour
     [HideInInspector] public int frame;
     public void OnMouseOver1()
     {
-        if (!Global.Instance.isPossessed && inArea == true)
+        if (!LevelLogic.Instance.isPossessed && inArea == true)
         {
             if (gameObject.GetComponent<Collider>() != null)
             {
@@ -42,7 +42,7 @@ public class posseion : MonoBehaviour
             shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
             interactable = true;
             // GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
-            Global.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
+            LevelLogic.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
         }
         else
         {
@@ -51,7 +51,7 @@ public class posseion : MonoBehaviour
             // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
             interactable = false;
-            Global.Instance.interact = false;
+            LevelLogic.Instance.interact = false;
         }
 
     }
@@ -63,7 +63,7 @@ public class posseion : MonoBehaviour
         // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
         interactable = false;
-        Global.Instance.interact = false;
+        LevelLogic.Instance.interact = false;
         
     }
     private void Update()
