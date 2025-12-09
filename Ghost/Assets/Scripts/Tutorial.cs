@@ -8,20 +8,52 @@ public class Tutorial : MonoBehaviour
 {
     public GameObject textStuff;
     public Text text1;
-    bool tutorialStarted = false;
+    bool PossessionTutorialStarted = false;
+
+    bool possessed;
+    string nextLine;
+    bool isTyping = false;
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "player(Clone)")
         {
             textStuff.SetActive(true);
-            tutorialStarted = true;
+            PossessionTutorialStarted = true;
+            nextLine = "You can possess objects by hovering your mouse over and pressing e to interact.";
+            StartCoroutine(ShowText());
         }
+    }
+    IEnumerator ShowText()
+    {
+            isTyping = true;
+            text1.text = "";
+            
+            for(int i = 0; i < nextLine.Length; i++)
+            {
+                text1.text += nextLine[i];
+                yield return new WaitForSeconds(0.05f);
+            }
+            yield return new WaitForSeconds(1f);
+            isTyping = false;
+            
+        
     }
     void Update()
     {
-        if (tutorialStarted && Global.Instance.isPossessed)
+         if (PossessionTutorialStarted && Global.Instance.isPossessed && !isTyping && Input.GetKeyDown(KeyCode.E))
         {
-            text1.text = "As a possessed object you can move around and go up and down with space and shift. If you hold control and right click you can move the mouse to rotate the object. Press E to depossess the object.";
+            nextLine = "As a possessed object you can move around and go up and down with space and shift. If you hold control and right click you can move the mouse to rotate the object. Press E to depossess the object.";
+            StartCoroutine(ShowText());
         }
-    }
+        else if(PossessionTutorialStarted && !isTyping )
+        {
+            nextLine = "Objects have a value. Bring the objects to a collection zone to try to meet your quota. Be careful though as they can be damaged if you drop it harshly.";
+            StartCoroutine(ShowText());
+            if (!isTyping)
+            {
+                PossessionTutorialStarted = false;
+                textStuff.SetActive(false);
+            }
+        }
+        }
 }

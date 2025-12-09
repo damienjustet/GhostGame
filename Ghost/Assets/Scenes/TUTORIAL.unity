@@ -52083,7 +52083,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You can possess objects by hovering your mouse over and pressing e to interact.
+  m_Text: 
 --- !u!222 &1570843712
 CanvasRenderer:
   m_ObjectHideFlags: 0
