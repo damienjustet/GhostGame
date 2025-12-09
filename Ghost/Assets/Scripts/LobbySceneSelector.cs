@@ -43,7 +43,6 @@ public class LobbySceneSelector : MonoBehaviour
 
     void Update()
     {
-        print(interact);
         if(interact == true && Input.GetKeyDown(KeyCode.E))
         {
             SceneManager.LoadScene(scene);
