@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class posseion : MonoBehaviour
 {
