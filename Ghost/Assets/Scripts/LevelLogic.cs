@@ -58,6 +58,7 @@ public class LevelLogic : MonoBehaviour
             moneyText.transform.SetParent(GameObject.Find("Canvas(Clone)").transform);
             moneyTextText = moneyText.GetComponent<Text>();
             moneyTextText.text = "$0.00";
+            moneyText.GetComponent<RectTransform>().anchoredPosition = new Vector3(306,150,0);
         }
     }
 

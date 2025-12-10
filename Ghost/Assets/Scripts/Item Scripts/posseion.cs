@@ -40,7 +40,7 @@ public class posseion : MonoBehaviour
             {
                 showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
             }
-            shownText.text = Convert.ToString(gameObject.GetComponent<ItemCost>().value);
+            shownText.text = "$" + Convert.ToString(gameObject.GetComponent<ItemCost>().value);
             interactable = true;
             // GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
             LevelLogic.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
@@ -92,7 +92,6 @@ public class posseion : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
         {
-            Debug.Log("WRONG");
             Depossess();
             
         }
@@ -162,7 +161,7 @@ public class posseion : MonoBehaviour
         for (int i = 1; i <= 4; i++)
         {
             Vector3 moveItemRadius = new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * itemRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * itemRad);
-            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("item", "Walls"));
+            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("Walls"));
             if (CollidersAreAll(colliders, gameObject.GetComponent<Collider>().name) || colliders.Length == 0)
             {
                 depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad);
