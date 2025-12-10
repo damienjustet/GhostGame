@@ -11,34 +11,43 @@ public class SceneBuilder : MonoBehaviour
 {
     GameObject canvas;
     GameObject global;
+    GameObject levelLogic;
     GameObject mainCamera;
     GameObject player;
     GameObject soundEffects;
     GameObject moneyText;
     Transform playerSpawn;
+    string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
 
     void Start()
     {
+        bool isGameplay = gameplayScenes.Contains(SceneManager.GetActiveScene().name);
         canvas = (GameObject)Resources.Load("Create On Scene Load/Canvas");
         global = (GameObject)Resources.Load("Create On Scene Load/global");
-
+        if (isGameplay)
+        {
+            levelLogic = (GameObject)Resources.Load("Create On Scene Load/Level Logic");
+        }
         mainCamera = (GameObject)Resources.Load("Create On Scene Load/Main Camera");
         player = (GameObject)Resources.Load("Create On Scene Load/player");
         soundEffects = (GameObject)Resources.Load("Create On Scene Load/SoundEffects");
 
         player = Instantiate(player);
         canvas = Instantiate(canvas);
-        string[] scenesWithMoney = {"TUTORIAL", "LEVEL 1", "House"};
-        if (scenesWithMoney.Contains(SceneManager.GetActiveScene().name))
+        if (isGameplay)
         {
             moneyText = (GameObject)Resources.Load("Create On Scene Load/MONEY");
             moneyText = Instantiate(moneyText);
-            global.GetComponent<Global>().moneyText = moneyText;
+            levelLogic.GetComponent<LevelLogic>().moneyText = moneyText;
             moneyText.transform.SetParent(canvas.transform);
         }
 
         soundEffects = Instantiate(soundEffects);
         global = Instantiate(global);
+        if (isGameplay)
+        {
+            levelLogic = Instantiate(levelLogic);
+        }
         mainCamera = Instantiate(mainCamera);
 
         playerSpawn = transform.GetChild(0);
