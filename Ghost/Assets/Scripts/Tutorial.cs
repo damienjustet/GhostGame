@@ -13,9 +13,10 @@ public class Tutorial : MonoBehaviour
     bool possessed;
     string nextLine;
     bool isTyping = false;
+    int lineIndex = 0;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "player(Clone)")
+        if (other.gameObject.name == "player(Clone)" && lineIndex == 0)
         {
             textStuff.SetActive(true);
             PossessionTutorialStarted = true;
@@ -34,26 +35,28 @@ public class Tutorial : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
             yield return new WaitForSeconds(1f);
+            lineIndex += 1;
             isTyping = false;
             
         
     }
     void Update()
     {
-         if (PossessionTutorialStarted && Global.Instance.isPossessed && !isTyping && Input.GetKeyDown(KeyCode.E))
+         if (PossessionTutorialStarted && LevelLogic.Instance.isPossessed && Input.GetKeyDown(KeyCode.E) && lineIndex == 1)
         {
             nextLine = "As a possessed object you can move around and go up and down with space and shift. If you hold control and right click you can move the mouse to rotate the object. Press E to depossess the object.";
             StartCoroutine(ShowText());
         }
-        else if(PossessionTutorialStarted && !isTyping )
+        else if(PossessionTutorialStarted && lineIndex == 2)
         {
             nextLine = "Objects have a value. Bring the objects to a collection zone to try to meet your quota. Be careful though as they can be damaged if you drop it harshly.";
             StartCoroutine(ShowText());
-            if (!isTyping)
-            {
-                PossessionTutorialStarted = false;
-                textStuff.SetActive(false);
-            }
+            
+        }
+        if (lineIndex == 3)
+        {
+            textStuff.SetActive(false); 
+            lineIndex = 0;
         }
         }
 }
