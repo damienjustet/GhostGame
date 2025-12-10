@@ -9,18 +9,25 @@ public class Tutorial : MonoBehaviour
     public GameObject textStuff;
     public Text text1;
     bool PossessionTutorialStarted = false;
-
+    bool enemyTutorial = false;
     bool possessed;
     string nextLine;
     bool isTyping = false;
     int lineIndex = 0;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "player(Clone)" && lineIndex == 0 && !isTyping)
+        if (other.gameObject.name == "player(Clone)" && lineIndex == 0 && !isTyping && this.gameObject.name == "PossessTriggerTutorial")
         {
             textStuff.SetActive(true);
             PossessionTutorialStarted = true;
             nextLine = "You can possess objects by hovering your mouse over and pressing e to interact.(Press E to continue)";
+            StartCoroutine(ShowText());
+        }
+        if (other.gameObject.name == "player(Clone)" && lineIndex == 0 && !isTyping && this.gameObject.name == "EnemyTutorial")
+        {
+            textStuff.SetActive(true);
+            enemyTutorial = true;
+            nextLine = "There are 2 enemies so far, the Pope who will wander and try to get you. If he catches you you are dead so watch out. There are also rats that will scurry around the map attacking items so try to save as much as you can(Future versions will let you fight back against monsters. Press E to exit)";
             StartCoroutine(ShowText());
         }
     }
@@ -59,6 +66,14 @@ public class Tutorial : MonoBehaviour
         {
             textStuff.SetActive(false); 
             lineIndex = 0;
+            PossessionTutorialStarted = false;
+        }
+
+        if(enemyTutorial && Input.GetKeyDown(KeyCode.E) && lineIndex == 1 && !isTyping)
+        {
+            textStuff.SetActive(false); 
+            lineIndex = 0;
+            enemyTutorial = false;
         }
         }
 }
