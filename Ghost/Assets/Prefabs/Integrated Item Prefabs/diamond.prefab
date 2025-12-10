@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7327261587619315699}
   - component: {fileID: 4319768303908115919}
   - component: {fileID: 4185166787243361746}
+  - component: {fileID: 950227838750140694}
   m_Layer: 7
   m_Name: diamond
   m_TagString: Collectable
@@ -33,8 +34,7 @@ Transform:
   m_LocalPosition: {x: -1.97, y: 1.334, z: 0.045}
   m_LocalScale: {x: 39.4, y: 39.4, z: 39.4}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 2897869013527696496}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 39.684, y: 0, z: 0}
 --- !u!33 &6713005333136599190
@@ -147,45 +147,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &3917415431526926587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2897869013527696496}
-  - component: {fileID: 4269587388872884380}
-  m_Layer: 7
-  m_Name: Collider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2897869013527696496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3917415431526926587}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5885801444155275789}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &4269587388872884380
+--- !u!64 &950227838750140694
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3917415431526926587}
+  m_GameObject: {fileID: 837637807876291958}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

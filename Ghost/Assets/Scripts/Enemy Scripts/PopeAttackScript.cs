@@ -9,7 +9,7 @@ public class PopeAttackScript : MonoBehaviour
     {
         if (collider.gameObject.name == "player(Clone)")
         {
-            Global.Instance.health -= 100;
+            LevelLogic.Instance.health -= 100;
             
         }
     }

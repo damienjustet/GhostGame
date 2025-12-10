@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 200
   fragility: 0.029
-  sensitivity: 0.423
+  sensitivity: 0.774
   loseValueText: {fileID: 0}
   shownText: {fileID: 0}
 --- !u!114 &1969945602025780696
@@ -180,7 +180,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &1926085370593807819
 BoxCollider:
@@ -201,8 +201,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.030840633, y: 0.01127627, z: 0.03475712}
-  m_Center: {x: 0.00016137685, y: -0.0001408156, z: 0.0032059385}
+  m_Size: {x: 0.030840633, y: 0.01127627, z: 0.029018685}
+  m_Center: {x: 0.00016137685, y: -0.0001408156, z: 0.00033671464}
 --- !u!1 &7868555370395465766
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,10 +11,10 @@ public class itemMove : MonoBehaviour
 {
     public Rigidbody rb;
     CinemachineFreeLook cam;
-    public float moveSpeed = 200;
+    public float moveSpeed = 4;
     public float rotationSpeed = 3;
     float yValue;
-    float maxVelocity = 5;
+    float maxVelocity = 0.01f;
     float height;
 
     private void Awake()
@@ -22,6 +22,7 @@ public class itemMove : MonoBehaviour
         //references
         cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
         rb = gameObject.GetComponent<Rigidbody>();
+        rb.useGravity = false;
         
         Collider[] colliders = gameObject.GetComponents<Collider>();
         height = 0;
@@ -42,33 +43,43 @@ public class itemMove : MonoBehaviour
         }
         height /= 2;
 
-        rb.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y + 1 + height, rb.transform.position.z);
-
-        CapsuleCollider cp = gameObject.AddComponent<CapsuleCollider>();
-        cp.height = (height + 1) / transform.localScale.y;
-        cp.radius = 0.001f;
-        cp.center = - new Vector3(0, height / transform.localScale.y, 0);
-
         Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized; //move in direction of camera
         Vector3 movement = cameraForward + Camera.main.transform.right; //so you can strafe
 
         movement *= moveSpeed;
         movement.y = 0;
+        Vector3.ClampMagnitude(movement, 1f);
 
-        rb.velocity = movement * Time.deltaTime;
+        // rb.velocity = movement * Time.deltaTime;
+        rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
     }
     void Update()
     {
         //Handles movement
         float y_input = Input.GetAxis("Vertical");
         float x_input = Input.GetAxis("Horizontal");
+        float y_direction = 0;
+        if (Input.GetKey(KeyCode.Space))
+        {
+            y_direction = 1;
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            y_direction = -1;
+        }
+
+        rb.angularVelocity = new Vector3(0,0,0);
+
         Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized; //move in direction of camera
         Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input; //so you can strafe
 
+        movement.y = y_direction;
         movement *= moveSpeed;        
-        movement.y = 0;
         
-        rb.velocity = movement * Time.deltaTime;
+        Vector3.ClampMagnitude(movement, 1f);
+        
+        // rb.velocity = movement * Time.deltaTime;
+        rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
 
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Mouse1)) // Rotates possessed object
         {

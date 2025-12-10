@@ -10,7 +10,7 @@ using UnityEngine.TextCore.Text;
 public class Player : MonoBehaviour
 {
     //references
-    CharacterController rb;
+    CharacterController rib;
     public GameObject detect;
     public float moveSpeed = 5;
     public CinemachineFreeLook cam;
@@ -19,14 +19,14 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<CharacterController>();// finds player
+        rib = GetComponent<CharacterController>();// finds player
         Cursor.lockState = CursorLockMode.Confined; // confines cursor to window(Might need to click screen to get it to work)
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Global.Instance.playerLiving)
+        if (LevelLogic.Instance.playerLiving)
         {
             if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
             {
@@ -54,9 +54,9 @@ public class Player : MonoBehaviour
 
             movement *= moveSpeed;
 
-            if (rb.enabled)
+            if (rib.enabled)
             {
-                rb.SimpleMove(movement); // moves player
+                rib.SimpleMove(movement); // moves player
             }
             if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
             {
@@ -72,10 +72,10 @@ public class Player : MonoBehaviour
                 SoundManager.StopSound(SoundType.PLAYERMOVE);
             }
             
-            if (Input.GetKeyDown(KeyCode.E) && !Global.Instance.isPossessed && Global.Instance.interact) // Possession
+            if (Input.GetKeyDown(KeyCode.E) && !LevelLogic.Instance.isPossessed && LevelLogic.Instance.interact) // Possession
             {
                 SoundManager.PlaySound(SoundType.POSSESS);
-                Global.Instance.isPossessed = true;
+                LevelLogic.Instance.isPossessed = true;
                 GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
                 player.GetComponent<Collider>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
@@ -88,12 +88,12 @@ public class Player : MonoBehaviour
 
     public void Depossess(Vector3 pos)
     {
-        rb.transform.position = pos;
+        rib.transform.position = pos;
         gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
         player.GetComponent<Collider>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;
         detect.GetComponent<Renderer>().enabled = true;
-        Global.Instance.isPossessed = false;
+        LevelLogic.Instance.isPossessed = false;
     }
 
 }

@@ -8,7 +8,7 @@ public class ItemCollect : MonoBehaviour
     {
         if (collider.gameObject.tag == "Collectable")
         {
-            Global.Instance.money += collider.gameObject.GetComponent<ItemCost>().value;
+            LevelLogic.Instance.money += collider.gameObject.GetComponent<ItemCost>().value;
             
             collider.GetComponent<ItemCost>().Collect(transform.position + Vector3.right);
             
