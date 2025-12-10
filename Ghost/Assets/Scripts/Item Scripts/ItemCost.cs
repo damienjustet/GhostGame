@@ -55,8 +55,7 @@ public class ItemCost : MonoBehaviour
                 LevelLogic.Instance.interact = false;
                 if (LevelLogic.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
                 {
-                    gameObject.GetComponent<posseion>().depossessCoord = transform.position;
-                    gameObject.GetComponent<posseion>().Depossess();
+                    gameObject.GetComponent<posseion>().Depossess(true);
                 }
                 Destroy(gameObject);
             }
