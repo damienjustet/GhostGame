@@ -16,11 +16,11 @@ public class Tutorial : MonoBehaviour
     int lineIndex = 0;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "player(Clone)" && lineIndex == 0)
+        if (other.gameObject.name == "player(Clone)" && lineIndex == 0 && !isTyping)
         {
             textStuff.SetActive(true);
             PossessionTutorialStarted = true;
-            nextLine = "You can possess objects by hovering your mouse over and pressing e to interact.";
+            nextLine = "You can possess objects by hovering your mouse over and pressing e to interact.(Press E to continue)";
             StartCoroutine(ShowText());
         }
     }
@@ -42,18 +42,20 @@ public class Tutorial : MonoBehaviour
     }
     void Update()
     {
-         if (PossessionTutorialStarted && LevelLogic.Instance.isPossessed && Input.GetKeyDown(KeyCode.E) && lineIndex == 1)
+        
+         if (PossessionTutorialStarted && Input.GetKeyDown(KeyCode.E) && lineIndex == 1 && !isTyping)
         {
-            nextLine = "As a possessed object you can move around and go up and down with space and shift. If you hold control and right click you can move the mouse to rotate the object. Press E to depossess the object.";
+            print(lineIndex);
+            nextLine = "As a possessed object you can move around and go up and down with space and shift. If you hold control and right click you can move the mouse to rotate the object. Press E to depossess the object.(Press E to continue)";
             StartCoroutine(ShowText());
         }
-        else if(PossessionTutorialStarted && lineIndex == 2)
+        else if(PossessionTutorialStarted && lineIndex == 2 && Input.GetKeyDown(KeyCode.E) && !isTyping)
         {
-            nextLine = "Objects have a value. Bring the objects to a collection zone to try to meet your quota. Be careful though as they can be damaged if you drop it harshly.";
+            nextLine = "Objects have a value. Bring the objects to a collection zone to try to meet your quota. Be careful though as they can be damaged if you drop it harshly.(Press E to continue)";
             StartCoroutine(ShowText());
             
         }
-        if (lineIndex == 3)
+        if (lineIndex == 3 && !isTyping)
         {
             textStuff.SetActive(false); 
             lineIndex = 0;
