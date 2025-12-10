@@ -8991,7 +8991,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &750160186
 RectTransform:
   m_ObjectHideFlags: 0
@@ -46359,6 +46359,95 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046750330}
   m_Mesh: {fileID: 2494185979427425891, guid: 072df9fdeac5ee346bdbed01d105dfde, type: 3}
+--- !u!1001 &1046850640
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1116586335840239413, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_Text
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 71.64886
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 130.88678
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 177.09856
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 524.0851
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 539.3044
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.72058874
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 2.5377603e-18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6933628
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 8.5655724e-17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 87.794
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935574565275824047, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963637698051737489, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: scene
+      value: LOBBY
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654002204280462844, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0021
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654002204280462844, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0028
+      objectReference: {fileID: 0}
+    - target: {fileID: 8654002204280462844, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.00198
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724880561675735524, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: m_Name
+      value: TutorialGraveStone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
 --- !u!1 &1047409625
 GameObject:
   m_ObjectHideFlags: 0
@@ -62812,3 +62901,4 @@ SceneRoots:
   - {fileID: 714266472}
   - {fileID: 924395477}
   - {fileID: 466760806}
+  - {fileID: 1046850640}
