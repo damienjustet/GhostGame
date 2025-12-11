@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PopeAttackScript : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PopeAttackScript : MonoBehaviour
     {
         if (collider.gameObject.name == "player(Clone)")
         {
-            LevelLogic.Instance.health -= 100;
+            SceneManager.LoadScene("LOBBY");
             
         }
     }

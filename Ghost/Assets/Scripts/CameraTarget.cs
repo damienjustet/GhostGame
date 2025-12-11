@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class CameraTarget : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CameraTarget : MonoBehaviour
     itemMove script;
     public GameObject player;
     public float rotationSpeed = 1;
+    ProBuilderMesh[] target;
+    int index = 0;
     private void Start()
     {
         
@@ -24,12 +27,15 @@ public class CameraTarget : MonoBehaviour
         }
         else
         {
+            target = FindObjectsOfType<ProBuilderMesh>();
+            
             transform.position = player.transform.position;
-        }
+            
+        }}
         
         
 
 
     }
     
-}
+
