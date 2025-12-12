@@ -116,5 +116,10 @@ public class LevelLogic : MonoBehaviour
         }
         
     }
+
+    public void UpdateTextPos()
+    {
+        moneyText.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width / 2 - 3, Screen.height / 2 - 1);
+    }
     
 }

@@ -25,6 +25,7 @@ public class SceneBuilder : MonoBehaviour
         {
             global = (GameObject)Resources.Load("Create On Scene Load/global");
             global = Instantiate(global);
+            global.GetComponent<Global>().gameplay = true;
         }
         else
         {

@@ -46,7 +46,7 @@ public class LobbySceneSelector : MonoBehaviour
     {
         if(interact == true && Input.GetKeyDown(KeyCode.E))
         {
-            SceneManager.LoadScene(scene);
+            Global.Instance.LoadAScene(scene);
             print("hi");
         }
     }

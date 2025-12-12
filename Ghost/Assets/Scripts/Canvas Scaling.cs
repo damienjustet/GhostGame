@@ -21,6 +21,10 @@ public class CanvasScaling : MonoBehaviour
         {
             GameObject.Find("Main Camera(Clone)").GetComponent<PixelArtCamera>().UpdateRenderTexture();
         }
+        if (GameObject.Find("Level Logic(Clone)"))
+        {
+            GameObject.Find("Level Logic(Clone)").GetComponent<LevelLogic>().UpdateTextPos();
+        }
         rt = GetComponent<RectTransform>();
         thisHeight = rt.localScale.x * rt.rect.height;
         thisWidth = rt.localScale.x * rt.rect.width;

@@ -35,7 +35,20 @@ public class Global : MonoBehaviour
     public void StartGame()
     {
         asyncSceneLoading = SceneManager.LoadSceneAsync("LOBBY");
-        gameplay = true;
+        gameplay = false;
+    }
+
+    public void LoadAScene(string sceneName)
+    {
+        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+        if (sceneName != "LOBBY")
+        {
+            gameplay = true;
+        }
+        else
+        {
+            gameplay = false;
+        }
     }
 
 
