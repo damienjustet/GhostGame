@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class ButtonUI : MonoBehaviour
 {
-    [SerializeField] private string newGameleve1 = "leve1";
+    [SerializeField] private string newGameLOBBY = "LOBBY";
 
   public void NewGameButton()
     {
-        SceneManager.LoadScene(newGameleve1);
+        SceneManager.LoadScene(newGameLOBBY);
     }
 
 }
