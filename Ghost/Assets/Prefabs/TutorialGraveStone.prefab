@@ -5201,7 +5201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8724880561675735524}
   serializedVersion: 2
-  m_LocalRotation: {x: 1.3404231e-17, y: 0.8150584, z: -8.463846e-17, w: 0.5793789}
+  m_LocalRotation: {x: -0, y: -0.8150571, z: 0, w: -0.5793807}
   m_LocalPosition: {x: 0.50210726, y: 0.021500004, z: 0.10033417}
   m_LocalScale: {x: 2.2320075, y: 4.0773892, z: 5.51698}
   m_ConstrainProportionsScale: 0
@@ -5318,4 +5318,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: TUTORIAL
   effect: {fileID: 6959282458980755590}
-  grave: {fileID: 0}
+  grave: {fileID: 1839777010881854442}

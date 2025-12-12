@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,22 +27,44 @@ bool seePlayer;
 
     void Update()
     {
+        if (!LevelLogic.Instance.isPossessed)
+        {
+            player = GameObject.Find("player(Clone)");
+        }
+        else
+        {
+            GameObject[] items = GameObject.FindGameObjectsWithTag("Collectable");
+            for (int i = 0; i < items.Length; i++)
+            {
+               // if(items[i].GetComponent<posseion>.is)
+                {
+                    player = items[i];
+                }
+            }
+            
+            
+           
+        }
+         Vector3 direction = player.transform.position - transform.position;
+            RaycastHit hit;
+            int playerLayer = LayerMask.GetMask("player");
+            Debug.DrawRay(transform.position,direction, Color.blue);
+            seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         
-        player = GameObject.Find("player(Clone)");
-        Vector3 direction = player.transform.position - transform.position;
-        RaycastHit hit;
-        int playerLayer = LayerMask.GetMask("player");
-        Debug.DrawRay(transform.position,direction, Color.blue);
-        seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        timer += Time.deltaTime;
+         timer += Time.deltaTime;
         Transform selfPos = transform;
+        
         
         if (!tired)
         {
             if (distanceToPlayer <= wanderRadius && seePlayer)
             {
-                if (hit.collider.gameObject.name == "player(Clone)")
+                if (hit.collider.gameObject.name == "player(Clone)" && !LevelLogic.Instance.isPossessed)
+                {
+                    agent.SetDestination(player.transform.position);
+                }
+                else if(hit.collider.gameObject.tag == "Collectable")
                 {
                     agent.SetDestination(player.transform.position);
                 }

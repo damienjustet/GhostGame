@@ -81,7 +81,7 @@ public class itemMove : MonoBehaviour
         // rb.velocity = movement * Time.deltaTime;
         rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
 
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Mouse1)) // Rotates possessed object
+        if (Input.GetKey(KeyCode.Mouse0)) // Rotates possessed object
         {
             
             float mousex = Input.GetAxis("Mouse X");

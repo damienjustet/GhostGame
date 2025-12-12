@@ -25095,6 +25095,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7963637698051737489, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: grave
+      value: 
+      objectReference: {fileID: 2078144610}
+    - target: {fileID: 7963637698051737489, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
       propertyPath: scene
       value: LEVEL1
       objectReference: {fileID: 0}
@@ -35226,6 +35230,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3026732754373350383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1890521315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1839777010881854442, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+  m_PrefabInstance: {fileID: 3117183626521817959}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1918335274
 GameObject:
   m_ObjectHideFlags: 0
@@ -41880,6 +41895,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071660273}
   m_Mesh: {fileID: 766207002214816160, guid: 072df9fdeac5ee346bdbed01d105dfde, type: 3}
+--- !u!114 &2078144610 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1839777010881854442, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+  m_PrefabInstance: {fileID: 1189188031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2136582898
 GameObject:
   m_ObjectHideFlags: 0
@@ -45001,6 +45027,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7963637698051737489, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
+      propertyPath: grave
+      value: 
+      objectReference: {fileID: 1890521315}
     - target: {fileID: 8724880561675735524, guid: ebbabe99f67d03c4ca4451d47ff6eda0, type: 3}
       propertyPath: m_Name
       value: TutorialGraveStone
