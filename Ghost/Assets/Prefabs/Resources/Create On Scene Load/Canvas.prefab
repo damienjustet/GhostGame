@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2507675661970472600}
   - component: {fileID: 2726006453330169450}
   - component: {fileID: 5728168909028106645}
+  - component: {fileID: 2381177724008648611}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   - {fileID: 4059877226487366701}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
@@ -115,6 +116,33 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &2381177724008648611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10285455871736816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ba3608f71d8b24cafdb2f6aa6abd58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notifyScreenSizeChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 197183532436118663}
+        m_TargetAssemblyTypeName: CanvasScaling, Assembly-CSharp
+        m_MethodName: ResizeScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7548234496290608246
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +154,6 @@ GameObject:
   - component: {fileID: 4059877226487366701}
   - component: {fileID: 2408810201289606050}
   - component: {fileID: 2288300419329608162}
-  - component: {fileID: 5667231438097252306}
   - component: {fileID: 197183532436118663}
   m_Layer: 5
   m_Name: Camera Display
@@ -189,33 +216,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &5667231438097252306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548234496290608246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ba3608f71d8b24cafdb2f6aa6abd58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  notifyScreenSizeChange:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PixelArtCamera
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &197183532436118663
 MonoBehaviour:
   m_ObjectHideFlags: 0

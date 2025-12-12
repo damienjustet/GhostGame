@@ -15,17 +15,20 @@ public class CanvasScaling : MonoBehaviour
     }
 
     // Update is called once per frame
-    void ResizeScreen()
+    public void ResizeScreen()
     {
+        if (GameObject.Find("Main Camera(Clone)"))
+        {
+            GameObject.Find("Main Camera(Clone)").GetComponent<PixelArtCamera>().UpdateRenderTexture();
+        }
         rt = GetComponent<RectTransform>();
         thisHeight = rt.localScale.x * rt.rect.height;
         thisWidth = rt.localScale.x * rt.rect.width;
 
-        Vector2 parentSize = GetComponentInParent<RectTransform>().sizeDelta;
-        Vector3 parentPos = GetComponentInParent<RectTransform>().anchoredPosition / 2;
         
-        rt.sizeDelta = parentSize;
+        rt.sizeDelta = new Vector2(Screen.width, Screen.height);
         
-        rt.anchoredPosition = parentPos;
+        rt.anchoredPosition = new Vector2(Screen.width, Screen.height) / 2;
     }
+
 }
