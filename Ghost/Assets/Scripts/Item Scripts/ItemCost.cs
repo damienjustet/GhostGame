@@ -46,7 +46,7 @@ public class ItemCost : MonoBehaviour
                     value = 0;
                 }
 
-                shownText.text = "-" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
+                shownText.text = "-$" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 Instantiate(loseValueText, transform);
             }
@@ -77,16 +77,13 @@ public class ItemCost : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Collected Item");
         if (gameObject.GetComponent<itemMove>() != null)
         {
-            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            gameObject.GetComponent<posseion>().Depossess();
             if (gameObject.GetComponent<Rigidbody>() != null)
             {
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
                 gameObject.GetComponent<Rigidbody>().isKinematic = false;
             }
             Destroy(gameObject.GetComponent<itemMove>());
-            gameObject.GetComponent<Rigidbody>().transform.position = gameObject.GetComponent<CharacterController>().transform.position;
-            gameObject.GetComponent<Rigidbody>().velocity = gameObject.GetComponent<CharacterController>().velocity;
-            Destroy(gameObject.GetComponent<CharacterController>());
         }
 
     }
