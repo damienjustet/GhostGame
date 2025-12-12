@@ -19,16 +19,19 @@ public class SceneBuilder : MonoBehaviour
     Transform playerSpawn;
     string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
 
-    void Update()
+    void Awake()
     {
         if (Global.Instance == null)
         {
             global = (GameObject)Resources.Load("Create On Scene Load/global");
             global = Instantiate(global);
         }
-        while (!Global.Instance.asyncSceneLoading.isDone)
+        else
         {
-            Debug.Log("hello");
+            while (!Global.Instance.asyncSceneLoading.isDone)
+            {
+                Debug.Log("hello");
+            }  
         }
         bool isGameplay = gameplayScenes.Contains(SceneManager.GetActiveScene().name);
         canvas = (GameObject)Resources.Load("Create On Scene Load/Canvas");
