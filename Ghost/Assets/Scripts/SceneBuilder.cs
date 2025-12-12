@@ -10,8 +10,8 @@ using UnityEngine.UI;
 public class SceneBuilder : MonoBehaviour
 {
     GameObject canvas;
-    GameObject global;
     GameObject levelLogic;
+    GameObject global;
     GameObject mainCamera;
     GameObject player;
     GameObject soundEffects;
@@ -19,11 +19,19 @@ public class SceneBuilder : MonoBehaviour
     Transform playerSpawn;
     string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
 
-    void Start()
+    void Update()
     {
+        if (Global.Instance == null)
+        {
+            global = (GameObject)Resources.Load("Create On Scene Load/global");
+            global = Instantiate(global);
+        }
+        while (!Global.Instance.asyncSceneLoading.isDone)
+        {
+            Debug.Log("hello");
+        }
         bool isGameplay = gameplayScenes.Contains(SceneManager.GetActiveScene().name);
         canvas = (GameObject)Resources.Load("Create On Scene Load/Canvas");
-        global = (GameObject)Resources.Load("Create On Scene Load/global");
         if (isGameplay)
         {
             levelLogic = (GameObject)Resources.Load("Create On Scene Load/Level Logic");
@@ -43,7 +51,6 @@ public class SceneBuilder : MonoBehaviour
         }
 
         soundEffects = Instantiate(soundEffects);
-        global = Instantiate(global);
         if (isGameplay)
         {
             levelLogic = Instantiate(levelLogic);
