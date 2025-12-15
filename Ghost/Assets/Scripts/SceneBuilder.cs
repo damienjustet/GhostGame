@@ -26,14 +26,11 @@ public class SceneBuilder : MonoBehaviour
             global = (GameObject)Resources.Load("Create On Scene Load/global");
             global = Instantiate(global);
             global.GetComponent<Global>().gameplay = true;
+            StartScene();
         }
-        else
-        {
-            while (!Global.Instance.asyncSceneLoading.isDone)
-            {
-                Debug.Log("hello");
-            }  
-        }
+    }
+    public void StartScene()
+    {
         bool isGameplay = gameplayScenes.Contains(SceneManager.GetActiveScene().name);
         canvas = (GameObject)Resources.Load("Create On Scene Load/Canvas");
         if (isGameplay)

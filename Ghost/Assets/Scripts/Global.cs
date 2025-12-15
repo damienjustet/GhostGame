@@ -38,19 +38,43 @@ public class Global : MonoBehaviour
         gameplay = false;
     }
 
+    // public void LoadAScene(string sceneName)
+    // {
+    //     asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+    //     if (sceneName != "LOBBY")
+    //     {
+    //         gameplay = true;
+    //     }
+    //     else
+    //     {
+    //         gameplay = false;
+    //     }
+    //     while (!asyncSceneLoading.isDone)
+    //     {
+    //         Debug.Log("Not yet");
+    //     }
+    //     GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
+    // }
+
     public void LoadAScene(string sceneName)
     {
-        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
-        if (sceneName != "LOBBY")
-        {
-            gameplay = true;
-        }
-        else
-        {
-            gameplay = false;
-        }
+        StartCoroutine(LoadATheScene(sceneName));
     }
 
+    IEnumerator LoadATheScene(string sceneName)
+    {
+        // Start loading the scene asynchronously
+        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncSceneLoading.isDone)
+        {
+            // Optional: Update a loading bar or display progress
+            Debug.Log("Loading Progress: " + asyncSceneLoading.progress);
+            yield return null; // Wait for the next frame
+        }
+        GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
+    }
 
 
 }
