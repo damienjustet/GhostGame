@@ -8,10 +8,22 @@ public class PopeAttackScript : MonoBehaviour
 {
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.name == "player(Clone)")
+        if (!LevelLogic.Instance.isPossessed)
+        {
+            if (collider.gameObject.name == "player(Clone)")
         {
             SceneManager.LoadScene("LOBBY");
             
         }
+        }
+        else if (FindObjectOfType<itemMove>() != null)
+        {
+            if (collider.gameObject == FindObjectOfType<itemMove>().gameObject)
+            {
+                SceneManager.LoadScene("LOBBY");
+            }
+        }
+        
+        
     }
 }

@@ -33,13 +33,9 @@ bool seePlayer;
         }
         else
         {
-            GameObject[] items = GameObject.FindGameObjectsWithTag("Collectable");
-            for (int i = 0; i < items.Length; i++)
+           if (FindObjectOfType<itemMove>() != null)
             {
-               // if(items[i].GetComponent<posseion>.is)
-                {
-                    player = items[i];
-                }
+                player = FindObjectOfType<itemMove>().gameObject;
             }
             
             

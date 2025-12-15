@@ -86,7 +86,6 @@ public class itemMove : MonoBehaviour
             
             float mousex = Input.GetAxis("Mouse X");
             float mousey = Input.GetAxis("Mouse Y");
-
             transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
             transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
             

@@ -22,7 +22,7 @@ public class posseion : MonoBehaviour
 
     Vector2 textureCoord;
     [HideInInspector] public Vector3 depossessCoord;
-    bool thisIsPossessed = false;
+    public bool thisIsPossessed = false;
   
 
     [HideInInspector] public bool item;
@@ -44,7 +44,7 @@ public class posseion : MonoBehaviour
             // GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
             LevelLogic.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
         }
-        else
+        else if (!inArea)
         {
             shownText.text = "";
             
@@ -72,6 +72,7 @@ public class posseion : MonoBehaviour
         // It will set frame to 0 if it is in the raycast and so it checks here
         // if mouse exits
         
+
         if (frame == 0)
         {
             frame = 1;
@@ -82,11 +83,12 @@ public class posseion : MonoBehaviour
             item = false;
             OnMouseExit1();
         }
-            
+
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
             gameObject.AddComponent<itemMove>();
             thisIsPossessed = true;
+            LevelLogic.Instance.isPossessed = true;
             
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
