@@ -18,6 +18,7 @@ public class SceneBuilder : MonoBehaviour
     GameObject moneyText;
     Transform playerSpawn;
     string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
+    string[] blankScenes = {"TITLESCREEN"};
 
     void Start()
     {
@@ -27,8 +28,18 @@ public class SceneBuilder : MonoBehaviour
             global = (GameObject)Resources.Load("Create On Scene Load/global");
             global = Instantiate(global);
             global.GetComponent<Global>().gameplay = isGameplay;
+            
+        }
+        if (!blankScenes.Contains(SceneManager.GetActiveScene().name))
+        {
             StartScene();
         }
+        else
+        {
+            MakeSoundManager();
+        }
+        
+        DestroyImmediate(gameObject);
     }
     public void StartScene()
     {
@@ -40,7 +51,7 @@ public class SceneBuilder : MonoBehaviour
         }
         mainCamera = (GameObject)Resources.Load("Create On Scene Load/Main Camera");
         player = (GameObject)Resources.Load("Create On Scene Load/player");
-        soundEffects = (GameObject)Resources.Load("Create On Scene Load/SoundEffects");
+        
 
         playerSpawn = transform.GetChild(0);
         player.transform.position = playerSpawn.position;
@@ -48,6 +59,9 @@ public class SceneBuilder : MonoBehaviour
         
         player = Instantiate(player);
         canvas = Instantiate(canvas);
+
+        MakeSoundManager();
+
         if (isGameplay)
         {
             moneyText = (GameObject)Resources.Load("Create On Scene Load/MONEY");
@@ -56,7 +70,6 @@ public class SceneBuilder : MonoBehaviour
             moneyText.transform.SetParent(canvas.transform);
         }
 
-        soundEffects = Instantiate(soundEffects);
         if (isGameplay)
         {
             levelLogic = Instantiate(levelLogic);
@@ -88,7 +101,12 @@ public class SceneBuilder : MonoBehaviour
                 go.GetComponent<posseion>().CreateShownValue();
             }
         }
-        Destroy(gameObject);
+    }
+
+    void MakeSoundManager()
+    {
+        soundEffects = (GameObject)Resources.Load("Create On Scene Load/SoundEffects");
+        soundEffects = Instantiate(soundEffects);
     }
 
 }

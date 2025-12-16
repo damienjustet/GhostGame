@@ -16,7 +16,8 @@ public enum MusicType
 {
     LOBBY,
     TUTORIAL,
-    LEVEL1
+    LEVEL1,
+    TITLESCREEN
 }
 
 [ExecuteInEditMode]
