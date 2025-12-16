@@ -12,12 +12,12 @@ public class itemMove : MonoBehaviour
     public Rigidbody rb;
     CinemachineFreeLook cam;
     public float moveSpeed = 4;
-    public float rotationSpeed = 50;
+    public float rotationSpeed = 3;
     float yValue;
     float maxVelocity = 0.01f;
     float height;
-    quaternion initRotation;
-    Vector2 previousMousePosition;
+    public float maxFloatation;
+    bool atMaxFloatation;
 
     private void Awake()
     {
@@ -51,15 +51,11 @@ public class itemMove : MonoBehaviour
         movement *= moveSpeed;
         movement.y = 0;
         Vector3.ClampMagnitude(movement, 1f);
-        initRotation = rb.rotation;
 
         // rb.velocity = movement * Time.deltaTime;
         rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
-        previousMousePosition = LevelLogic.Instance.normalizedPoint;
-        rb.maxAngularVelocity = 10f;
-        
     }
-    void FixedUpdate()
+    void Update()
     {
         //Handles movement
         float y_input = Input.GetAxis("Vertical");
@@ -80,7 +76,12 @@ public class itemMove : MonoBehaviour
         Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input; //so you can strafe
 
         movement.y = y_direction;
-        movement *= moveSpeed;        
+        movement *= moveSpeed;    
+        CheckDown(maxFloatation);   
+        if (atMaxFloatation && movement.y > 0)
+        {
+            movement.y *= 0;
+        } 
         
         Vector3.ClampMagnitude(movement, 1f);
         
@@ -89,21 +90,12 @@ public class itemMove : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0)) // Rotates possessed object
         {
-           
-            Vector3 mouseDelta = (LevelLogic.Instance.normalizedPoint - previousMousePosition) * 4;
-
-        
-        float torqueX = -mouseDelta.x * rotationSpeed; 
-        float torqueY = -mouseDelta.y * rotationSpeed; 
-        
-        Vector3 camNormal = Vector3.ProjectOnPlane(Camera.main.transform.right, Vector3.up);
-        
-        // Apply torque
-        rb.AddRelativeTorque(camNormal * torqueY, ForceMode.VelocityChange);
-        rb.AddRelativeTorque(transform.up * torqueX, ForceMode.VelocityChange);
-        
-        // Update the previous mouse position for the next frame
-            previousMousePosition = LevelLogic.Instance.normalizedPoint;
+            
+            float mousex = Input.GetAxis("Mouse X");
+            float mousey = Input.GetAxis("Mouse Y");
+            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
+            transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
+            
             cam.m_XAxis.m_MaxSpeed = 0f;// Locks Camera while Rotating
             cam.m_YAxis.m_MaxSpeed = 0f;
 
@@ -113,6 +105,25 @@ public class itemMove : MonoBehaviour
         {
             cam.m_XAxis.m_MaxSpeed = 300f;
             cam.m_YAxis.m_MaxSpeed = 2f;
+        }
+
+        
+    }
+
+    void CheckDown(float dist)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item")))
+        {
+            if (transform.position.y - dist >= hit.point.y)
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + dist, transform.position.z);
+                atMaxFloatation = true;
+            }
+            else
+            {
+                atMaxFloatation = false;
+            }
         }
     }
 

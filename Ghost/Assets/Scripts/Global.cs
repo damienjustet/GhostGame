@@ -23,7 +23,7 @@ public class Global : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -34,13 +34,36 @@ public class Global : MonoBehaviour
 
     public void StartGame()
     {
-        asyncSceneLoading = SceneManager.LoadSceneAsync("LOBBY");
+        LoadAScene("LOBBY");
         gameplay = false;
     }
 
+    // public void LoadAScene(string sceneName)
+    // {
+    //     asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+    //     if (sceneName != "LOBBY")
+    //     {
+    //         gameplay = true;
+    //     }
+    //     else
+    //     {
+    //         gameplay = false;
+    //     }
+    //     while (!asyncSceneLoading.isDone)
+    //     {
+    //         Debug.Log("Not yet");
+    //     }
+    //     GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
+    // }
+
     public void LoadAScene(string sceneName)
     {
-        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+        StartCoroutine(LoadATheScene(sceneName));
+    }
+
+    IEnumerator LoadATheScene(string sceneName)
+    {
+
         if (sceneName != "LOBBY")
         {
             gameplay = true;
@@ -49,9 +72,32 @@ public class Global : MonoBehaviour
         {
             gameplay = false;
         }
+
+        // Start loading the scene asynchronously
+        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName,  LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncSceneLoading.isDone)
+        {
+            // Optional: Update a loading bar or display progress
+            Debug.Log("Loading Progress: " + asyncSceneLoading.progress);
+            yield return null; // Wait for the next frame
+        }
+        GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
+        
     }
 
-
-
+    public void StartMusic()
+    {
+        MusicType song;
+        if (Enum.TryParse(SceneManager.GetActiveScene().name, out song))
+        {
+            SoundManager.StartSong(song);
+        }
+        else
+        {
+            Debug.Log("No music played");
+        }
+    }
 }
 

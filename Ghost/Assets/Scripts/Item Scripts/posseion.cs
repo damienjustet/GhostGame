@@ -27,6 +27,8 @@ public class posseion : MonoBehaviour
 
     [HideInInspector] public bool item;
     [HideInInspector] public int frame;
+
+    public float maxFloatation;
     public void OnMouseOver1()
     {
         if (!LevelLogic.Instance.isPossessed && inArea == true)
@@ -51,7 +53,6 @@ public class posseion : MonoBehaviour
             // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
             interactable = false;
-            LevelLogic.Instance.interact = false;
         }
 
     }
@@ -63,7 +64,7 @@ public class posseion : MonoBehaviour
         // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
         interactable = false;
-        LevelLogic.Instance.interact = false;
+        //LevelLogic.Instance.interact = false;
         
     }
     private void Update()
@@ -86,9 +87,10 @@ public class posseion : MonoBehaviour
 
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
+            maxFloatation = 3;
             gameObject.AddComponent<itemMove>();
+            gameObject.GetComponent<itemMove>().maxFloatation = maxFloatation;
             thisIsPossessed = true;
-            LevelLogic.Instance.isPossessed = true;
             
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
