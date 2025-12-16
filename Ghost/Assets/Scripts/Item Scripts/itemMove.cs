@@ -16,6 +16,8 @@ public class itemMove : MonoBehaviour
     float yValue;
     float maxVelocity = 0.01f;
     float height;
+    public float maxFloatation;
+    bool atMaxFloatation;
 
     private void Awake()
     {
@@ -74,7 +76,12 @@ public class itemMove : MonoBehaviour
         Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input; //so you can strafe
 
         movement.y = y_direction;
-        movement *= moveSpeed;        
+        movement *= moveSpeed;    
+        CheckDown(maxFloatation);   
+        if (atMaxFloatation && movement.y > 0)
+        {
+            movement.y *= 0;
+        } 
         
         Vector3.ClampMagnitude(movement, 1f);
         
@@ -98,6 +105,25 @@ public class itemMove : MonoBehaviour
         {
             cam.m_XAxis.m_MaxSpeed = 300f;
             cam.m_YAxis.m_MaxSpeed = 2f;
+        }
+
+        
+    }
+
+    void CheckDown(float dist)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
+            if (transform.position.y - dist >= hit.point.y)
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + dist, transform.position.z);
+                atMaxFloatation = true;
+            }
+            else
+            {
+                atMaxFloatation = false;
+            }
         }
     }
 

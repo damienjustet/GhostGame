@@ -27,6 +27,8 @@ public class posseion : MonoBehaviour
 
     [HideInInspector] public bool item;
     [HideInInspector] public int frame;
+
+    public float maxFloatation;
     public void OnMouseOver1()
     {
         if (!LevelLogic.Instance.isPossessed && inArea == true)
@@ -85,7 +87,9 @@ public class posseion : MonoBehaviour
 
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
+            maxFloatation = 3;
             gameObject.AddComponent<itemMove>();
+            gameObject.GetComponent<itemMove>().maxFloatation = maxFloatation;
             thisIsPossessed = true;
             
         }
