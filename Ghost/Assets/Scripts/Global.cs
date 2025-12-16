@@ -23,7 +23,7 @@ public class Global : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
@@ -63,8 +63,18 @@ public class Global : MonoBehaviour
 
     IEnumerator LoadATheScene(string sceneName)
     {
+
+        if (sceneName != "LOBBY")
+        {
+            gameplay = true;
+        }
+        else
+        {
+            gameplay = false;
+        }
+
         // Start loading the scene asynchronously
-        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
+        asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName,  LoadSceneMode.Single);
 
         // Wait until the asynchronous scene fully loads
         while (!asyncSceneLoading.isDone)
@@ -74,8 +84,20 @@ public class Global : MonoBehaviour
             yield return null; // Wait for the next frame
         }
         GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
+        
     }
 
-
+    public void StartMusic()
+    {
+        MusicType song;
+        if (Enum.TryParse(SceneManager.GetActiveScene().name, out song))
+        {
+            SoundManager.StartSong(song);
+        }
+        else
+        {
+            Debug.Log("No music played");
+        }
+    }
 }
 

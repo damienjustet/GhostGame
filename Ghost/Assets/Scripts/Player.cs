@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
             SoundManager.StopSound(SoundType.PLAYERMOVE);
         }
 
-        if (Global.Instance.gameplay)
+        if (Global.Instance.gameplay && LevelLogic.Instance != null)
         {
             
             if (LevelLogic.Instance.playerLiving)

@@ -42,15 +42,7 @@ public class LevelLogic : MonoBehaviour
             Destroy(Instance);
         }
         Instance = this;
-        MusicType song;
-        if (Enum.TryParse(SceneManager.GetActiveScene().name, out song))
-        {
-            SoundManager.StartSong(song);
-        }
-        else
-        {
-            Debug.Log("No music played");
-        }
+        
 
         if (moneyText != null)
         {

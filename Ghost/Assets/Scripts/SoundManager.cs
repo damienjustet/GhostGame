@@ -22,7 +22,8 @@ public enum MusicType
 [ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager instance;
+    public static SoundManager instance;
+    public bool canSound = false;
     public SoundList[] soundList;
     public SongList[] songList;
     [HideInInspector] public AudioSource musicSource;
@@ -47,6 +48,13 @@ public class SoundManager : MonoBehaviour
         musicSource.volume = musicVolume;
         musicSource.loop = true;
         
+        
+    }
+
+    void Start()
+    {
+        canSound = true;
+        Global.Instance.StartMusic();
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)

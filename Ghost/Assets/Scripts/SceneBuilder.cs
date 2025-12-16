@@ -19,13 +19,14 @@ public class SceneBuilder : MonoBehaviour
     Transform playerSpawn;
     string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
 
-    void Awake()
+    void Start()
     {
         if (Global.Instance == null)
         {
+            bool isGameplay = gameplayScenes.Contains(SceneManager.GetActiveScene().name);
             global = (GameObject)Resources.Load("Create On Scene Load/global");
             global = Instantiate(global);
-            global.GetComponent<Global>().gameplay = true;
+            global.GetComponent<Global>().gameplay = isGameplay;
             StartScene();
         }
     }
@@ -41,6 +42,10 @@ public class SceneBuilder : MonoBehaviour
         player = (GameObject)Resources.Load("Create On Scene Load/player");
         soundEffects = (GameObject)Resources.Load("Create On Scene Load/SoundEffects");
 
+        playerSpawn = transform.GetChild(0);
+        player.transform.position = playerSpawn.position;
+        player.transform.rotation = playerSpawn.rotation;
+        
         player = Instantiate(player);
         canvas = Instantiate(canvas);
         if (isGameplay)
@@ -58,14 +63,14 @@ public class SceneBuilder : MonoBehaviour
         }
         mainCamera = Instantiate(mainCamera);
 
-        playerSpawn = transform.GetChild(0);
-        player.transform.position = playerSpawn.position;
-        player.transform.rotation = playerSpawn.rotation;
+        
+        
         mainCamera.transform.position = playerSpawn.position + new Vector3(5,5,0);
         mainCamera.transform.rotation = Quaternion.LookRotation(player.transform.position);
-
+        
         player.GetComponent<Player>().cam = mainCamera.transform.Find("FreeLook Camera").GetComponent<CinemachineFreeLook>();
         player.GetComponent<Player>().target = mainCamera.transform.Find("FreeLook Camera").transform;
+        
 
         mainCamera.GetComponent<PixelArtCamera>()._rawImage = canvas.transform.Find("Camera Display").GetComponent<RawImage>();
         mainCamera.transform.Find("In-Game Text Camera").GetComponent<PixelArtCamera>()._rawImage = canvas.transform.Find("Camera Display").GetComponent<RawImage>();
@@ -83,8 +88,6 @@ public class SceneBuilder : MonoBehaviour
                 go.GetComponent<posseion>().CreateShownValue();
             }
         }
-
-
         Destroy(gameObject);
     }
 
