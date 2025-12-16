@@ -72,10 +72,10 @@ public class Player : MonoBehaviour
 
         if (Global.Instance.gameplay && LevelLogic.Instance != null)
         {
-            
+            Debug.Log("One");
             if (LevelLogic.Instance.playerLiving)
             {
-                
+                Debug.Log("Two");
                 if (Input.GetKeyDown(KeyCode.E) && !LevelLogic.Instance.isPossessed && LevelLogic.Instance.interact) // Possession
                 {
                     SoundManager.PlaySound(SoundType.POSSESS);
@@ -84,8 +84,8 @@ public class Player : MonoBehaviour
                     player.GetComponent<Collider>().enabled = false;
                     player.GetComponent<CharacterController>().enabled = false;
                     detect.GetComponent<Renderer>().enabled = false;
+                    LevelLogic.Instance.interact = false;
                     
-                
                 
                 }
                 

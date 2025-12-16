@@ -51,7 +51,6 @@ public class posseion : MonoBehaviour
             // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
             interactable = false;
-            LevelLogic.Instance.interact = false;
         }
 
     }
@@ -63,7 +62,7 @@ public class posseion : MonoBehaviour
         // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
         interactable = false;
-        LevelLogic.Instance.interact = false;
+        //LevelLogic.Instance.interact = false;
         
     }
     private void Update()
@@ -88,7 +87,6 @@ public class posseion : MonoBehaviour
         {
             gameObject.AddComponent<itemMove>();
             thisIsPossessed = true;
-            LevelLogic.Instance.isPossessed = true;
             
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object

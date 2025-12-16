@@ -107,6 +107,7 @@ public class LevelLogic : MonoBehaviour
             print("You Lose");
         }
         
+        print(interact);
     }
 
     public void UpdateTextPos()
