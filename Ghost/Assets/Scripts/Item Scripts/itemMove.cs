@@ -12,10 +12,12 @@ public class itemMove : MonoBehaviour
     public Rigidbody rb;
     CinemachineFreeLook cam;
     public float moveSpeed = 4;
-    public float rotationSpeed = 3;
+    public float rotationSpeed = 50;
     float yValue;
     float maxVelocity = 0.01f;
     float height;
+    quaternion initRotation;
+    Vector2 previousMousePosition;
 
     private void Awake()
     {
@@ -49,11 +51,15 @@ public class itemMove : MonoBehaviour
         movement *= moveSpeed;
         movement.y = 0;
         Vector3.ClampMagnitude(movement, 1f);
+        initRotation = rb.rotation;
 
         // rb.velocity = movement * Time.deltaTime;
         rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
+        previousMousePosition = LevelLogic.Instance.normalizedPoint;
+        rb.maxAngularVelocity = 10f;
+        
     }
-    void Update()
+    void FixedUpdate()
     {
         //Handles movement
         float y_input = Input.GetAxis("Vertical");
@@ -83,12 +89,21 @@ public class itemMove : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0)) // Rotates possessed object
         {
-            
-            float mousex = Input.GetAxis("Mouse X");
-            float mousey = Input.GetAxis("Mouse Y");
-            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
-            transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
-            
+           
+            Vector3 mouseDelta = (LevelLogic.Instance.normalizedPoint - previousMousePosition) * 4;
+
+        
+        float torqueX = -mouseDelta.x * rotationSpeed; 
+        float torqueY = -mouseDelta.y * rotationSpeed; 
+        
+        Vector3 camNormal = Vector3.ProjectOnPlane(Camera.main.transform.right, Vector3.up);
+        
+        // Apply torque
+        rb.AddRelativeTorque(camNormal * torqueY, ForceMode.VelocityChange);
+        rb.AddRelativeTorque(transform.up * torqueX, ForceMode.VelocityChange);
+        
+        // Update the previous mouse position for the next frame
+            previousMousePosition = LevelLogic.Instance.normalizedPoint;
             cam.m_XAxis.m_MaxSpeed = 0f;// Locks Camera while Rotating
             cam.m_YAxis.m_MaxSpeed = 0f;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class LevelLogic : MonoBehaviour
     public float money;
     public GameObject moneyText;
     Text moneyTextText;
+    public Vector2 normalizedPoint;
 
     
     // checks if ghost is possessed
@@ -67,7 +69,7 @@ public class LevelLogic : MonoBehaviour
          Vector2 localPoint;
         if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
         {
-            Vector2 normalizedPoint = new Vector2(
+            normalizedPoint = new Vector2(
             (localPoint.x - rawImage.rectTransform.rect.x) / rawImage.rectTransform.rect.width,
             (localPoint.y - rawImage.rectTransform.rect.y) / rawImage.rectTransform.rect.height
 );
