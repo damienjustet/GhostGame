@@ -171,7 +171,7 @@ public class posseion : MonoBehaviour
 
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item"));
+        Physics.Raycast(transform.position, Vector3.down, out hit);
 
         // Positive z side
         for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (playerRad * 2)); i++)
@@ -233,7 +233,7 @@ public class posseion : MonoBehaviour
             Debug.DrawLine(center + Vector3.down, center + Vector3.up);
         }
 
-        return force;
+        return true;
     }
 
     bool CollidersAreAll(Collider[] colliders, string name)
