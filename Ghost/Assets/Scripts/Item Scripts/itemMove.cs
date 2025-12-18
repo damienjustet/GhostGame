@@ -93,9 +93,20 @@ public class itemMove : MonoBehaviour
             
             float mousex = Input.GetAxis("Mouse X");
             float mousey = Input.GetAxis("Mouse Y");
-            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
-            transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
             
+            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
+
+            Collider collider = GetComponent<Collider>();
+            if (!Physics.BoxCast(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.up, Quaternion.identity, 0.1f))
+            {
+                Debug.Log("Ues");
+                transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
+            }
+            else
+            {
+                print("no");
+            }
+            Debug.DrawLine(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), transform.position + Vector3.up * (collider.bounds.size.y / 2 + 0.1f) + Vector3.up * 0.1f);
             cam.m_XAxis.m_MaxSpeed = 0f;// Locks Camera while Rotating
             cam.m_YAxis.m_MaxSpeed = 0f;
 

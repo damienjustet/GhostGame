@@ -69,28 +69,6 @@ public class Player : MonoBehaviour
             
             SoundManager.StopSound(SoundType.PLAYERMOVE);
         }
-
-        if (Global.Instance.gameplay && LevelLogic.Instance != null)
-        {
-            Debug.Log("One");
-            if (LevelLogic.Instance.playerLiving)
-            {
-                Debug.Log("Two");
-                if (Input.GetKeyDown(KeyCode.E) && !LevelLogic.Instance.isPossessed && LevelLogic.Instance.interact) // Possession
-                {
-                    SoundManager.PlaySound(SoundType.POSSESS);
-                    LevelLogic.Instance.isPossessed = true;
-                    GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
-                    player.GetComponent<Collider>().enabled = false;
-                    player.GetComponent<CharacterController>().enabled = false;
-                    detect.GetComponent<Renderer>().enabled = false;
-                    LevelLogic.Instance.interact = false;
-                    
-                
-                }
-                
-            }
-        }
         
     }
 
@@ -102,6 +80,16 @@ public class Player : MonoBehaviour
         player.GetComponent<CharacterController>().enabled = true;
         detect.GetComponent<Renderer>().enabled = true;
         LevelLogic.Instance.isPossessed = false;
+    }
+
+    public void Possess()
+    {
+        SoundManager.PlaySound(SoundType.POSSESS);
+        LevelLogic.Instance.isPossessed = true;
+        GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
+        player.GetComponent<Collider>().enabled = false;
+        player.GetComponent<CharacterController>().enabled = false;
+        detect.GetComponent<Renderer>().enabled = false;
     }
 
 }
