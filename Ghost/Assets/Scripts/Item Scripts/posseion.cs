@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,7 +32,7 @@ public class posseion : MonoBehaviour
     public float maxFloatation;
     public void OnMouseOver1()
     {
-        if (!LevelLogic.Instance.isPossessed && inArea == true)
+        if (!thisIsPossessed && !LevelLogic.Instance.isPossessed && inArea == true)
         {
             if (gameObject.GetComponent<Collider>() != null)
             {
@@ -64,7 +65,7 @@ public class posseion : MonoBehaviour
         // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
 
         interactable = false;
-        //LevelLogic.Instance.interact = false;
+        LevelLogic.Instance.interact = false;
         
     }
     private void Update()
@@ -91,6 +92,9 @@ public class posseion : MonoBehaviour
             gameObject.AddComponent<itemMove>();
             gameObject.GetComponent<itemMove>().maxFloatation = maxFloatation;
             thisIsPossessed = true;
+            LevelLogic.Instance.interact = false;
+            interactable = false;
+            GameObject.Find("player(Clone)").GetComponent<Player>().Possess();
             
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
@@ -131,7 +135,7 @@ public class posseion : MonoBehaviour
     {
         if (CanDepossess(force))
         {
-            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            
             if (gameObject.GetComponent<Rigidbody>() != null)
             {
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
@@ -139,8 +143,13 @@ public class posseion : MonoBehaviour
             }
             Destroy(gameObject.GetComponent<itemMove>());
             thisIsPossessed = false;
+            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
         }
         
+        if (force)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void CreateShownValue()
@@ -157,24 +166,68 @@ public class posseion : MonoBehaviour
     {
         float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
         float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
-        float itemRad = gameObject.GetComponent<Collider>().bounds.size.x / 2;
-        
-        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad) * 2f;
-        
-        for (int i = 1; i <= 4; i++)
+        float itemWidth = gameObject.GetComponent<Collider>().bounds.size.x / 2;
+        float itemLength = gameObject.GetComponent<Collider>().bounds.size.z / 2;
+
+        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
+
+        // Positive z side
+        for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (playerRad * 2)); i++)
         {
-            Vector3 moveItemRadius = new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * itemRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * itemRad);
-            Collider[] colliders = Physics.OverlapBox(transform.position + new Vector3(((i % 2) - 0.5f) / Mathf.Abs((i % 2) - 0.5f) * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad), 2 * boxSize, Quaternion.identity, LayerMask.GetMask("Walls"));
-            if (CollidersAreAll(colliders, gameObject.GetComponent<Collider>().name) || colliders.Length == 0)
+            Vector3 center = transform.position + new Vector3(i * 2 *playerRad, 0, itemLength / 2 + 2 * playerRad);
+            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+            if (colliders.Length == 0)
             {
-                depossessCoord = transform.position + moveItemRadius + new Vector3(i % 2 * playerRad, 0, (i - 2.5f) / Mathf.Abs(i - 2.5f) * playerRad);
+                depossessCoord = center;
                 return true;
             }
+
+            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
+        }
+
+        //negative z side
+        for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (2 * playerRad)); i++)
+        {
+            Vector3 center = transform.position + new Vector3(i * 2 * playerRad, 0, -(itemLength / 2) - (2 * playerRad));
+            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+            if (colliders.Length == 0)
+            {
+                depossessCoord = center;
+                return true;
+            }
+
+            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
+        }
+
+        // Positive x side
+        for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
+        {
+            Vector3 center = transform.position + new Vector3(itemWidth / 2 + 2 * playerRad, 0, i * 2 *playerRad);
+            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+            if (colliders.Length == 0)
+            {
+                depossessCoord = center;
+                return true;
+            }
+
+            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
+        }
+
+        //negative x side
+        for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
+        {
+            Vector3 center = transform.position + new Vector3(-(itemWidth / 2 + 2 * playerRad), 0, i * 2 *playerRad);
+            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+            if (colliders.Length == 0)
+            {
+                depossessCoord = center;
+                return true;
+            }
+
+            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
         }
 
         return force;
-
-        
     }
 
     bool CollidersAreAll(Collider[] colliders, string name)
@@ -201,6 +254,8 @@ public class posseion : MonoBehaviour
 
         return false;
     }
+
+
 }
 
 

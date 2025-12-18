@@ -48,7 +48,6 @@ public class ItemCost : MonoBehaviour
                 {
                     value = 0;
                 }
-                print(Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity)));
                 shownText.text = "-$" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 Instantiate(loseValueText, transform);
@@ -59,8 +58,8 @@ public class ItemCost : MonoBehaviour
                 if (LevelLogic.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
                 {
                     gameObject.GetComponent<posseion>().Depossess(true);
+                    
                 }
-                Destroy(gameObject);
             }
         }
     }
