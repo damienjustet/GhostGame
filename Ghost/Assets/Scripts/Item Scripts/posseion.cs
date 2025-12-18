@@ -250,11 +250,14 @@ public class posseion : MonoBehaviour
         float itemLength = itemCollider.bounds.size.z / 2;
 
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item"));
 
         // Positive z side
         for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (playerRad * 2)); i++)
         {
             Vector3 center = transform.position + new Vector3(i * 2 *playerRad, 0, itemLength / 2 + 2 * playerRad);
+            center.y = hit.point.y + boxSize.y / 2;
             Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
             if (colliders.Length == 0)
             {
@@ -269,6 +272,7 @@ public class posseion : MonoBehaviour
         for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (2 * playerRad)); i++)
         {
             Vector3 center = transform.position + new Vector3(i * 2 * playerRad, 0, -(itemLength / 2) - (2 * playerRad));
+            center.y = hit.point.y + boxSize.y / 2;
             Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
             if (colliders.Length == 0)
             {
@@ -283,6 +287,7 @@ public class posseion : MonoBehaviour
         for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
         {
             Vector3 center = transform.position + new Vector3(itemWidth / 2 + 2 * playerRad, 0, i * 2 *playerRad);
+            center.y = hit.point.y + boxSize.y / 2;
             Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
             if (colliders.Length == 0)
             {
@@ -297,6 +302,7 @@ public class posseion : MonoBehaviour
         for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
         {
             Vector3 center = transform.position + new Vector3(-(itemWidth / 2 + 2 * playerRad), 0, i * 2 *playerRad);
+            center.y = hit.point.y + boxSize.y / 2;
             Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
             if (colliders.Length == 0)
             {

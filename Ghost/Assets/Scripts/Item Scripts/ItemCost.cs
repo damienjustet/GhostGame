@@ -80,11 +80,6 @@ public class ItemCost : MonoBehaviour
         if (gameObject.GetComponent<itemMove>() != null)
         {
             gameObject.GetComponent<posseion>().Depossess();
-            if (gameObject.GetComponent<Rigidbody>() != null)
-            {
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            }
             Destroy(gameObject.GetComponent<itemMove>());
         }
 

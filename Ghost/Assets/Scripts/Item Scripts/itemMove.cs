@@ -120,7 +120,7 @@ public class itemMove : MonoBehaviour
     void CheckDown(float dist)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item")))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item", "ground")))
         {
             if (transform.position.y - dist >= hit.point.y)
             {
