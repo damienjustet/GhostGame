@@ -90,6 +90,7 @@ public class itemMove : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0)) // Rotates possessed object
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Lock cursor to prevent hitting screen edge
             
             float mousex = Input.GetAxis("Mouse X");
             float mousey = Input.GetAxis("Mouse Y");
@@ -110,8 +111,14 @@ public class itemMove : MonoBehaviour
         }
         else if(Input.GetKey(KeyCode.Mouse1)) //Unlocks camera if right mouse is held
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Lock cursor for camera rotation
             cam.m_XAxis.m_MaxSpeed = 300f;
             cam.m_YAxis.m_MaxSpeed = 2f;
+        }
+        else // Release cursor when not rotating
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+            UnityEngine.Cursor.visible = true;
         }
 
         
