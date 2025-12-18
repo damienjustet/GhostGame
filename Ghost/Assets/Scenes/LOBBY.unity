@@ -18248,6 +18248,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5182182628793496422, guid: 83479a69217ca4942a1610a8d098d024, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5893988949578442952, guid: 83479a69217ca4942a1610a8d098d024, type: 3}
       propertyPath: m_Name
       value: Scene Builder
@@ -57350,7 +57354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: TUTORIAL
   effect: {fileID: 1602230265}
-  grave: {fileID: 0}
+  grave: {fileID: 1755161426}
 --- !u!4 &5367923179268961068
 Transform:
   m_ObjectHideFlags: 0
