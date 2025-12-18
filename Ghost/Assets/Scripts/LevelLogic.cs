@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class LevelLogic : MonoBehaviour
 {
     public static LevelLogic Instance { get; private set; }
+
+    public bool gameIsRunning;
+
     public float total_time;
     float timer = 0;
     float finish_cooldown;
@@ -149,7 +152,7 @@ public class LevelLogic : MonoBehaviour
         if (timer > 1)
         {
             SoundManager.instance.canSound = true;
-            print("Ye");
+            gameIsRunning = true;
             timer = -1;
         }
         else if (timer >= 0)
