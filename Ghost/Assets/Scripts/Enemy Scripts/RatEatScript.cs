@@ -7,27 +7,57 @@ public class RatEatScript : MonoBehaviour
 {
     public int timer = 100;
     int attacks = 0;
-    void OnTriggerStay(Collider item){
-       
-        if (item.gameObject.CompareTag("Collectable")){
+    
+    void OnTriggerStay(Collider item)
+    {
+        if (item.gameObject.CompareTag("Collectable"))
+        {
+            ItemCost itemCost = item.GetComponent<ItemCost>();
+            if (itemCost == null)
+            {
+                Debug.LogError($"[RatEatScript] ItemCost component missing on {item.gameObject.name}!");
+                return;
+            }
+            
             if (timer <= 0)
             {
                 attacks += 1;
-                item.GetComponent<ItemCost>().value -= 5;
-                item.GetComponent<ItemCost>().shownText.text = "-5";
-                Instantiate(item.GetComponent<ItemCost>().loseValueText, item.transform);
+                itemCost.value -= 5;
+                
+                if (itemCost.shownText != null)
+                {
+                    itemCost.shownText.text = "-5";
+                }
+                
+                if (itemCost.loseValueText != null)
+                {
+                    Instantiate(itemCost.loseValueText, item.transform);
+                }
+                else
+                {
+                    Debug.LogWarning($"[RatEatScript] loseValueText prefab is null on {item.gameObject.name}");
+                }
+                
                 timer = 100;
+                
                 if (attacks >= 4)
                 {
-                    gameObject.GetComponentInParent<RatTargetScript>().scurryAway = true;
+                    RatTargetScript ratScript = gameObject.GetComponentInParent<RatTargetScript>();
+                    if (ratScript != null)
+                    {
+                        ratScript.scurryAway = true;
+                        Debug.Log($"[RatEatScript] Rat {gameObject.name} scurrying away after 4 attacks.");
+                    }
+                    else
+                    {
+                        Debug.LogError("[RatEatScript] RatTargetScript not found in parent!");
+                    }
                 }
             }
             else
             {
                 timer -= 1;
             }
-            
         }
-        
     }
 }

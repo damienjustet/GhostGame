@@ -23,11 +23,28 @@ public class RatTargetScript : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
+        
+        // Cache the collectable item at start
+        item = GameObject.FindWithTag("Collectable");
+        if (item == null)
+        {
+            Debug.LogWarning($"[RatTargetScript] No Collectable tagged object found on start for {gameObject.name}!");
+        }
     }
 
     void Update()
     {
-        item = GameObject.FindWithTag("Collectable");
+        // Only search for item if we don't have one
+        if (item == null)
+        {
+            item = GameObject.FindWithTag("Collectable");
+            if (item == null)
+            {
+                Debug.LogWarning("[RatTargetScript] Still no Collectable found!");
+                return;
+            }
+        }
+        
         float distanceToItem = Vector3.Distance(transform.position, item.transform.position);
         timer += Time.deltaTime;
         Transform selfPos = transform;
@@ -56,10 +73,18 @@ public class RatTargetScript : MonoBehaviour
             
         }
         else
+        {
+            GameObject ratHoleObj = GameObject.FindGameObjectWithTag("ratHole");
+            if (ratHoleObj != null)
             {
-                ratHole = GameObject.FindGameObjectWithTag("ratHole").transform;
+                ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
             }
+            else
+            {
+                Debug.LogWarning("[RatTargetScript] Rat hole tagged object not found!");
+            }
+        }
         
     }
 

@@ -17,7 +17,9 @@ public class ThePOPE : MonoBehaviour
     
     public Transform exitDoor;
 
-bool seePlayer;
+    bool seePlayer;
+    private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType calls
+    private bool wasPossessed = false; // Track possession state changes
 
     void Start()
     {
@@ -27,26 +29,59 @@ bool seePlayer;
 
     void Update()
     {
+        // Clear cache if possession state changed
+        if (wasPossessed != LevelLogic.Instance.isPossessed)
+        {
+            cachedItemMove = null;
+            wasPossessed = LevelLogic.Instance.isPossessed;
+        }
+        
+        // Update player reference based on possession state
         if (!LevelLogic.Instance.isPossessed)
         {
-            player = GameObject.Find("player(Clone)");
+            if (player == null || player.name != "player(Clone)")
+            {
+                player = GameObject.Find("player(Clone)");
+                if (player == null)
+                {
+                    Debug.LogWarning("[ThePOPE] Player object 'player(Clone)' not found!");
+                    return;
+                }
+            }
         }
         else
         {
-           if (FindObjectOfType<itemMove>() != null)
+            // Cache itemMove to avoid repeated FindObjectOfType
+            if (cachedItemMove == null)
             {
-                player = FindObjectOfType<itemMove>().gameObject;
+                cachedItemMove = FindObjectOfType<itemMove>();
             }
             
-            
-           
+            if (cachedItemMove != null)
+            {
+                player = cachedItemMove.gameObject;
+            }
+            else
+            {
+                Debug.LogWarning("[ThePOPE] No possessed item found, but isPossessed is true!");
+                // Reset cache to try again next frame
+                cachedItemMove = null;
+                return;
+            }
         }
-         Vector3 direction = player.transform.position - transform.position;
-            RaycastHit hit;
-            int playerLayer = LayerMask.GetMask("player");
-            Debug.DrawRay(transform.position,direction, Color.blue);
-            seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
-            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        
+        if (player == null)
+        {
+            Debug.LogWarning("[ThePOPE] Player reference is null!");
+            return;
+        }
+        
+        Vector3 direction = player.transform.position - transform.position;
+        RaycastHit hit;
+        int playerLayer = LayerMask.GetMask("player");
+        Debug.DrawRay(transform.position, direction, Color.blue);
+        seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         
          timer += Time.deltaTime;
         Transform selfPos = transform;
@@ -85,10 +120,18 @@ bool seePlayer;
             
         }
         else
+        {
+            GameObject exitObj = GameObject.FindGameObjectWithTag("exit");
+            if (exitObj != null)
             {
-                exitDoor = GameObject.FindGameObjectWithTag("exit").transform;
+                exitDoor = exitObj.transform;
                 agent.SetDestination(exitDoor.position);
             }
+            else
+            {
+                Debug.LogWarning("[ThePOPE] Exit door tagged object not found!");
+            }
+        }
         
     }
 

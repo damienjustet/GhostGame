@@ -18,6 +18,12 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (LevelLogic.Instance == null)
+        {
+            Debug.LogError("[Arrow] LevelLogic.Instance is null!");
+            return;
+        }
+        
         if (LevelLogic.Instance.isPossessed && !rendie.enabled)
         {
             rendie.enabled = true;
@@ -27,7 +33,14 @@ public class Arrow : MonoBehaviour
             rendie.enabled = false;
         }
 
-        transform.rotation = Camera.main.transform.rotation;
+        if (Camera.main != null)
+        {
+            transform.rotation = Camera.main.transform.rotation;
+        }
+        else
+        {
+            Debug.LogWarning("[Arrow] Main Camera not found!");
+        }
 
         timer += Time.deltaTime;
 

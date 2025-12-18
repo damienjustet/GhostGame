@@ -17,14 +17,26 @@ public class CanvasScaling : MonoBehaviour
     // Update is called once per frame
     public void ResizeScreen()
     {
-        if (GameObject.Find("Main Camera(Clone)"))
+        GameObject mainCamera = GameObject.Find("Main Camera(Clone)");
+        if (mainCamera != null)
         {
-            GameObject.Find("Main Camera(Clone)").GetComponent<PixelArtCamera>().UpdateRenderTexture();
+            PixelArtCamera pixelCam = mainCamera.GetComponent<PixelArtCamera>();
+            if (pixelCam != null)
+            {
+                pixelCam.UpdateRenderTexture();
+            }
         }
-        if (GameObject.Find("Level Logic(Clone)"))
+        
+        GameObject levelLogic = GameObject.Find("Level Logic(Clone)");
+        if (levelLogic != null)
         {
-            GameObject.Find("Level Logic(Clone)").GetComponent<LevelLogic>().UpdateTextPos();
+            LevelLogic logic = levelLogic.GetComponent<LevelLogic>();
+            if (logic != null)
+            {
+                logic.UpdateTextPos();
+            }
         }
+        
         rt = GetComponent<RectTransform>();
         thisHeight = rt.localScale.x * rt.rect.height;
         thisWidth = rt.localScale.x * rt.rect.width;
