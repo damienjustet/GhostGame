@@ -16,11 +16,18 @@ public class Player : MonoBehaviour
     public CinemachineFreeLook cam;
     [SerializeField] GameObject player;
     public Transform target;
+    
+    // Ghost floating bob effect
+    public float bobSpeed = 5f;
+    public float bobAmount = 0.1f;
+    private float bobTimer = 0f;
+    private Vector3 originalPosition;
 
     private void Awake()
     {
         rib = GetComponent<CharacterController>();// finds player
         Cursor.lockState = CursorLockMode.Confined; // confines cursor to window(Might need to click screen to get it to work)
+        originalPosition = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -56,8 +63,22 @@ public class Player : MonoBehaviour
         {
             rib.SimpleMove(movement); // moves player
         }
+        
+        // Ghost floating bob effect
         if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
         {
+            bobTimer += Time.deltaTime * bobSpeed;
+            float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
+            
+            // Apply bob to visual model (assuming GhostBoi is the visual)
+            Transform ghostBoi = transform.Find("GhostBoi");
+            if (ghostBoi != null)
+            {
+                Vector3 newPos = ghostBoi.localPosition;
+                newPos.y = bobOffset;
+                ghostBoi.localPosition = newPos;
+            }
+            
             // rotates player
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
 
@@ -66,6 +87,14 @@ public class Player : MonoBehaviour
         }
         else
         {
+            // Reset bob when not moving
+            Transform ghostBoi = transform.Find("GhostBoi");
+            if (ghostBoi != null)
+            {
+                Vector3 newPos = ghostBoi.localPosition;
+                newPos.y = Mathf.Lerp(newPos.y, 0, Time.deltaTime * 5f);
+                ghostBoi.localPosition = newPos;
+            }
             
             SoundManager.StopSound(SoundType.PLAYERMOVE);
         }
