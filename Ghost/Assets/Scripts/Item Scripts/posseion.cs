@@ -34,6 +34,19 @@ public class posseion : MonoBehaviour
     {
         if (!thisIsPossessed && !LevelLogic.Instance.isPossessed && inArea == true)
         {
+            if (showValueText == null || shownText == null)
+            {
+                Debug.LogWarning($"[posseion] ShowValueText or Text component is null on {gameObject.name}. Call CreateShownValue() first.");
+                return;
+            }
+            
+            ItemCost itemCost = gameObject.GetComponent<ItemCost>();
+            if (itemCost == null)
+            {
+                Debug.LogError($"[posseion] ItemCost component missing on {gameObject.name}");
+                return;
+            }
+            
             if (gameObject.GetComponent<Collider>() != null)
             {
                 showValueText.transform.position = transform.position + new Vector3(0, gameObject.GetComponent<Collider>().bounds.size.y / 2, 0);
@@ -42,17 +55,16 @@ public class posseion : MonoBehaviour
             {
                 showValueText.transform.position = transform.position + new Vector3(0, 0, 0);
             }
-            shownText.text = "$" + Convert.ToString(gameObject.GetComponent<ItemCost>().value);
+            shownText.text = "$" + Convert.ToString(itemCost.value);
             interactable = true;
-            // GetComponent<Renderer>().material.color = Color.yellow; // Shows if you can click on it. This can be changed for some other effect
-            LevelLogic.Instance.interact = true; // basically same as interactable var but its so player can access it though don't delete the other one because we need individual vars for the different items
+            LevelLogic.Instance.interact = true;
         }
         else if (!inArea)
         {
-            shownText.text = "";
-            
-            // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
-
+            if (shownText != null)
+            {
+                shownText.text = "";
+            }
             interactable = false;
         }
 
@@ -60,9 +72,10 @@ public class posseion : MonoBehaviour
     
     public void OnMouseExit1()
     {
-        shownText.text = "";
-       
-        // GetComponent<Renderer>().material.color = Color.white; // Resets color from yellow
+        if (shownText != null)
+        {
+            shownText.text = "";
+        }
 
         interactable = false;
         LevelLogic.Instance.interact = false;
@@ -88,14 +101,30 @@ public class posseion : MonoBehaviour
 
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
+            GameObject playerObj = GameObject.Find("player(Clone)");
+            if (playerObj == null)
+            {
+                Debug.LogError("[posseion] Player object 'player(Clone)' not found! Cannot possess.");
+                return;
+            }
+            
+            Player playerScript = playerObj.GetComponent<Player>();
+            if (playerScript == null)
+            {
+                Debug.LogError("[posseion] Player component missing on player object!");
+                return;
+            }
+            
             maxFloatation = 3;
-            gameObject.AddComponent<itemMove>();
-            gameObject.GetComponent<itemMove>().maxFloatation = maxFloatation;
+            itemMove moveComponent = gameObject.AddComponent<itemMove>();
+            moveComponent.maxFloatation = maxFloatation;
             thisIsPossessed = true;
+            LevelLogic.Instance.isPossessed = true;
             LevelLogic.Instance.interact = false;
             interactable = false;
-            GameObject.Find("player(Clone)").GetComponent<Player>().Possess();
+            playerScript.Possess();
             
+            Debug.Log($"[posseion] Possessed {gameObject.name}");
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
         {
@@ -135,19 +164,49 @@ public class posseion : MonoBehaviour
     {
         if (CanDepossess(force))
         {
-            
-            if (gameObject.GetComponent<Rigidbody>() != null)
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                rb.useGravity = true;
+                rb.isKinematic = false;
             }
-            Destroy(gameObject.GetComponent<itemMove>());
+            
+            itemMove moveComp = gameObject.GetComponent<itemMove>();
+            if (moveComp != null)
+            {
+                Destroy(moveComp);
+            }
+            
             thisIsPossessed = false;
-            GameObject.FindWithTag("Player").GetComponent<Player>().Depossess(depossessCoord);
+            LevelLogic.Instance.isPossessed = false;
+            
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                Player playerScript = playerObj.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.Depossess(depossessCoord);
+                    Debug.Log($"[posseion] Depossessed {gameObject.name}");
+                }
+                else
+                {
+                    Debug.LogError("[posseion] Player component not found on Player tagged object!");
+                }
+            }
+            else
+            {
+                Debug.LogError("[posseion] Player tagged object not found! Cannot depossess properly.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[posseion] Cannot depossess {gameObject.name} - no valid position found!");
         }
         
         if (force)
         {
+            Debug.Log($"[posseion] Force destroying {gameObject.name}");
             Destroy(gameObject);
         }
     }
@@ -164,10 +223,31 @@ public class posseion : MonoBehaviour
 
     public bool CanDepossess(bool force = false)
     {
-        float playerRad = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().radius;
-        float playerHeight = GameObject.FindWithTag("Player").GetComponent<CapsuleCollider>().height;
-        float itemWidth = gameObject.GetComponent<Collider>().bounds.size.x / 2;
-        float itemLength = gameObject.GetComponent<Collider>().bounds.size.z / 2;
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        if (playerObj == null)
+        {
+            Debug.LogError("[posseion] CanDepossess: Player tagged object not found!");
+            return force;
+        }
+        
+        CapsuleCollider playerCollider = playerObj.GetComponent<CapsuleCollider>();
+        if (playerCollider == null)
+        {
+            Debug.LogError("[posseion] CanDepossess: CapsuleCollider not found on player!");
+            return force;
+        }
+        
+        Collider itemCollider = gameObject.GetComponent<Collider>();
+        if (itemCollider == null)
+        {
+            Debug.LogError($"[posseion] CanDepossess: No collider on {gameObject.name}!");
+            return force;
+        }
+        
+        float playerRad = playerCollider.radius;
+        float playerHeight = playerCollider.height;
+        float itemWidth = itemCollider.bounds.size.x / 2;
+        float itemLength = itemCollider.bounds.size.z / 2;
 
         Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
         RaycastHit hit;

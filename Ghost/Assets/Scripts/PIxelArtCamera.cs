@@ -42,7 +42,23 @@ public class PixelArtCamera : MonoBehaviour
     {
         if (_camera.targetTexture == null)
         {
-            _camera.targetTexture = GameObject.Find("Main Camera").GetComponent<PixelArtCamera>()._renderTexture;
+            GameObject mainCamera = GameObject.Find("Main Camera");
+            if (mainCamera != null)
+            {
+                PixelArtCamera mainCamScript = mainCamera.GetComponent<PixelArtCamera>();
+                if (mainCamScript != null && mainCamScript._renderTexture != null)
+                {
+                    _camera.targetTexture = mainCamScript._renderTexture;
+                }
+                else
+                {
+                    Debug.LogWarning("[PixelArtCamera] Main Camera found but render texture is null!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[PixelArtCamera] Main Camera GameObject not found!");
+            }
         }
     }
     

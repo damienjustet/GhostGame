@@ -37,27 +37,79 @@ public class LevelLogic : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        rawImage = GameObject.Find("Camera Display").GetComponent<RawImage>();
-        sm = GameObject.Find("SoundEffects(Clone)").GetComponent<SoundManager>();
+        GameObject cameraDisplay = GameObject.Find("Camera Display");
+        if (cameraDisplay != null)
+        {
+            rawImage = cameraDisplay.GetComponent<RawImage>();
+            if (rawImage == null)
+            {
+                Debug.LogError("[LevelLogic] Camera Display doesn't have a RawImage component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[LevelLogic] Camera Display GameObject not found!");
+        }
+        
+        GameObject soundEffects = GameObject.Find("SoundEffects(Clone)");
+        if (soundEffects != null)
+        {
+            sm = soundEffects.GetComponent<SoundManager>();
+            if (sm == null)
+            {
+                Debug.LogError("[LevelLogic] SoundEffects(Clone) doesn't have a SoundManager component!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[LevelLogic] SoundEffects(Clone) GameObject not found!");
+        }
+        
         if (Instance != null)
         {
-            Destroy(Instance);
+            Destroy(Instance.gameObject);
         }
         Instance = this;
         
 
         if (moneyText != null)
         {
-            moneyText.transform.SetParent(GameObject.Find("Canvas(Clone)").transform);
-            moneyTextText = moneyText.GetComponent<Text>();
-            moneyTextText.text = "$0.00";
-            moneyText.GetComponent<RectTransform>().anchoredPosition = new Vector3(306,150,0);
+            GameObject canvas = GameObject.Find("Canvas(Clone)");
+            if (canvas != null)
+            {
+                moneyText.transform.SetParent(canvas.transform);
+                moneyTextText = moneyText.GetComponent<Text>();
+                if (moneyTextText != null)
+                {
+                    moneyTextText.text = "$0.00";
+                }
+                else
+                {
+                    Debug.LogError("[LevelLogic] MoneyText doesn't have a Text component!");
+                }
+                
+                RectTransform rt = moneyText.GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    rt.anchoredPosition = new Vector3(306, 150, 0);
+                }
+            }
+            else
+            {
+                Debug.LogError("[LevelLogic] Canvas(Clone) GameObject not found!");
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (rawImage == null)
+        {
+            Debug.LogWarning("[LevelLogic] RawImage is null, cannot perform raycasting!");
+            return;
+        }
+        
         Vector2 localPoint;
         if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
         {
@@ -65,19 +117,29 @@ public class LevelLogic : MonoBehaviour
             (localPoint.x - rawImage.rectTransform.rect.x) / rawImage.rectTransform.rect.width,
             (localPoint.y - rawImage.rectTransform.rect.y) / rawImage.rectTransform.rect.height
 );
+            
+            if (Camera.main == null)
+            {
+                Debug.LogError("[LevelLogic] Main Camera not found!");
+                return;
+            }
+            
             RaycastHit hit;
-            Ray ray =  Camera.main.ViewportPointToRay(normalizedPoint);
+            Ray ray = Camera.main.ViewportPointToRay(normalizedPoint);
     
             Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
             int layerMask = LayerMask.GetMask("item");
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {   
-                if (hit.collider.gameObject.GetComponentInParent<posseion>() != null)
+                if (hit.collider != null && hit.collider.gameObject != null)
                 {
                     posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
-                    ps.item = true;
-                    ps.frame = 0;
-                    ps.OnMouseOver1();
+                    if (ps != null)
+                    {
+                        ps.item = true;
+                        ps.frame = 0;
+                        ps.OnMouseOver1();
+                    }
                 }
             }
             
@@ -104,20 +166,35 @@ public class LevelLogic : MonoBehaviour
         {
             extraMoneyText = "0";
         }
-        if (moneyText != null)
+        if (moneyText != null && moneyTextText != null)
         {
             moneyTextText.text = "$" + money + extraMoneyText;
         }
         if (health <= 0)
         {
-            print("You Lose");
+            Debug.Log("[LevelLogic] Player health reached 0 - You Lose!");
         }
         
     }
 
     public void UpdateTextPos()
     {
-        moneyText.GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width / 2 - 3, Screen.height / 2 - 1);
+        if (moneyText != null)
+        {
+            RectTransform rt = moneyText.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchoredPosition = new Vector2(Screen.width / 2 - 3, Screen.height / 2 - 1);
+            }
+            else
+            {
+                Debug.LogError("[LevelLogic] UpdateTextPos: MoneyText has no RectTransform!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[LevelLogic] UpdateTextPos: MoneyText is null!");
+        }
     }
     
 }

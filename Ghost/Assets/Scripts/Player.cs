@@ -76,21 +76,143 @@ public class Player : MonoBehaviour
     public void Depossess(Vector3 pos)
     {
         rib.transform.position = pos;
-        gameObject.transform.Find("GhostBoi").GetComponent<Renderer>().enabled = true;
-        player.GetComponent<Collider>().enabled = true;
-        player.GetComponent<CharacterController>().enabled = true;
-        detect.GetComponent<Renderer>().enabled = true;
+        
+        Transform ghostBoi = gameObject.transform.Find("GhostBoi");
+        if (ghostBoi != null)
+        {
+            Renderer ghostRenderer = ghostBoi.GetComponent<Renderer>();
+            if (ghostRenderer != null)
+            {
+                ghostRenderer.enabled = true;
+            }
+            else
+            {
+                Debug.LogError("[Player] Depossess: GhostBoi has no Renderer component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Depossess: GhostBoi child not found!");
+        }
+        
+        if (player != null)
+        {
+            Collider playerCollider = player.GetComponent<Collider>();
+            CharacterController playerController = player.GetComponent<CharacterController>();
+            
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = true;
+            }
+            else
+            {
+                Debug.LogError("[Player] Depossess: Player Collider not found!");
+            }
+            
+            if (playerController != null)
+            {
+                playerController.enabled = true;
+            }
+            else
+            {
+                Debug.LogError("[Player] Depossess: Player CharacterController not found!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Depossess: Player GameObject reference is null!");
+        }
+        
+        if (detect != null)
+        {
+            Renderer detectRenderer = detect.GetComponent<Renderer>();
+            if (detectRenderer != null)
+            {
+                detectRenderer.enabled = true;
+            }
+            else
+            {
+                Debug.LogError("[Player] Depossess: Detect has no Renderer component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Depossess: Detect GameObject reference is null!");
+        }
+        
         LevelLogic.Instance.isPossessed = false;
+        Debug.Log("[Player] Depossessed successfully");
     }
 
     public void Possess()
     {
         SoundManager.PlaySound(SoundType.POSSESS);
         LevelLogic.Instance.isPossessed = true;
-        GameObject.Find("GhostBoi").GetComponent<Renderer>().enabled = false;
-        player.GetComponent<Collider>().enabled = false;
-        player.GetComponent<CharacterController>().enabled = false;
-        detect.GetComponent<Renderer>().enabled = false;
+        
+        GameObject ghostBoi = GameObject.Find("GhostBoi");
+        if (ghostBoi != null)
+        {
+            Renderer ghostRenderer = ghostBoi.GetComponent<Renderer>();
+            if (ghostRenderer != null)
+            {
+                ghostRenderer.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("[Player] Possess: GhostBoi has no Renderer component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Possess: GhostBoi GameObject not found!");
+        }
+        
+        if (player != null)
+        {
+            Collider playerCollider = player.GetComponent<Collider>();
+            CharacterController playerController = player.GetComponent<CharacterController>();
+            
+            if (playerCollider != null)
+            {
+                playerCollider.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("[Player] Possess: Player Collider not found!");
+            }
+            
+            if (playerController != null)
+            {
+                playerController.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("[Player] Possess: Player CharacterController not found!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Possess: Player GameObject reference is null!");
+        }
+        
+        if (detect != null)
+        {
+            Renderer detectRenderer = detect.GetComponent<Renderer>();
+            if (detectRenderer != null)
+            {
+                detectRenderer.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("[Player] Possess: Detect has no Renderer component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[Player] Possess: Detect GameObject reference is null!");
+        }
+        
+        Debug.Log("[Player] Possessed successfully");
     }
 
 }
