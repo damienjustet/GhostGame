@@ -58,7 +58,7 @@ public class LevelLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         Vector2 localPoint;
+        Vector2 localPoint;
         if(RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, null, out localPoint))
         {
             normalizedPoint = new Vector2(
@@ -72,25 +72,29 @@ public class LevelLogic : MonoBehaviour
             int layerMask = LayerMask.GetMask("item");
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {   
-                posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
-                ps.item = true;
-                ps.frame = 0;
-                ps.OnMouseOver1();
+                if (hit.collider.gameObject.GetComponentInParent<posseion>() != null)
+                {
+                    posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
+                    ps.item = true;
+                    ps.frame = 0;
+                    ps.OnMouseOver1();
+                }
             }
             
         }
 
-        timer += Time.deltaTime;
-        if (timer > total_time)
-        {
-            
-        }
-        if (finish_cooldown > total_time + finish_cooldown)
-        {
-
-        }
-
         
+        if (timer > 1)
+        {
+            SoundManager.instance.canSound = true;
+            print("Ye");
+            timer = -1;
+        }
+        else if (timer >= 0)
+        {
+            timer += Time.deltaTime;
+        }
+
         string extraMoneyText = "";
         if (money % 1 == 0)
         {

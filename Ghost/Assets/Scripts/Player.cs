@@ -69,7 +69,8 @@ public class Player : MonoBehaviour
             
             SoundManager.StopSound(SoundType.PLAYERMOVE);
         }
-        
+    
+
     }
 
     public void Depossess(Vector3 pos)

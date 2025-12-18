@@ -32,6 +32,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        canSound = false;
         AudioSource[] sources = GetComponents<AudioSource>();
         foreach (AudioSource s in sources)
         {
@@ -54,15 +55,17 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        canSound = true;
         Global.Instance.StartMusic();
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)
     {
-        AudioClip[] clips = instance.soundList[(int)sound].clips;
-        AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
-        instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume);
+        if (instance.canSound)
+        {
+            AudioClip[] clips = instance.soundList[(int)sound].clips;
+            AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
+            instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume); 
+        }
 
     }
 

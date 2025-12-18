@@ -97,14 +97,9 @@ public class itemMove : MonoBehaviour
             transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
 
             Collider collider = GetComponent<Collider>();
-            if (!Physics.BoxCast(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.up, Quaternion.identity, 0.1f) && !Physics.BoxCast(transform.position - Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.down, Quaternion.identity, 0.1f))
+            if (!Physics.BoxCast(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.up, Quaternion.identity, 0.1f) && !Physics.BoxCast(transform.position - Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.down, Quaternion.identity, 0.2f))
             {
-                Debug.Log("Ues");
                 transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
-            }
-            else
-            {
-                print("no");
             }
             Debug.DrawLine(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), transform.position + Vector3.up * (collider.bounds.size.y / 2 + 0.1f) + Vector3.up * 0.1f);
             Debug.DrawLine(transform.position - Vector3.up * (collider.bounds.size.y / 2 - 0.1f), transform.position - Vector3.up * (collider.bounds.size.y / 2 + 0.1f) - Vector3.up * 0.1f);
