@@ -133,7 +133,7 @@ public class posseion : MonoBehaviour
 
     public void Depossess(bool force = false)
     {
-        if (CanDepossess(false))
+        if (CanDepossess(force))
         {
             
             if (gameObject.GetComponent<Rigidbody>() != null)
