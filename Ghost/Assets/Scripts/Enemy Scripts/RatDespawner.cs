@@ -10,6 +10,7 @@ public class RatDespawner : MonoBehaviour
         
         if (other.gameObject.name == "Rat"){
             Destroy(other.gameObject);
+            GetComponent<EnemyManager>().RatSpawn = false;
         }
     }
 }

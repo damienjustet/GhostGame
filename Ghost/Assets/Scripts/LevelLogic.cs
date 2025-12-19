@@ -15,6 +15,7 @@ public class LevelLogic : MonoBehaviour
     public float total_time;
     float timer = 0;
     float finish_cooldown;
+    
 
     
     SoundManager sm;

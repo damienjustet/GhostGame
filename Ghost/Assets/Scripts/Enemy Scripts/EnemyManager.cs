@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject pope;
     public GameObject rat;
     public bool spawn = false;
+    public bool RatSpawn = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,12 @@ public class EnemyManager : MonoBehaviour
         {
             Instantiate(pope, transform);
             spawn = true;
+        }
+        if(time >= 30 && this.gameObject.name == "ratHole" && !RatSpawn)
+        {
+            Instantiate(rat, transform);
+            RatSpawn = true;
+            time = 0;
         }
     }
 
