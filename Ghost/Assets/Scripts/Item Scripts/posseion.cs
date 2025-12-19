@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SocialPlatforms;
@@ -37,7 +38,7 @@ public class posseion : MonoBehaviour
     Collider thisCollider;
     Rigidbody rb;
 
-    
+    List<Vector3> depossessableCoords = new List<Vector3>();
 
     public float maxFloatation;
 
@@ -143,6 +144,10 @@ public class posseion : MonoBehaviour
 
         Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
 
+        if (playerObj != null && thisIsPossessed)
+        {
+            FindDepossessableCoord();
+        }
     }
     private void OnTriggerEnter(Collider other) // if in area
     {
@@ -201,6 +206,94 @@ public class posseion : MonoBehaviour
         showValueText.GetComponent<Transform>().localScale = new Vector3(0.06f,0.06f,0.06f);
         shownText = showValueText.GetComponent<Text>();
         showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+    }
+
+
+    public void FindDepossessableCoord()
+    {
+        depossessableCoords.Clear();
+
+        float playerRadius = playerCollider.radius;
+        float playerHeight = playerCollider.height;
+        float itemBoundsX = thisCollider.bounds.size.x;
+        float itemBoundsZ = thisCollider.bounds.size.z;
+
+        Vector3 boxSize = new Vector3(playerRadius * 2, playerHeight, playerRadius * 2);
+        Vector3 boxCenter = transform.position;
+        boxCenter.y = 0; 
+
+        Ray ray;
+        RaycastHit hit;
+        Collider[] colliders;
+        // Expand out in a grid checking spots
+        for (int ring = 0; ring <= 10; ring += 2)
+        {
+            if (ring != 0)
+            {
+                for (int side = 1; side <= 4; side++)
+                {
+                    for (int i = 1; i < ring; i++)
+                    {
+                        boxCenter.y = transform.position.y;
+                        ray = new Ray(boxCenter, Vector3.down);
+                        Physics.Raycast(ray, out hit);
+                        boxCenter.y = boxSize.y / 2 + hit.point.y + 0.1f;
+                        colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                        if (colliders.Length == 0)
+                        {
+                            boxCenter.y = hit.point.y;
+                            depossessableCoords.Add(boxCenter);
+                            Debug.DrawRay(boxCenter, Vector3.down, Color.green);
+                        }
+                        else
+                        {
+                            Debug.DrawRay(boxCenter, Vector3.down, Color.red);
+                        }
+                        if (side % 2 == 1)
+                        {
+                            boxCenter.z += boxSize.z * (side - 2);
+                        }
+                        else
+                        {
+                            boxCenter.x += boxSize.x * (side - 3);
+                        }
+                    }
+                    boxCenter.y = transform.position.y;
+                    ray = new Ray(boxCenter, Vector3.down);
+                    Physics.Raycast(ray, out hit);
+                    boxCenter.y = boxSize.y / 2 + hit.point.y + 0.1f;
+                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                    if (colliders.Length == 0)
+                    {
+                        boxCenter.y = hit.point.y;
+                        depossessableCoords.Add(boxCenter);   
+                    }
+                    if (side % 2 == 1)
+                    {
+                        boxCenter.x += boxSize.x * (side - 2);
+                    }
+                    else if (side == 2)
+                    {
+                        boxCenter.z += boxSize.z * (-side + 3);
+                    }
+                }
+            }
+            else
+            {
+                ray = new Ray(transform.position, Vector3.down);
+                Physics.Raycast(ray, out hit);
+                boxCenter.y = boxSize.y / 2 + hit.point.y;
+                colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                if (colliders.Length == 1)
+                {
+                    boxCenter.y = hit.point.y;
+                    depossessableCoords.Add(boxCenter);   
+                }
+            }
+
+            boxCenter.x += boxSize.x;
+            
+        }
     }
 
     public bool CanDepossess(bool force = false)
