@@ -15,6 +15,7 @@ public class LevelLogic : MonoBehaviour
     public float total_time;
     float timer = 0;
     float finish_cooldown;
+    public float quota = 5000.00f;
     
 
     
@@ -37,6 +38,8 @@ public class LevelLogic : MonoBehaviour
 
     // Player health
     public float health = 100;
+
+    public bool canLeave = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -172,7 +175,10 @@ public class LevelLogic : MonoBehaviour
         }
         if (moneyText != null && moneyTextText != null)
         {
-            moneyTextText.text = "$" + money + extraMoneyText;
+            moneyTextText.text = "$" + money + extraMoneyText + "/$" + quota;
+            if (money >= quota){
+                canLeave = true;
+            }
         }
         if (health <= 0)
         {
