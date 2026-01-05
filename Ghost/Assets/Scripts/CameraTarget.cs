@@ -13,13 +13,18 @@ public class CameraTarget : MonoBehaviour
     public float rotationSpeed = 1;
     ProBuilderMesh[] target;
     int index = 0;
+    
     private void Start()
     {
-        
+        if (player == null)
+        {
+            Debug.LogWarning("[CameraTarget] Player reference not assigned!");
+        }
     }
+    
     void Update()
     {
-        script = FindObjectOfType<itemMove>(); // finds script
+        script = FindObjectOfType<itemMove>(); // finds script - Consider caching this in the future
         if (script != null)
         {
             item = script.gameObject; //finds objects that have script
@@ -27,15 +32,16 @@ public class CameraTarget : MonoBehaviour
         }
         else
         {
-            target = FindObjectsOfType<ProBuilderMesh>();
-            
-            transform.position = player.transform.position;
-            
-        }}
-        
-        
-
-
+            if (player != null)
+            {
+                transform.position = player.transform.position;
+            }
+            else
+            {
+                Debug.LogWarning("[CameraTarget] Player reference is null and no possessed item found!");
+            }
+        }
     }
+}
     
 

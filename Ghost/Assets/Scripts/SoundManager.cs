@@ -16,13 +16,15 @@ public enum MusicType
 {
     LOBBY,
     TUTORIAL,
-    LEVEL1
+    LEVEL1,
+    TITLESCREEN
 }
 
 [ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager instance;
+    public static SoundManager instance;
+    public bool canSound = false;
     public SoundList[] soundList;
     public SongList[] songList;
     [HideInInspector] public AudioSource musicSource;
@@ -30,6 +32,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        canSound = false;
         AudioSource[] sources = GetComponents<AudioSource>();
         foreach (AudioSource s in sources)
         {
@@ -47,13 +50,22 @@ public class SoundManager : MonoBehaviour
         musicSource.volume = musicVolume;
         musicSource.loop = true;
         
+        
+    }
+
+    void Start()
+    {
+        Global.Instance.StartMusic();
     }
 
     public static void PlaySound(SoundType sound, float volume = 1)
     {
-        AudioClip[] clips = instance.soundList[(int)sound].clips;
-        AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
-        instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume);
+        if (instance.canSound)
+        {
+            AudioClip[] clips = instance.soundList[(int)sound].clips;
+            AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
+            instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume); 
+        }
 
     }
 

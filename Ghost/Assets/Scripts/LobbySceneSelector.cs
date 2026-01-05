@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,7 @@ public class LobbySceneSelector : MonoBehaviour
 {
     public string scene;
     public ParticleSystem effect;
-    public TextMesh grave;
+    public TextMeshPro grave;
 
     bool interact;
     void Awake()
@@ -45,7 +46,7 @@ public class LobbySceneSelector : MonoBehaviour
     {
         if(interact == true && Input.GetKeyDown(KeyCode.E))
         {
-            SceneManager.LoadScene(scene);
+            Global.Instance.LoadAScene(scene);
             print("hi");
         }
     }

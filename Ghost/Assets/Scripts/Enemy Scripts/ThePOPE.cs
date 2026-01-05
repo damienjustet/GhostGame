@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,9 @@ public class ThePOPE : MonoBehaviour
     
     public Transform exitDoor;
 
-bool seePlayer;
+    bool seePlayer;
+    private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType calls
+    private bool wasPossessed = false; // Track possession state changes
 
     void Start()
     {
@@ -26,22 +29,73 @@ bool seePlayer;
 
     void Update()
     {
+        // Clear cache if possession state changed
+        if (wasPossessed != LevelLogic.Instance.isPossessed)
+        {
+            cachedItemMove = null;
+            wasPossessed = LevelLogic.Instance.isPossessed;
+        }
         
-        player = GameObject.Find("player(Clone)");
+        // Update player reference based on possession state
+        if (!LevelLogic.Instance.isPossessed)
+        {
+            if (player == null || player.name != "player(Clone)")
+            {
+                player = GameObject.Find("player(Clone)");
+                if (player == null)
+                {
+                    Debug.LogWarning("[ThePOPE] Player object 'player(Clone)' not found!");
+                    return;
+                }
+            }
+        }
+        else
+        {
+            // Cache itemMove to avoid repeated FindObjectOfType
+            if (cachedItemMove == null)
+            {
+                cachedItemMove = FindObjectOfType<itemMove>();
+            }
+            
+            if (cachedItemMove != null)
+            {
+                player = cachedItemMove.gameObject;
+            }
+            else
+            {
+                Debug.LogWarning("[ThePOPE] No possessed item found, but isPossessed is true!");
+                // Reset cache to try again next frame
+                cachedItemMove = null;
+                return;
+            }
+        }
+        
+        if (player == null)
+        {
+            Debug.LogWarning("[ThePOPE] Player reference is null!");
+            return;
+        }
+        
         Vector3 direction = player.transform.position - transform.position;
         RaycastHit hit;
         int playerLayer = LayerMask.GetMask("player");
-        Debug.DrawRay(transform.position,direction, Color.blue);
+        Debug.DrawRay(transform.position, direction, Color.blue);
         seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        timer += Time.deltaTime;
+        
+         timer += Time.deltaTime;
         Transform selfPos = transform;
+        
         
         if (!tired)
         {
             if (distanceToPlayer <= wanderRadius && seePlayer)
             {
-                if (hit.collider.gameObject.name == "player(Clone)")
+                if (hit.collider.gameObject.name == "player(Clone)" && !LevelLogic.Instance.isPossessed)
+                {
+                    agent.SetDestination(player.transform.position);
+                }
+                else if(hit.collider.gameObject.tag == "Collectable")
                 {
                     agent.SetDestination(player.transform.position);
                 }
@@ -66,10 +120,18 @@ bool seePlayer;
             
         }
         else
+        {
+            GameObject exitObj = GameObject.FindGameObjectWithTag("exit");
+            if (exitObj != null)
             {
-                exitDoor = GameObject.FindGameObjectWithTag("exit").transform;
+                exitDoor = exitObj.transform;
                 agent.SetDestination(exitDoor.position);
             }
+            else
+            {
+                Debug.LogWarning("[ThePOPE] Exit door tagged object not found!");
+            }
+        }
         
     }
 

@@ -12,10 +12,12 @@ public class itemMove : MonoBehaviour
     public Rigidbody rb;
     CinemachineFreeLook cam;
     public float moveSpeed = 4;
-    public float rotationSpeed = 3;
+    public float rotationSpeed = 2;
     float yValue;
     float maxVelocity = 0.01f;
     float height;
+    public float maxFloatation;
+    bool atMaxFloatation;
 
     private void Awake()
     {
@@ -74,22 +76,34 @@ public class itemMove : MonoBehaviour
         Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input; //so you can strafe
 
         movement.y = y_direction;
-        movement *= moveSpeed;        
+        movement *= moveSpeed;    
+        CheckDown(maxFloatation);   
+        if (atMaxFloatation && movement.y > 0)
+        {
+            movement.y *= 0;
+        } 
         
         Vector3.ClampMagnitude(movement, 1f);
         
         // rb.velocity = movement * Time.deltaTime;
         rb.AddForce(movement * maxVelocity - maxVelocity * rb.velocity, ForceMode.VelocityChange);
 
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Mouse1)) // Rotates possessed object
+        if (Input.GetKey(KeyCode.Mouse0)) // Rotates possessed object
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Lock cursor to prevent hitting screen edge
             
             float mousex = Input.GetAxis("Mouse X");
             float mousey = Input.GetAxis("Mouse Y");
-
-            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
-            transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
             
+            transform.Rotate(Vector3.up, -mousex * rotationSpeed, Space.World);
+
+            Collider collider = GetComponent<Collider>();
+            if (!Physics.BoxCast(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.up, Quaternion.identity, 0.1f) && !Physics.BoxCast(transform.position - Vector3.up * (collider.bounds.size.y / 2 - 0.1f), new Vector3(collider.bounds.size.x, 0.01f, collider.bounds.size.z) / 2, Vector3.down, Quaternion.identity, 0.2f))
+            {
+                transform.RotateAround(transform.position, Camera.main.transform.right, mousey * rotationSpeed);
+            }
+            Debug.DrawLine(transform.position + Vector3.up * (collider.bounds.size.y / 2 - 0.1f), transform.position + Vector3.up * (collider.bounds.size.y / 2 + 0.1f) + Vector3.up * 0.1f);
+            Debug.DrawLine(transform.position - Vector3.up * (collider.bounds.size.y / 2 - 0.1f), transform.position - Vector3.up * (collider.bounds.size.y / 2 + 0.1f) - Vector3.up * 0.1f);
             cam.m_XAxis.m_MaxSpeed = 0f;// Locks Camera while Rotating
             cam.m_YAxis.m_MaxSpeed = 0f;
 
@@ -97,8 +111,33 @@ public class itemMove : MonoBehaviour
         }
         else if(Input.GetKey(KeyCode.Mouse1)) //Unlocks camera if right mouse is held
         {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Lock cursor for camera rotation
             cam.m_XAxis.m_MaxSpeed = 300f;
             cam.m_YAxis.m_MaxSpeed = 2f;
+        }
+        else // Release cursor when not rotating
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+            UnityEngine.Cursor.visible = true;
+        }
+
+        
+    }
+
+    void CheckDown(float dist)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item", "ground")))
+        {
+            if (transform.position.y - dist >= hit.point.y)
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + dist, transform.position.z);
+                atMaxFloatation = true;
+            }
+            else
+            {
+                atMaxFloatation = false;
+            }
         }
     }
 

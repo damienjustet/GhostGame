@@ -35,8 +35,11 @@ public class ItemCost : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
-
+        if (SoundManager.instance.canSound)
+        {
+            SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
+        }
+        
         if (canDamage)
         {
             if (GetVelocityMagnitude(collision.relativeVelocity) > -10 * sensitivity + 10)
@@ -45,7 +48,6 @@ public class ItemCost : MonoBehaviour
                 {
                     value = 0;
                 }
-
                 shownText.text = "-$" + Round2Decimals(ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 Instantiate(loseValueText, transform);
@@ -55,9 +57,9 @@ public class ItemCost : MonoBehaviour
                 LevelLogic.Instance.interact = false;
                 if (LevelLogic.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
                 {
-                    gameObject.GetComponent<posseion>().Depossess(true);
+                    gameObject.GetComponent<posseion>().Depossess();
+                    
                 }
-                Destroy(gameObject);
             }
         }
     }
@@ -78,11 +80,6 @@ public class ItemCost : MonoBehaviour
         if (gameObject.GetComponent<itemMove>() != null)
         {
             gameObject.GetComponent<posseion>().Depossess();
-            if (gameObject.GetComponent<Rigidbody>() != null)
-            {
-                gameObject.GetComponent<Rigidbody>().useGravity = true;
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            }
             Destroy(gameObject.GetComponent<itemMove>());
         }
 

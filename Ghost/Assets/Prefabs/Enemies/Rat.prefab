@@ -30,9 +30,9 @@ Transform:
   m_GameObject: {fileID: 5954477478188483450}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.3772, y: 0.4804, z: 3.6367}
-  m_LocalScale: {x: 0.2906593, y: 0.27752566, z: 0.7512642}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 0.88, y: 0.8402366, z: 2.2745273}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6583595572191951953}
   - {fileID: 6006095545269648488}
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4376f4dd651ff74e8e164973afe8fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 10
+  wanderRadius: 20
   wanderTimer: 1
   item: {fileID: 0}
   scurryAway: 0
@@ -238,7 +238,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 68.80908
+      value: 161.6
       objectReference: {fileID: 0}
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalScale.y

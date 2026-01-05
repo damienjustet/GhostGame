@@ -13,7 +13,8 @@ public class RatTargetScript : MonoBehaviour
 
     private NavMeshAgent agent;
     private float timer;
-    public GameObject item;
+    public GameObject[] item;
+    public GameObject closestItem;
     public bool scurryAway = false;
     
     public Transform ratHole;
@@ -21,14 +22,51 @@ public class RatTargetScript : MonoBehaviour
 
     void Start()
     {
+        closestItem = GameObject.FindGameObjectWithTag("Collectable");
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
+        
+        // Cache the collectable item at start
+        item = GameObject.FindGameObjectsWithTag("Collectable");
+        if (item == null)
+        {
+            Debug.LogWarning($"[RatTargetScript] No Collectable tagged object found on start for {gameObject.name}!");
+        }
+        for(int i = 0; i <= item.Length; i++)
+        {
+             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
+              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+            if(distanceToItem < distanceToClosestItem)
+            {
+                closestItem = item[i];
+            }
+        }
     }
 
     void Update()
     {
-        item = GameObject.FindWithTag("Collectable");
-        float distanceToItem = Vector3.Distance(transform.position, item.transform.position);
+        // Only search for item if we don't have one
+        if (item == null)
+        {
+            item = GameObject.FindGameObjectsWithTag("Collectable");
+            if (item == null)
+            {
+                Debug.LogWarning("[RatTargetScript] Still no Collectable found!");
+                return;
+            }
+             }
+        for(int i = 0; i <= item.Length; i++)
+        {
+             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
+              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+            if(distanceToItem < distanceToClosestItem)
+            {
+                closestItem = item[i];
+            }
+        }
+        
+        
+        float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
         timer += Time.deltaTime;
         Transform selfPos = transform;
 
@@ -36,16 +74,16 @@ public class RatTargetScript : MonoBehaviour
         {
         if (timer >= wanderTimer)
         {
-            if (distanceToItem <= wanderRadius)
+            if (distanceToItem2 <= wanderRadius)
             {
-                agent.SetDestination(item.transform.position);
+                agent.SetDestination(closestItem.transform.position);
                 
 
             }
             else
             {
 
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, item, selfPos);
+                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
                 agent.SetDestination(newPos);
                 
                 
@@ -56,15 +94,23 @@ public class RatTargetScript : MonoBehaviour
             
         }
         else
+        {
+            GameObject ratHoleObj = GameObject.FindGameObjectWithTag("ratHole");
+            if (ratHoleObj != null)
             {
-                ratHole = GameObject.FindGameObjectWithTag("ratHole").transform;
+                ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
             }
+            else
+            {
+                Debug.LogWarning("[RatTargetScript] Rat hole tagged object not found!");
+            }
+        }
         
     }
 
     // Function to find a random point on the NavMesh within a sphere
-    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask, GameObject item1, Transform selfTransform)
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask, Transform selfTransform)
     {
 
         Vector3 randomDirection = Random.insideUnitSphere * dist;
