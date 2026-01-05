@@ -137,10 +137,10 @@ public class posseion : MonoBehaviour
         }
 
         // Set depossession coord to the last depossessable spot
-        if (thisIsPossessed)
-        {
-            CanDepossess();
-        }
+        // if (thisIsPossessed)
+        // {
+        //     CanDepossess();
+        // }
 
         Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
 
@@ -168,34 +168,28 @@ public class posseion : MonoBehaviour
         }
     }
 
-    public void Depossess(bool force = false)
+    public void Depossess()
     {
-        if (CanDepossess(force))
+        depossessCoord = FindDepossessableCoord();
+        if (rb != null)
         {
-            if (rb != null)
-            {
-                rb.useGravity = true;
-                rb.isKinematic = false;
-            }
-            
-            Destroy(gameObject.GetComponent<itemMove>());
+            rb.useGravity = true;
+            rb.isKinematic = false;
+        }
+        
+        Destroy(gameObject.GetComponent<itemMove>());
 
-            thisIsPossessed = false;
-            LevelLogic.Instance.isPossessed = false;
+        thisIsPossessed = false;
+        LevelLogic.Instance.isPossessed = false;
 
-            if (playerObj != null)
+        if (playerObj != null)
+        {
+            if (playerScript != null)
             {
-                if (playerScript != null)
-                {
-                    playerScript.Depossess(depossessCoord);
-                }
+                playerScript.Depossess(depossessCoord);
             }
         }
         
-        if (force)
-        {
-            Destroy(gameObject);
-        }
     }
 
     public void CreateShownValue()
@@ -209,7 +203,7 @@ public class posseion : MonoBehaviour
     }
 
 
-    public void FindDepossessableCoord()
+    public Vector3 FindDepossessableCoord()
     {
         depossessableCoords.Clear();
 
@@ -267,6 +261,11 @@ public class posseion : MonoBehaviour
                     {
                         boxCenter.y = hit.point.y;
                         depossessableCoords.Add(boxCenter);   
+                        Debug.DrawRay(boxCenter, Vector3.down, Color.green);
+                    }
+                    else
+                    {
+                        Debug.DrawRay(boxCenter, Vector3.down, Color.red);
                     }
                     if (side % 2 == 1)
                     {
@@ -280,20 +279,48 @@ public class posseion : MonoBehaviour
             }
             else
             {
-                ray = new Ray(transform.position, Vector3.down);
-                Physics.Raycast(ray, out hit);
-                boxCenter.y = boxSize.y / 2 + hit.point.y;
-                colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
-                if (colliders.Length == 1)
+                if (itemCost.value <= 0)
                 {
-                    boxCenter.y = hit.point.y;
-                    depossessableCoords.Add(boxCenter);   
+                    ray = new Ray(transform.position, Vector3.down);
+                    Physics.Raycast(ray, out hit);
+                    boxCenter.y = boxSize.y / 2 + hit.point.y;
+                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                    if (colliders.Length == 1)
+                    {
+                        boxCenter.y = hit.point.y;
+                        depossessableCoords.Add(boxCenter);   
+                        Debug.DrawRay(boxCenter, Vector3.down, Color.green);
+                    }
+                    else
+                    {
+                        Debug.DrawRay(boxCenter, Vector3.down, Color.red);
+                    }
                 }
+                
             }
 
             boxCenter.x += boxSize.x;
             
         }
+        
+        Vector3 target; 
+        foreach (Vector3 coord in new List<Vector3>(depossessableCoords))
+        {
+            target = coord - transform.position;   
+            target.y = 0;
+            float dist = Mathf.Sqrt(Mathf.Pow(target.x, 2) + Mathf.Pow(target.z, 2));
+            if (!Physics.Raycast(transform.position, target, out hit, dist, LayerMask.GetMask("Walls", "Default", "CameraPassthrough")))
+            {
+                Debug.DrawRay(transform.position, target, Color.blue);
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, target, Color.red);
+                depossessableCoords.Remove(coord);
+            }
+        }
+
+        return depossessableCoords[0];
     }
 
     public bool CanDepossess(bool force = false)
