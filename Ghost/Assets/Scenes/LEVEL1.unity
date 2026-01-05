@@ -916,6 +916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: chemicalBin (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8940775178860174582, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
+      propertyPath: value
+      value: 2500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14665,6 +14669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 852111508}
   - component: {fileID: 852111509}
+  - component: {fileID: 852111510}
   m_Layer: 0
   m_Name: ExitPos
   m_TagString: Untagged
@@ -14700,6 +14705,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exit: {fileID: 447030044}
+  arrow: {fileID: 1326969910}
+--- !u!114 &852111510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852111506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d24be0ee83f5af4ba111d69733cde1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalPrice: 1
 --- !u!1 &863530241
 GameObject:
   m_ObjectHideFlags: 0
@@ -24072,6 +24091,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: chemicalBin (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8940775178860174582, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
+      propertyPath: value
+      value: 2500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24583,6 +24606,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4497478742551742369, guid: bdb7b4bb6105c68459541dab836cb67f, type: 3}
   m_PrefabInstance: {fileID: 1883968420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1326969910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7979368314665179508, guid: 47a978200d610974599c50f3079ab9a5, type: 3}
+  m_PrefabInstance: {fileID: 9008236043749037119}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1327466659
 GameObject:
@@ -36580,6 +36608,10 @@ PrefabInstance:
     - target: {fileID: 6806951637885646596, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
       propertyPath: m_Name
       value: chemicalBin (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8940775178860174582, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
+      propertyPath: value
+      value: 2500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -59332,6 +59364,10 @@ PrefabInstance:
     - target: {fileID: 6806951637885646596, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
       propertyPath: m_Name
       value: chemicalBin
+      objectReference: {fileID: 0}
+    - target: {fileID: 8940775178860174582, guid: 5346f6232ac0c674f817a79c14da6b32, type: 3}
+      propertyPath: value
+      value: 2500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
