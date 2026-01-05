@@ -168,7 +168,7 @@ public class posseion : MonoBehaviour
         }
     }
 
-    public void Depossess()
+    public void Depossess(bool dead = false)
     {
         depossessCoord = FindDepossessableCoord();
         if (rb != null)
@@ -188,6 +188,11 @@ public class posseion : MonoBehaviour
             {
                 playerScript.Depossess(depossessCoord);
             }
+        }
+
+        if (dead)
+        {
+            Destroy(gameObject);
         }
         
     }
