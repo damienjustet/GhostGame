@@ -6,12 +6,13 @@ public class DoorHinge : MonoBehaviour
 {
     [Range(-1,1)] public int direction;
     bool isOpen = false;
+    [HideInInspector] public bool inArea = false;
     
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O) && inArea)
         {
             if (isOpen)
             {
@@ -24,25 +25,38 @@ public class DoorHinge : MonoBehaviour
         }
     }
 
+    public void DoorInteract()
+    {
+        if (isOpen)
+        {
+            CloseDoor();
+        }
+        else
+        {
+            OpenDoor();
+        }
+    }
+
     void OpenDoor()
     {
-        if (!isOpen)
-        {
-            isOpen = true;
-            Vector3 rotation = transform.rotation.eulerAngles;
-            rotation.y += 90 * direction;
-            transform.rotation = Quaternion.Euler(rotation);
-        }
+        isOpen = true;
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.y += 90 * direction;
+        transform.rotation = Quaternion.Euler(rotation);
     }
 
     void CloseDoor()
     {
-        if (isOpen)
-        {
-            isOpen = false;
-            Vector3 rotation = transform.rotation.eulerAngles;
-            rotation.y -= 90 * direction;
-            transform.rotation = Quaternion.Euler(rotation);
-        }
+        isOpen = false;
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.y -= 90 * direction;
+        transform.rotation = Quaternion.Euler(rotation);
     }
+
+    public void MouseOver()
+    {
+        
+    }
+
+    
 }
