@@ -286,6 +286,7 @@ public class posseion : MonoBehaviour
             {
                 if (itemCost.value <= 0)
                 {
+                    
                     ray = new Ray(transform.position, Vector3.down);
                     Physics.Raycast(ray, out hit);
                     boxCenter.y = boxSize.y / 2 + hit.point.y;
@@ -305,6 +306,7 @@ public class posseion : MonoBehaviour
             }
 
             boxCenter.x += boxSize.x;
+            
             
         }
         

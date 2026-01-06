@@ -13,7 +13,7 @@ public class ItemPriceCalc : MonoBehaviour
         for(int i = 0; i < items.Length; i++)
         {
             totalPrice += items[i].GetComponent<ItemCost>().value;
-            LevelLogic.Instance.quota = totalPrice * 0.6f;
+            LevelLogic.Instance.quota = totalPrice * 0.5f;
             print(totalPrice);
         }
 
