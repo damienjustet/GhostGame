@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -135,17 +136,32 @@ public class LevelLogic : MonoBehaviour
             Ray ray = Camera.main.ViewportPointToRay(normalizedPoint);
     
             Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
-            int layerMask = LayerMask.GetMask("item");
+            int layerMask = LayerMask.GetMask("item", "Door");
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {   
                 if (hit.collider != null && hit.collider.gameObject != null)
                 {
-                    posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
-                    if (ps != null)
+                    if (LayerMask.LayerToName(hit.collider.gameObject.layer) == "item")
                     {
-                        ps.item = true;
-                        ps.frame = 0;
-                        ps.OnMouseOver1();
+                        posseion ps = hit.collider.gameObject.GetComponentInParent<posseion>();
+                        if (ps != null)
+                        {
+                            ps.item = true;
+                            ps.frame = 0;
+                            ps.OnMouseOver1();
+                        }
+                    }
+                    else
+                    {
+                        GameObject doorObject = hit.collider.gameObject;
+                        DoorHinge hingeScript = doorObject.GetComponentInParent<DoorHinge>();
+                        if (hingeScript != null)
+                        {
+                            if (hingeScript.inArea && Input.GetKeyDown(KeyCode.E))
+                            {
+                                hingeScript.DoorInteract();
+                            }
+                        }
                     }
                 }
             }
