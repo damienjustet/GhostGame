@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 
 public class RatTargetScript : MonoBehaviour
@@ -13,56 +15,43 @@ public class RatTargetScript : MonoBehaviour
 
     private NavMeshAgent agent;
     private float timer;
-    public GameObject[] item;
+    public GameObject[] items;
     public GameObject closestItem;
     public bool scurryAway = false;
-    
+    int waitTime;
     public Transform ratHole;
+    GameObject currentItem;
+    public List<GameObject> item = new List<GameObject>();
+    bool stuck = false;
 
 
     void Start()
     {
         closestItem = GameObject.FindGameObjectWithTag("Collectable");
+        
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
         
         // Cache the collectable item at start
-        item = GameObject.FindGameObjectsWithTag("Collectable");
+        items = GameObject.FindGameObjectsWithTag("Collectable");
+        
+        item.AddRange(items);
+        
+        
+
         if (item == null)
         {
             Debug.LogWarning($"[RatTargetScript] No Collectable tagged object found on start for {gameObject.name}!");
         }
-        for(int i = 0; i <= item.Length; i++)
-        {
-             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
-            if(distanceToItem < distanceToClosestItem)
-            {
-                closestItem = item[i];
-            }
-        }
+        scanItems();
     }
 
     void Update()
     {
         // Only search for item if we don't have one
-        if (item == null)
-        {
-            item = GameObject.FindGameObjectsWithTag("Collectable");
-            if (item == null)
-            {
-                Debug.LogWarning("[RatTargetScript] Still no Collectable found!");
-                return;
-            }
-             }
-        for(int i = 0; i <= item.Length; i++)
-        {
-             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
-            if(distanceToItem < distanceToClosestItem)
-            {
-                closestItem = item[i];
-            }
+        
+        if (closestItem == null){
+            scanItems();
         }
         
         
@@ -76,8 +65,11 @@ public class RatTargetScript : MonoBehaviour
         {
             if (distanceToItem2 <= wanderRadius)
             {
-                agent.SetDestination(closestItem.transform.position);
                 
+               
+                        agent.SetDestination(closestItem.transform.position);
+                        
+                   
 
             }
             else
@@ -121,5 +113,34 @@ public class RatTargetScript : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
         return navHit.position;
     }
-    
+
+  void scanItems(bool stuck = false)
+    {
+        for(int i = 1; i < item.Count; i++)
+        {
+             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
+              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+              Vector3 direction = item[i].transform.position - transform.position;
+              RaycastHit hit;
+            
+            if(distanceToItem < distanceToClosestItem)
+            {
+                if (Physics.Raycast(transform.position, direction.normalized, out hit))
+            {
+                if (hit.collider.gameObject == item[i])
+                {
+                    closestItem = item[i];
+                }
+            }
+            
+                else if (stuck)
+                {
+                    print("stuck");
+                    item.Remove(item[i]);
+                    continue;
+                }
+                
+            }
+        }
+    }
 }
