@@ -9,6 +9,11 @@ public class KeyPressVisualizer : MonoBehaviour
     public SpriteObject[] sprites;
     public Image image;
 
+    float easeTime = 0.1f;
+    float ease = 0;
+    int easeDirection;
+    float easeTimer;
+
     void Start()
     {
         image = gameObject.GetComponent<Image>();
@@ -19,8 +24,8 @@ public class KeyPressVisualizer : MonoBehaviour
     {
         if (keyName != "")
         {
-            image.color = new Color(255,255,255,255);
-           foreach (SpriteObject sprite in sprites)
+            easeDirection = 1;
+            foreach (SpriteObject sprite in sprites)
             {
                 if (sprite.name == keyName)
                 {
@@ -31,9 +36,28 @@ public class KeyPressVisualizer : MonoBehaviour
         }
         else
         {
-            image.color = new Color(255,255,255,0);
+            easeDirection = -1;
         }
         
+        
+    }
+
+    void Update()
+    {
+        if (easeTimer <= Mathf.PI / 2 && easeDirection == 1)
+        {
+            easeTimer += Time.deltaTime / (easeTime / Mathf.PI * 2);
+            ease = Mathf.Sin(easeTimer);
+            
+            image.color = new Color(255,255,255, ease);
+        }
+        else if (easeTimer >= 0 && easeDirection == -1)
+        {
+            easeTimer -= Time.deltaTime / (easeTime / Mathf.PI * 2);
+            ease = Mathf.Sin(easeTimer);
+            
+            image.color = new Color(255,255,255, ease);
+        }
     }
 }
 

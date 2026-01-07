@@ -149,16 +149,21 @@ public class LevelLogic : MonoBehaviour
                             ps.item = true;
                             ps.frame = 0;
                             ps.OnMouseOver1();
-                            Global.Instance.interactKey = "E";
+                            if (!isPossessed)
+                            {
+                                Global.Instance.InteractKeyChange("E");
+                            }
                         }
                     }
                     else
                     {
                         GameObject doorObject = hit.collider.gameObject;
                         DoorHinge hingeScript = doorObject.GetComponentInParent<DoorHinge>();
-                        if (hingeScript != null)
+                        if (hingeScript != null && !isPossessed)
                         {
-                            Global.Instance.interactKey = "E";
+                            
+                            Global.Instance.InteractKeyChange("E");
+                            
                             if (hingeScript.inArea && Input.GetKeyDown(KeyCode.E))
                             {
                                 hingeScript.DoorInteract();
@@ -170,7 +175,7 @@ public class LevelLogic : MonoBehaviour
             }
             else
             {
-                Global.Instance.interactKey = "";
+                Global.Instance.InteractKeyChange("");
             }
             
         }
