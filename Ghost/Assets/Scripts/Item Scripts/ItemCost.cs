@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using Unity.VisualScripting;
 
 public class ItemCost : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class ItemCost : MonoBehaviour
     [Range(0f, 1f)] public float fragility;
     [Range(0f, 1f)] public float sensitivity;
     posseion possessionScript;
+
+    public GameObject showValueText;
+    Text shownValueText;
 
     public GameObject loseValueText;
     public Text shownText;
@@ -61,6 +66,7 @@ public class ItemCost : MonoBehaviour
                     
                 }
             }
+            shownValueText.text = "$" + Convert.ToString(value);
         }
     }
         
@@ -83,5 +89,16 @@ public class ItemCost : MonoBehaviour
             Destroy(gameObject.GetComponent<itemMove>());
         }
 
+    }
+
+    public void CreateShownValue()
+    {
+        showValueText = (GameObject)Resources.Load("ShowValueText");
+        showValueText = Instantiate(showValueText, transform);
+        showValueText.GetComponent<Transform>().localScale = new Vector3(0.06f,0.06f,0.06f);
+        shownValueText = showValueText.GetComponent<Text>();
+        showValueText.GetComponent<ShowValue>().theirParent = gameObject;
+        gameObject.GetComponent<posseion>().CreateShownValue(showValueText);
+        shownValueText.text = "$" + Convert.ToString(value);
     }
 }

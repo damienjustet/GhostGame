@@ -97,9 +97,9 @@ public class SceneBuilder : MonoBehaviour
 
         foreach (GameObject go in allGameObjects)
         {
-            if (go.layer == layer && go.GetComponent<posseion>() != null)
+            if (go.layer == layer && go.GetComponent<ItemCost>() != null)
             {
-                go.GetComponent<posseion>().CreateShownValue();
+                go.GetComponent<ItemCost>().CreateShownValue();
             }
         }
     }
