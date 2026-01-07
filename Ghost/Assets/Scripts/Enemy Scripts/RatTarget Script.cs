@@ -23,11 +23,12 @@ public class RatTargetScript : MonoBehaviour
     GameObject currentItem;
     public List<GameObject> item = new List<GameObject>();
     bool stuck = false;
+    Transform selfPos;
 
 
     void Start()
     {
-        closestItem = GameObject.FindGameObjectWithTag("Collectable");
+        
         
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
@@ -38,49 +39,52 @@ public class RatTargetScript : MonoBehaviour
         item.AddRange(items);
         
         
+        
+        
 
         if (item == null)
         {
             Debug.LogWarning($"[RatTargetScript] No Collectable tagged object found on start for {gameObject.name}!");
         }
-        scanItems();
+        
     }
 
     void Update()
     {
-        // Only search for item if we don't have one
-        
-        if (closestItem == null){
-            scanItems();
-        }
         
         
-        float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
+            
+            
+        
+        
+        
         timer += Time.deltaTime;
-        Transform selfPos = transform;
+        selfPos = transform;
 
         if (!scurryAway)
         {
         if (timer >= wanderTimer)
         {
-            if (distanceToItem2 <= wanderRadius)
+
+            scanItems();
+            
+            if (closestItem != null)
+                {
+                    float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
+                     if (distanceToItem2 <= wanderRadius)
             {
                 
-               
+                        
+                        print(closestItem);
                         agent.SetDestination(closestItem.transform.position);
                         
                    
 
             }
-            else
-            {
-
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
-                agent.SetDestination(newPos);
-                
-                
-
-            }
+                }
+            
+           
+            
             timer = 0;
         }
             
@@ -92,6 +96,8 @@ public class RatTargetScript : MonoBehaviour
             {
                 ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
+                GameObject.Find("ratHole").GetComponent<EnemyManager>().RatSpawn = false;
+                
             }
             else
             {
@@ -116,31 +122,61 @@ public class RatTargetScript : MonoBehaviour
 
   void scanItems(bool stuck = false)
     {
-        for(int i = 1; i < item.Count; i++)
+        
+            for(int i = 1; i < item.Count; i++)
         {
-             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
-              Vector3 direction = item[i].transform.position - transform.position;
-              RaycastHit hit;
             
-            if(distanceToItem < distanceToClosestItem)
+            if(closestItem == null && item[i].transform.position.y <= (transform.position.y + 2))
             {
-                if (Physics.Raycast(transform.position, direction.normalized, out hit))
+                closestItem = item[i];
+                print(closestItem);
+            }
+            else if(closestItem == null)
             {
-                if (hit.collider.gameObject == item[i])
-                {
-                    closestItem = item[i];
-                }
+                continue;
             }
             
-                else if (stuck)
+                
+            
+             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
+              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+            
+            
+            if(distanceToItem < distanceToClosestItem && item[i].transform.position.y <= (transform.position.y + 2))
+            {
+                    closestItem = item[i];
+                    
+            }
+               
+            if(agent.velocity.magnitude < 0.5f)
                 {
-                    print("stuck");
-                    item.Remove(item[i]);
-                    continue;
+                    
+                    waitTime += 1;
+                    if (waitTime >= 5)
+                    {
+                        stuck = true;
+                        waitTime = 0;
+                    }
                 }
+            
+                if (stuck && item.Count > 0)
+                {
+                    item.Remove(item[i]);
+                    closestItem = null;
+                    
+                    
+                    
+                }
+                else if (stuck)
+            {
+                Destroy(this.gameObject);
+                print("destroyed");
+            }
                 
             }
         }
+        
+    
+        
     }
-}
+
