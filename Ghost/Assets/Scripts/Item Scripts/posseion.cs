@@ -19,7 +19,7 @@ public class posseion : MonoBehaviour
     Text shownText;
     private bool interactable = false;
 
-    bool inArea;
+    public bool inArea;
 
     Vector2 textureCoord;
     [HideInInspector] public Vector3 depossessCoord;

@@ -149,8 +149,7 @@ public class LevelLogic : MonoBehaviour
             Ray ray = Camera.main.ViewportPointToRay(normalizedPoint);
     
             Debug.DrawRay(ray.origin, ray.direction * 10000, Color.green);
-            int layerMask = LayerMask.GetMask("item", "Door");
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {   
                 if (hit.collider != null && hit.collider.gameObject != null)
                 {
@@ -162,13 +161,13 @@ public class LevelLogic : MonoBehaviour
                             ps.item = true;
                             ps.frame = 0;
                             ps.OnMouseOver1();
-                            if (!isPossessed)
+                            if (!isPossessed && ps.inArea)
                             {
                                 Global.Instance.InteractKeyChange("E");
                             }
                         }
                     }
-                    else
+                    else if (LayerMask.LayerToName(hit.collider.gameObject.layer) == "Door")
                     {
                         GameObject doorObject = hit.collider.gameObject;
                         DoorHinge hingeScript = doorObject.GetComponentInParent<DoorHinge>();
@@ -182,6 +181,10 @@ public class LevelLogic : MonoBehaviour
                                 hingeScript.DoorInteract();
                             }
                         }
+                    }
+                    else
+                    {
+                        Global.Instance.InteractKeyChange("");
                     }
                 }
                 

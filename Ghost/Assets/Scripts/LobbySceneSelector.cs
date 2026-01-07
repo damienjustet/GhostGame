@@ -23,12 +23,10 @@ public class LobbySceneSelector : MonoBehaviour
         if(collider.gameObject.name == "player(Clone)")
         {
             
-                effect.Play();
-                grave.color = Color.green;
-                interact = true;
-            
-            
-            
+            effect.Play();
+            grave.color = Color.green;
+            interact = true;
+            Global.Instance.InteractKeyChange("E");
         }
     }
     void OnTriggerExit(Collider collider)
@@ -38,6 +36,7 @@ public class LobbySceneSelector : MonoBehaviour
             effect.Stop();
             grave.color = Color.white;
             interact = false;
+            Global.Instance.InteractKeyChange("");
         }
     }
     // Start is called before the first frame update

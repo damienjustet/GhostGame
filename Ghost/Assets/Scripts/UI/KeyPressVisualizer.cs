@@ -10,7 +10,7 @@ public class KeyPressVisualizer : MonoBehaviour
     Image image;
 
     float easeTime = 0.1f;
-    float ease = 0;
+    float ease = -1;
     int easeDirection;
     float easeTimer;
 
@@ -18,6 +18,7 @@ public class KeyPressVisualizer : MonoBehaviour
     {
         image = gameObject.GetComponent<Image>();
         Global.Instance.keyVisual = this;
+        Global.Instance.InteractKeyChange("");
     }
 
     public void ShowKey(string keyName)

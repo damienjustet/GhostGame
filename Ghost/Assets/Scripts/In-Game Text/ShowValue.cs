@@ -8,6 +8,8 @@ public class ShowValue : MonoBehaviour
     Transform mainCam;
     Transform canvas;
     public GameObject theirParent;
+    posseion ps;
+    GameObject player;
     Text thisText;
 
     float maxOpacity = 0.85f;
@@ -19,6 +21,8 @@ public class ShowValue : MonoBehaviour
 
     void Awake()
     {
+        ps = gameObject.GetComponentInParent<posseion>();
+        player = GameObject.Find("player(Clone)");
         if (GameObject.Find("Main Camera(Clone)") != null)
         {
             mainCam = GameObject.Find("Main Camera(Clone)").transform;
@@ -46,7 +50,7 @@ public class ShowValue : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        
         if (easeTimer <= Mathf.PI / 2 && easeDirection == 1)
         {
             easeTimer += Time.deltaTime / (easeTime / Mathf.PI * 2);
