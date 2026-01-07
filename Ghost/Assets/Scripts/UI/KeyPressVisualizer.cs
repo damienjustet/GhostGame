@@ -7,7 +7,7 @@ using System;
 public class KeyPressVisualizer : MonoBehaviour
 {
     public SpriteObject[] sprites;
-    public Image image;
+    Image image;
 
     float easeTime = 0.1f;
     float ease = 0;

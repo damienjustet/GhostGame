@@ -17,7 +17,7 @@ public class LevelLogic : MonoBehaviour
     float timer = 0;
     float finish_cooldown;
     public float quota = 5000.00f;
-    
+    string extraQuotaText;
 
     
     SoundManager sm;
@@ -99,13 +99,26 @@ public class LevelLogic : MonoBehaviour
                 RectTransform rt = moneyText.GetComponent<RectTransform>();
                 if (rt != null)
                 {
-                    rt.anchoredPosition = new Vector3(306, 150, 0);
+                    rt.anchoredPosition = new Vector3(290, 150, 0);
                 }
             }
             else
             {
                 Debug.LogError("[LevelLogic] Canvas(Clone) GameObject not found!");
             }
+        }
+
+        if (quota % 1 == 0)
+        {
+            extraQuotaText = ".00";
+        }
+        else if (money * 10 % 1 == 0)
+        {
+            extraQuotaText = "0";
+        }
+        else
+        {
+            extraQuotaText = "";
         }
     }
 
@@ -203,7 +216,7 @@ public class LevelLogic : MonoBehaviour
         }
         if (moneyText != null && moneyTextText != null)
         {
-            moneyTextText.text = "$" + money + extraMoneyText + "/$" + quota;
+            moneyTextText.text = "$" + money + extraMoneyText + "/$" + quota + extraQuotaText;
             if (money >= quota){
                 canLeave = true;
             }
@@ -222,7 +235,7 @@ public class LevelLogic : MonoBehaviour
             RectTransform rt = moneyText.GetComponent<RectTransform>();
             if (rt != null)
             {
-                rt.anchoredPosition = new Vector2(Screen.width / 2 - 3, Screen.height / 2 - 1);
+                rt.anchoredPosition = new Vector2(Screen.width / 2 - 10, Screen.height / 2 - 1);
             }
             else
             {
