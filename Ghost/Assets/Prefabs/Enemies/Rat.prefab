@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4251593591737499315}
   - component: {fileID: 6637939149335153932}
   - component: {fileID: -7149153507801527031}
+  - component: {fileID: 7391291060500796791}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -131,12 +132,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 5954477478188483450}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2.5
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -158,9 +159,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wanderRadius: 20
   wanderTimer: 1
-  item: {fileID: 0}
+  items: []
+  closestItem: {fileID: 0}
   scurryAway: 0
   ratHole: {fileID: 0}
+  item:
+  - {fileID: 0}
+--- !u!54 &7391291060500796791
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5954477478188483450}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7320584930586514976
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +219,7 @@ Transform:
   m_GameObject: {fileID: 7320584930586514976}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0.685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -213,8 +244,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.6661155
+  m_Center: {x: 0, y: 0.44967538, z: 0}
 --- !u!114 &5423136010554678698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,15 +269,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 161.6
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 72.065414
+      value: 69.7
       objectReference: {fileID: 0}
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 26.621792
+      value: 21.8
       objectReference: {fileID: 0}
     - target: {fileID: 8214294105064169702, guid: 59c2fa1c6a7198042ae2b65bd1a85a5b, type: 3}
       propertyPath: m_LocalPosition.x

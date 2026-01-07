@@ -8,9 +8,10 @@ public class RatDespawner : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         
-        if (other.gameObject.name == "Rat"){
+        if (other.gameObject.name == "Rat(Clone)" && GetComponent<EnemyManager>().RatSpawn == false){
+
             Destroy(other.gameObject);
-            GetComponent<EnemyManager>().RatSpawn = false;
+           
         }
     }
 }
