@@ -149,6 +149,7 @@ public class LevelLogic : MonoBehaviour
                             ps.item = true;
                             ps.frame = 0;
                             ps.OnMouseOver1();
+                            Global.Instance.interactKey = "E";
                         }
                     }
                     else
@@ -157,6 +158,7 @@ public class LevelLogic : MonoBehaviour
                         DoorHinge hingeScript = doorObject.GetComponentInParent<DoorHinge>();
                         if (hingeScript != null)
                         {
+                            Global.Instance.interactKey = "E";
                             if (hingeScript.inArea && Input.GetKeyDown(KeyCode.E))
                             {
                                 hingeScript.DoorInteract();
@@ -164,6 +166,11 @@ public class LevelLogic : MonoBehaviour
                         }
                     }
                 }
+                
+            }
+            else
+            {
+                Global.Instance.interactKey = "";
             }
             
         }

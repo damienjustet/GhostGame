@@ -15,6 +15,9 @@ public class Global : MonoBehaviour
 
     public bool gameplay = false;
 
+    public KeyPressVisualizer keyVisual;
+    public string interactKey = "";
+
     
     private void Awake()
     {
@@ -28,8 +31,14 @@ public class Global : MonoBehaviour
 
     void Update()
     {
-       
-
+        if (interactKey == "E")
+        {
+            keyVisual.ShowKey("E");
+        }
+        else
+        {
+            keyVisual.ShowKey("");
+        }
     }
 
     public void StartGame()
