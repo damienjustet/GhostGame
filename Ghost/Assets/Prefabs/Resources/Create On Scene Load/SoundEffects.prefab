@@ -62,6 +62,7 @@ MonoBehaviour:
     volumeAndPitch:
       volume: 1
       pitch: 1
+      randomPitchOffset: 0.3
       loop: 0
       source: {fileID: 5723051986452869803}
   - name: DOOROPEN
@@ -70,6 +71,7 @@ MonoBehaviour:
     volumeAndPitch:
       volume: 0.73
       pitch: 1
+      randomPitchOffset: 0.3
       loop: 0
       source: {fileID: 5350897464825507387}
   - name: DOORCLOSE
@@ -79,6 +81,7 @@ MonoBehaviour:
     volumeAndPitch:
       volume: 0.83
       pitch: 0.645
+      randomPitchOffset: 0.1
       loop: 0
       source: {fileID: 8168411749248183071}
   - name: POSSESS
@@ -87,6 +90,7 @@ MonoBehaviour:
     volumeAndPitch:
       volume: 0.8
       pitch: 1
+      randomPitchOffset: 0.1
       loop: 0
       source: {fileID: 7939384681051910149}
   - name: PLAYERMOVE
@@ -95,22 +99,25 @@ MonoBehaviour:
     volumeAndPitch:
       volume: 0.61
       pitch: 0.59
+      randomPitchOffset: 0
       loop: 1
       source: {fileID: 1203071018617943021}
   - name: POPECURIOUS
     sounds:
-    - {fileID: 8300000, guid: cf6094cdd51d7b94b9db8d97c9df7a36, type: 3}
+    - {fileID: 8300000, guid: ef064d61dc915ea4a9071f5f91d8690c, type: 3}
     volumeAndPitch:
       volume: 1
-      pitch: 0.8
+      pitch: 0.96
+      randomPitchOffset: 0.1
       loop: 0
       source: {fileID: 4331019859395266243}
   - name: POPEFIND
     sounds:
-    - {fileID: 8300000, guid: 77224e41fa4214e49b310d07ba30042a, type: 3}
+    - {fileID: 8300000, guid: 97c7c9a029c3a3d4dbfb4a4e67df4f5d, type: 3}
     volumeAndPitch:
       volume: 1
-      pitch: 0.8
+      pitch: 0.96
+      randomPitchOffset: 0.1
       loop: 0
       source: {fileID: 796190093657779580}
   songList:
@@ -123,7 +130,7 @@ MonoBehaviour:
   - name: TITLESCREEN
     song: {fileID: 8300000, guid: d2e084c3e1a0fa84b9e180f6c01e6737, type: 3}
   musicSource: {fileID: 1163304827701453706}
-  musicVolume: 0
+  musicVolume: 0.837
 --- !u!82 &5723051986452869803
 AudioSource:
   m_ObjectHideFlags: 0
