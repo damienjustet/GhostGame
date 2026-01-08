@@ -30,10 +30,12 @@ public class DoorHinge : MonoBehaviour
         if (isOpen)
         {
             CloseDoor();
+            SoundManager.PlaySound(SoundType.DOORCLOSE);
         }
         else
         {
             OpenDoor();
+            SoundManager.PlaySound(SoundType.DOOROPEN);
         }
     }
 

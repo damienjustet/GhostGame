@@ -17,6 +17,7 @@ public class ThePOPE : MonoBehaviour
     
     public Transform exitDoor;
 
+    bool seePlayerSoundEffectPlayed = false;
     bool seePlayer;
     private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType calls
     private bool wasPossessed = false; // Track possession state changes
@@ -78,9 +79,17 @@ public class ThePOPE : MonoBehaviour
         
         Vector3 direction = player.transform.position - transform.position;
         RaycastHit hit;
-        int playerLayer = LayerMask.GetMask("player");
+        int playerLayer = LayerMask.GetMask("Player", "item");
         Debug.DrawRay(transform.position, direction, Color.blue);
-        seePlayer = Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+        Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+        if (hit.collider.gameObject == player || hit.collider.gameObject.layer == playerLayer)
+        {
+            seePlayer = true;
+        }
+        else
+        {
+            seePlayer = false;
+        }
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         
          timer += Time.deltaTime;
@@ -91,6 +100,11 @@ public class ThePOPE : MonoBehaviour
         {
             if (distanceToPlayer <= wanderRadius && seePlayer)
             {
+                if (!seePlayerSoundEffectPlayed)
+                {
+                    SoundManager.PlaySound(SoundType.POPEFIND);
+                    seePlayerSoundEffectPlayed = true;
+                }
                 if (hit.collider.gameObject.name == "player(Clone)" && !LevelLogic.Instance.isPossessed)
                 {
                     agent.SetDestination(player.transform.position);
@@ -99,24 +113,23 @@ public class ThePOPE : MonoBehaviour
                 {
                     agent.SetDestination(player.transform.position);
                 }
-                
-                
-
             }
             else if (timer >= wanderTimer)
-        {
-            
-            
             {
-                
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
-                agent.SetDestination(newPos);
-                timer = 0;
-                
-
+                {
+                    Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
+                    agent.SetDestination(newPos);
+                    timer = 0;
+                }
             }
-            
-        }
+            else
+            {
+                if (seePlayerSoundEffectPlayed)
+                {
+                    SoundManager.PlaySound(SoundType.POPECURIOUS);
+                    seePlayerSoundEffectPlayed = false;
+                }
+            }
             
         }
         else

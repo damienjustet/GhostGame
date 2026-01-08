@@ -8,8 +8,12 @@ using UnityEngine;
 public enum SoundType
 {
     ITEMHIT,
+    DOOROPEN,
+    DOORCLOSE,
     POSSESS,
-    PLAYERMOVE
+    PLAYERMOVE,
+    POPECURIOUS,
+    POPEFIND
 }
 
 public enum MusicType

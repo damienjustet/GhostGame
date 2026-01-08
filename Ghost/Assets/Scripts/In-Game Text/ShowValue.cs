@@ -51,11 +51,11 @@ public class ShowValue : MonoBehaviour
             Destroy(gameObject);
         }
         
-        if (easeTimer <= Mathf.PI / 2 && easeDirection == 1)
+        if (easeTimer <= Mathf.PI / 2 && easeDirection == 1 && !LevelLogic.Instance.isPossessed)
         {
             easeTimer += Time.deltaTime / (easeTime / Mathf.PI * 2);
         }
-        else if (easeTimer >= 0 && easeDirection == -1)
+        else if (easeTimer >= 0 && (easeDirection == -1 || LevelLogic.Instance.isPossessed))
         {
             easeTimer -= Time.deltaTime / (easeTime / Mathf.PI * 2);
         }
