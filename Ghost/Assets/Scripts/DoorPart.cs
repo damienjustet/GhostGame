@@ -12,11 +12,9 @@ public class DoorPart : MonoBehaviour
     }
     void OnTriggerEnter(Collider other) // if in area
     {
-        Debug.Log("In");
         if (other.gameObject.name == "detectionArea")
         {
             parentHinge.inArea = true;
-            
         }
 
     }
@@ -25,7 +23,6 @@ public class DoorPart : MonoBehaviour
         if (other.gameObject.name == "detectionArea")
         {
             parentHinge.inArea = false;
-            Debug.Log("Out");
         }
     }
 }
