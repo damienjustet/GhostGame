@@ -32,6 +32,8 @@ public class PopeAttackScript : MonoBehaviour
             if (collider.gameObject.name == "player(Clone)")
             {
                 Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
+                collider.gameObject.GetComponent<Player>().moveSpeed = 0;
+                collider.gameObject.transform.position = transform.position;
                 anim.SetTrigger("Clap");
                 
                 
@@ -50,6 +52,8 @@ public class PopeAttackScript : MonoBehaviour
             if (cachedItemMove != null && collider.gameObject == cachedItemMove.gameObject)
             {
                  Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
+                collider.gameObject.GetComponent<itemMove>().moveSpeed = 0;
+                collider.gameObject.transform.position = transform.position;
                 anim.SetTrigger("Clap");
                 
                 
