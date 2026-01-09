@@ -14,6 +14,8 @@ public class ThePOPE : MonoBehaviour
     private float timer;
     public GameObject player;
     public bool tired = false;
+
+    public GameObject chaseObject;
     
     public Transform exitDoor;
 
@@ -22,10 +24,17 @@ public class ThePOPE : MonoBehaviour
     private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType calls
     private bool wasPossessed = false; // Track possession state changes
 
+    int playerLayer;
+
+    bool goingToLastSeenPlayer;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
+        player = GameObject.Find("player(Clone)");
+        chaseObject = player;
+        playerLayer = LayerMask.GetMask("Player", "item");
     }
 
     void Update()
@@ -40,15 +49,7 @@ public class ThePOPE : MonoBehaviour
         // Update player reference based on possession state
         if (!LevelLogic.Instance.isPossessed)
         {
-            if (player == null || player.name != "player(Clone)")
-            {
-                player = GameObject.Find("player(Clone)");
-                if (player == null)
-                {
-                    Debug.LogWarning("[ThePOPE] Player object 'player(Clone)' not found!");
-                    return;
-                }
-            }
+            chaseObject = player;
         }
         else
         {
@@ -58,43 +59,34 @@ public class ThePOPE : MonoBehaviour
                 cachedItemMove = FindObjectOfType<itemMove>();
             }
             
-            if (cachedItemMove != null)
+            if (cachedItemMove != null && chaseObject != cachedItemMove.gameObject)
             {
-                player = cachedItemMove.gameObject;
+                chaseObject = cachedItemMove.gameObject;
             }
             else
             {
-                Debug.LogWarning("[ThePOPE] No possessed item found, but isPossessed is true!");
-                // Reset cache to try again next frame
                 cachedItemMove = null;
                 return;
             }
         }
         
-        if (player == null)
-        {
-            Debug.LogWarning("[ThePOPE] Player reference is null!");
-            return;
-        }
-        
-        Vector3 direction = player.transform.position - transform.position;
+        Vector3 direction = chaseObject.transform.position - transform.position;
         RaycastHit hit;
-        int playerLayer = LayerMask.GetMask("Player", "item");
         Debug.DrawRay(transform.position, direction, Color.blue);
         Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
-        if (hit.collider.gameObject == player || hit.collider.gameObject.layer == playerLayer)
+        if (hit.collider.gameObject == chaseObject)
         {
             seePlayer = true;
         }
-        else
+        else if (seePlayer)
         {
+            goingToLastSeenPlayer = true;
             seePlayer = false;
         }
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, chaseObject.transform.position);
         
-         timer += Time.deltaTime;
+        timer += Time.deltaTime;
         Transform selfPos = transform;
-        
         
         if (!tired)
         {
@@ -105,13 +97,16 @@ public class ThePOPE : MonoBehaviour
                     SoundManager.PlaySound(SoundType.POPEFIND);
                     seePlayerSoundEffectPlayed = true;
                 }
-                if (hit.collider.gameObject.name == "player(Clone)" && !LevelLogic.Instance.isPossessed)
+                agent.SetDestination(chaseObject.transform.position);
+            }
+            else if (!seePlayer && goingToLastSeenPlayer)
+            {
+                direction = agent.destination - transform.position;
+                Debug.Log(Vector3.Distance(transform.position, agent.destination));
+                if (Physics.Raycast(transform.position, direction, Vector3.Distance(transform.position, agent.destination), LayerMask.GetMask("Door")) || Vector3.Distance(transform.position, agent.destination) <= 3f)
                 {
-                    agent.SetDestination(player.transform.position);
-                }
-                else if(hit.collider.gameObject.tag == "Collectable")
-                {
-                    agent.SetDestination(player.transform.position);
+                    goingToLastSeenPlayer = false;
+                    Debug.Log("Unstuck");
                 }
             }
             else if (timer >= wanderTimer)

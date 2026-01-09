@@ -27,6 +27,7 @@ public class ItemCost : MonoBehaviour
         loseValueText = (GameObject)Resources.Load("LoseValueText");
         shownText = loseValueText.GetComponent<Text>();
         ogValue = value;
+        CreateShownValue();
     }
 
 

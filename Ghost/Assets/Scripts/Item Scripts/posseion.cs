@@ -97,19 +97,6 @@ public class posseion : MonoBehaviour
 
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
-            
-            if (playerObj == null)
-            {
-                Debug.LogError("[posseion] Player object 'player(Clone)' not found! Cannot possess.");
-                return;
-            }
-            
-            if (playerScript == null)
-            {
-                Debug.LogError("[posseion] Player component missing on player object!");
-                return;
-            }
-            
             maxFloatation = 3;
             itemMove moveComponent = gameObject.AddComponent<itemMove>();
             moveComponent.maxFloatation = maxFloatation;

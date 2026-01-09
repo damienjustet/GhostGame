@@ -130,7 +130,7 @@ MonoBehaviour:
   - name: TITLESCREEN
     song: {fileID: 8300000, guid: d2e084c3e1a0fa84b9e180f6c01e6737, type: 3}
   musicSource: {fileID: 1163304827701453706}
-  musicVolume: 0.837
+  musicVolume: 0.74
 --- !u!82 &5723051986452869803
 AudioSource:
   m_ObjectHideFlags: 0
