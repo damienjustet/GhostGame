@@ -31,8 +31,12 @@ public class PopeAttackScript : MonoBehaviour
         {
             if (collider.gameObject.name == "player(Clone)")
             {
-                Debug.Log("[PopeAttackScript] Pope caught the player! Returning to LOBBY.");
-                SceneManager.LoadScene("LOBBY");
+                Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
+                anim.SetTrigger("Clap");
+                
+                
+                
+                
             }
         }
         else
@@ -45,9 +49,12 @@ public class PopeAttackScript : MonoBehaviour
             
             if (cachedItemMove != null && collider.gameObject == cachedItemMove.gameObject)
             {
-                Debug.Log("[PopeAttackScript] Pope caught the possessed item! Returning to LOBBY.");
-                SceneManager.LoadScene("LOBBY");
+                 Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
+                anim.SetTrigger("Clap");
+                
+                
             }
         }
     }
+
 }

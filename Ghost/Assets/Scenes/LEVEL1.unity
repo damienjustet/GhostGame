@@ -4938,6 +4938,7 @@ MonoBehaviour:
   spawn: 0
   RatSpawn: 0
   spawnTimeRat: 0
+  popeSpawnTime: 10
 --- !u!4 &292740900
 Transform:
   m_ObjectHideFlags: 0
@@ -36460,6 +36461,7 @@ MonoBehaviour:
   spawn: 0
   RatSpawn: 0
   spawnTimeRat: 25
+  popeSpawnTime: 0
 --- !u!1 &2014057876
 GameObject:
   m_ObjectHideFlags: 0
@@ -37804,7 +37806,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5792955671992852221, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 995484640149690178, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 2371755174495701574, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 3499529300906897696, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -53686,7 +53692,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2371755174495701574, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 3499529300906897696, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 5792955671992852221, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
+    - {fileID: 995484640149690178, guid: 7e94afaf12cebe24883f17b4514c3ddc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
