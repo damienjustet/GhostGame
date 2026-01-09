@@ -95,13 +95,6 @@ public class SceneBuilder : MonoBehaviour
         int layer = LayerMask.NameToLayer("item");
         GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
 
-        foreach (GameObject go in allGameObjects)
-        {
-            if (go.layer == layer && go.GetComponent<ItemCost>() != null)
-            {
-                go.GetComponent<ItemCost>().CreateShownValue();
-            }
-        }
     }
 
     void MakeSoundManager()

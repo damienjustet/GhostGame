@@ -27,6 +27,7 @@ public class ItemCost : MonoBehaviour
         loseValueText = (GameObject)Resources.Load("LoseValueText");
         shownText = loseValueText.GetComponent<Text>();
         ogValue = value;
+        CreateShownValue();
     }
 
 
@@ -57,11 +58,12 @@ public class ItemCost : MonoBehaviour
                 value = Round2Decimals(value - ogValue * fragility * GetVelocityMagnitude(collision.relativeVelocity));
                 Instantiate(loseValueText, transform);
             }
-            if (value < 0)
+            if (value <= 0)
             {
                 LevelLogic.Instance.interact = false;
                 if (LevelLogic.Instance.isPossessed && gameObject.GetComponent<posseion>().item)
                 {
+                    Debug.Log("he");
                     gameObject.GetComponent<posseion>().Depossess(true);
                     
                 }
