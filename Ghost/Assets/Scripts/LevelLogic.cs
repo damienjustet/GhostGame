@@ -171,7 +171,7 @@ public class LevelLogic : MonoBehaviour
                     {
                         GameObject doorObject = hit.collider.gameObject;
                         DoorHinge hingeScript = doorObject.GetComponentInParent<DoorHinge>();
-                        if (hingeScript != null && !isPossessed)
+                        if (hingeScript != null && !isPossessed && hingeScript.inArea)
                         {
                             
                             Global.Instance.InteractKeyChange("E");
