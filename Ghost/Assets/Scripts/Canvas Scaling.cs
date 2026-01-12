@@ -56,6 +56,9 @@ public class CanvasScaling : MonoBehaviour
         {
             ui.rt.anchoredPosition = new Vector2(ui.canvasWidthPercent / 100 * thisWidth - thisWidth / 2, ui.canvasHeightPercent / 100 * thisHeight - thisHeight / 2);
         }
+
+        Global.Instance.canvasHeight = thisHeight;
+        Global.Instance.canvasWidth = thisWidth;
     }
 
 }

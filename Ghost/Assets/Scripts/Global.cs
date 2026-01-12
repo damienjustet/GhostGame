@@ -17,6 +17,9 @@ public class Global : MonoBehaviour
 
     public KeyPressVisualizer keyVisual;
 
+    public float canvasWidth;
+    public float canvasHeight;
+
     
     private void Awake()
     {
