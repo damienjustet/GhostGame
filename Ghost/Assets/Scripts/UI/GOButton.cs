@@ -13,9 +13,8 @@ public class GOButton : MonoBehaviour
         myButton = GetComponent<Button>();
     }
 
-    public void GameOverShow()
+    public void ButtonClicked()
     {
-        myButton.onClick.RemoveAllListeners();
-        myButton.onClick.AddListener(() => Global.Instance.LoadAScene(scene));
+        Global.Instance.LoadAScene(scene);
     }
 }
