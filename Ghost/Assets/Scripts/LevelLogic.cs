@@ -42,6 +42,8 @@ public class LevelLogic : MonoBehaviour
 
     public bool canLeave = false;
 
+    GameOverScreen goScreen;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -106,6 +108,8 @@ public class LevelLogic : MonoBehaviour
             {
                 Debug.LogError("[LevelLogic] Canvas(Clone) GameObject not found!");
             }
+
+
         }
 
         if (quota % 1 == 0)
@@ -120,11 +124,18 @@ public class LevelLogic : MonoBehaviour
         {
             extraQuotaText = "";
         }
+        
+        goScreen = GameObject.Find("Game Over Canvas").GetComponent<GameOverScreen>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!goScreen.end && !playerLiving)
+        {
+            goScreen.GameOver();
+        }
+
         if (rawImage == null)
         {
             Debug.LogWarning("[LevelLogic] RawImage is null, cannot perform raycasting!");
