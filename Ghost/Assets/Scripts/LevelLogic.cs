@@ -47,33 +47,8 @@ public class LevelLogic : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        GameObject cameraDisplay = GameObject.Find("Camera Display");
-        if (cameraDisplay != null)
-        {
-            rawImage = cameraDisplay.GetComponent<RawImage>();
-            if (rawImage == null)
-            {
-                Debug.LogError("[LevelLogic] Camera Display doesn't have a RawImage component!");
-            }
-        }
-        else
-        {
-            Debug.LogError("[LevelLogic] Camera Display GameObject not found!");
-        }
-        
-        GameObject soundEffects = GameObject.Find("SoundEffects(Clone)");
-        if (soundEffects != null)
-        {
-            sm = soundEffects.GetComponent<SoundManager>();
-            if (sm == null)
-            {
-                Debug.LogError("[LevelLogic] SoundEffects(Clone) doesn't have a SoundManager component!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[LevelLogic] SoundEffects(Clone) GameObject not found!");
-        }
+        rawImage = GameObject.Find("Camera Display").GetComponent<RawImage>();
+        sm = GameObject.Find("SoundEffects(Clone)").GetComponent<SoundManager>();
         
         if (Instance != null)
         {
@@ -116,7 +91,7 @@ public class LevelLogic : MonoBehaviour
         {
             extraQuotaText = ".00";
         }
-        else if (money * 10 % 1 == 0)
+        else if (quota * 10 % 1 == 0)
         {
             extraQuotaText = "0";
         }
