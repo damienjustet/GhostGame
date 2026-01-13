@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoorHinge : MonoBehaviour
@@ -39,7 +40,9 @@ public class DoorHinge : MonoBehaviour
         }
     }
 
-    void OpenDoor()
+    
+
+    public void OpenDoor()
     {
         isOpen = true;
         Vector3 rotation = transform.rotation.eulerAngles;

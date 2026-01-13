@@ -41,6 +41,7 @@ public class RatTargetScript : MonoBehaviour
         
         
         
+        
 
         if (item == null)
         {
@@ -130,8 +131,8 @@ public class RatTargetScript : MonoBehaviour
         
             for(int i = 1; i < item.Count; i++)
         {
-            
-            if(closestItem == null && item[i].transform.position.y <= (transform.position.y + 2))
+            print(item[i] + "hi");
+            if(closestItem == null && item[i].GetComponent<posseion>().isGrounded)
             {
                 closestItem = item[i];
                 
@@ -147,7 +148,7 @@ public class RatTargetScript : MonoBehaviour
               float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
             
             
-            if(distanceToItem < distanceToClosestItem && item[i].transform.position.y <= (transform.position.y + 2))
+            if(distanceToItem < distanceToClosestItem && item[i].GetComponent<posseion>().isGrounded)
             {
                     closestItem = item[i];
                     
