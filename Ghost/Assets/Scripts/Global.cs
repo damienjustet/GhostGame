@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,9 @@ public class Global : MonoBehaviour
     public float canvasWidth;
     public float canvasHeight;
 
+    string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
+    string[] blankScenes = {"TITLESCREEN"};
+
     
     private void Awake()
     {
@@ -29,6 +33,15 @@ public class Global : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (gameplayScenes.Contains(SceneManager.GetActiveScene().name))
+        {
+            gameplay = true;
+        }
+        else
+        {
+            gameplay = false;
+        }
     }
 
     void Update()
@@ -46,19 +59,14 @@ public class Global : MonoBehaviour
     public void LoadAScene(string sceneName)
     {
         StartCoroutine(LoadATheScene(sceneName));
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     IEnumerator LoadATheScene(string sceneName)
     {
-
-        if (sceneName != "LOBBY")
-        {
-            gameplay = true;
-        }
-        else
-        {
-            gameplay = false;
-        }
 
         // Start loading the scene asynchronously
         asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName,  LoadSceneMode.Single);
@@ -72,6 +80,14 @@ public class Global : MonoBehaviour
         }
         GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
         
+        if (gameplayScenes.Contains(sceneName))
+        {
+            gameplay = true;
+        }
+        else
+        {
+            gameplay = false;
+        }
     }
 
     public void StartMusic()
