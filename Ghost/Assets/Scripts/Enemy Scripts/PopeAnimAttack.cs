@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class PopeAnimAttack : MonoBehaviour
 {
+    public GameOverAnimation gameOverScreen;
+
     public void AnimFinished()
     {
+        gameOverScreen.ComeHere();
         GetComponent<AudioSource>().Play();
         StartCoroutine(wait());
-        Global.Instance.LoadAScene("LOBBY");
         
     }
     IEnumerator wait()

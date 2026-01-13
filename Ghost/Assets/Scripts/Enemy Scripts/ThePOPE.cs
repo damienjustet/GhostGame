@@ -27,6 +27,7 @@ public class ThePOPE : MonoBehaviour
     int playerLayer;
 
     bool goingToLastSeenPlayer;
+    public GameOverAnimation gameOverScreen;
 
     void Start()
     {

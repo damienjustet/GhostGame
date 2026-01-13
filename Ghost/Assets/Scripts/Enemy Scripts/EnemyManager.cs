@@ -13,6 +13,8 @@ public class EnemyManager : MonoBehaviour
 
     public float spawnTimePope;
     public float spawnTimeRat;
+
+    public GameOverAnimation gameOverAnimation;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +29,10 @@ public class EnemyManager : MonoBehaviour
         if(time >= spawnTimePope && this.gameObject.name == "popeSpawn" && !spawn)
         {
             Instantiate(pope, transform);
-            popeScript = pope.GetComponent<ThePOPE>();
             spawn = true;
+            popeScript = pope.GetComponent<ThePOPE>();
+            pope.transform.GetComponentInChildren<PopeAnimAttack>().gameOverScreen = gameOverAnimation;
+            
         }
         if(time >= spawnTimeRat && this.gameObject.name == "ratHole" && !RatSpawn)
         {
