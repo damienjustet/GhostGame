@@ -98,5 +98,7 @@ public class Global : MonoBehaviour
             keyVisual.ShowKey("");
         }
     }
+
+    
 }
 

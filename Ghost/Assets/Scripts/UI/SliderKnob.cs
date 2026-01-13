@@ -14,6 +14,10 @@ public class SliderKnob : MonoBehaviour
     RectTransform rt;
 
     bool dragging = false;
+    float maxX;
+    float minX;
+
+    public AudioType audioType;
 
     
     void Start()
@@ -21,6 +25,9 @@ public class SliderKnob : MonoBehaviour
         imageComponent = GetComponent<Image>();
         ogColor = imageComponent.color;
         rt = GetComponent<RectTransform>();
+
+        maxX = gameObject.transform.Find("SliderMax").GetComponent<RectTransform>().anchoredPosition.x;
+        minX = gameObject.transform.Find("SliderMin").GetComponent<RectTransform>().anchoredPosition.x;
     }
 
     void Update()
@@ -29,11 +36,30 @@ public class SliderKnob : MonoBehaviour
         {
             if (dragging && Input.GetMouseButton(0))
             {
-                rt.anchoredPosition = new Vector2(Input.mousePosition.x - Global.Instance.canvasWidth / 2, rt.anchoredPosition.y);
+                float mouseX = Input.mousePosition.x - Global.Instance.canvasWidth / 2;
+                Debug.Log(mouseX);
+                if (mouseX <= minX)
+                {
+                    rt.anchoredPosition = new Vector2(minX, rt.anchoredPosition.y);
+                }
+                else if (mouseX >= maxX)
+                {
+                    rt.anchoredPosition = new Vector2(maxX, rt.anchoredPosition.y);
+                }
+                else
+                {
+                    rt.anchoredPosition = new Vector2(mouseX, rt.anchoredPosition.y);
+                }
+                print((rt.anchoredPosition.x - minX) / (maxX - minX));
+                SoundManager.instance.ChangeVolume(audioType, (rt.anchoredPosition.x - minX) / (maxX - minX));
             }
             else if (dragging)
             {
                 dragging = false;
+                if (!pointerOver)
+                {
+                    imageComponent.color = ogColor;
+                }
             }
             else
             {
@@ -50,8 +76,12 @@ public class SliderKnob : MonoBehaviour
 
     public void MouseNotOver()
     {
-        imageComponent.color = ogColor;
+        if (!dragging)
+        {
+            imageComponent.color = ogColor;
+        }
         pointerOver = false;
+        
     }
 
 }

@@ -24,6 +24,12 @@ public enum MusicType
     TITLESCREEN
 }
 
+public enum AudioType
+{
+    MUSIC,
+    ENVIRONMENT
+}
+
 [ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
@@ -117,6 +123,21 @@ public class SoundManager : MonoBehaviour
         instance.musicSource.clip = clip;
         instance.musicSource.Play();
 
+    }
+
+    public void ChangeVolume(AudioType audioType, float volume)
+    {
+        if (audioType == AudioType.MUSIC)
+        {
+            instance.musicSource.volume = volume;
+        }
+        else
+        {
+            foreach (SoundList soundy in soundList)
+            {
+                soundy.volumeAndPitch.source.volume = volume;
+            }
+        }
     }
 
 #if UNITY_EDITOR
