@@ -72,6 +72,7 @@ public class SceneBuilder : MonoBehaviour
 
         if (isGameplay)
         {
+           
             levelLogic = Instantiate(levelLogic);
         }
         mainCamera = Instantiate(mainCamera);

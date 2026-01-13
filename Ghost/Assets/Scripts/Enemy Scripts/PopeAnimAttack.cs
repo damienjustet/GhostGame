@@ -9,7 +9,7 @@ public class PopeAnimAttack : MonoBehaviour
     {
         GetComponent<AudioSource>().Play();
         StartCoroutine(wait());
-        SceneManager.LoadScene("LOBBY");
+        Global.Instance.LoadAScene("LOBBY");
         
     }
     IEnumerator wait()

@@ -70,17 +70,22 @@ public class RatTargetScript : MonoBehaviour
             
             if (closestItem != null)
                 {
+                    
                     float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
                      if (distanceToItem2 <= wanderRadius)
             {
                 
                         
-                        print(closestItem);
+                        print(closestItem + "closest item");
                         agent.SetDestination(closestItem.transform.position);
                         
                    
 
             }
+                    else
+                    {
+                        agent.SetDestination(RandomNavSphere(transform.position, wanderRadius,0,selfPos));
+                    }
                 }
             
            
@@ -129,7 +134,7 @@ public class RatTargetScript : MonoBehaviour
             if(closestItem == null && item[i].transform.position.y <= (transform.position.y + 2))
             {
                 closestItem = item[i];
-                print(closestItem);
+                
             }
             else if(closestItem == null)
             {
@@ -152,7 +157,7 @@ public class RatTargetScript : MonoBehaviour
                 {
                     
                     waitTime += 1;
-                    if (waitTime >= 5)
+                    if (waitTime >= 3)
                     {
                         stuck = true;
                         waitTime = 0;
@@ -161,8 +166,10 @@ public class RatTargetScript : MonoBehaviour
             
                 if (stuck && item.Count > 0)
                 {
+                    print("hi");
                     item.Remove(item[i]);
                     closestItem = null;
+                    
                     
                     
                     
@@ -174,6 +181,7 @@ public class RatTargetScript : MonoBehaviour
             }
                 
             }
+            
         }
         
     
