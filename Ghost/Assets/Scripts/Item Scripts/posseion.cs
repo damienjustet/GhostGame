@@ -37,6 +37,8 @@ public class posseion : MonoBehaviour
     Collider thisCollider;
     Rigidbody rb;
 
+    public bool isGrounded;
+
     List<Vector3> depossessableCoords = new List<Vector3>();
 
     public float maxFloatation;
@@ -173,6 +175,20 @@ public class posseion : MonoBehaviour
             Destroy(gameObject);
         }
         
+
+        //Raycast for Rat
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down,out hit, 1f))
+        {
+            if(hit.collider.gameObject.layer == 10)
+            {
+                isGrounded = true;
+            }
+        }
+        else
+        {
+            isGrounded = false;
+        }
     }
 
     public Vector3 FindDepossessableCoord()

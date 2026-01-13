@@ -16,6 +16,11 @@ public class DoorPart : MonoBehaviour
         {
             parentHinge.inArea = true;
         }
+        if (other.gameObject.name == "Pope(Clone)")
+        {
+            GetComponentInParent<DoorHinge>().OpenDoor();
+            
+        }
 
     }
     void OnTriggerExit(Collider other)// not in area
