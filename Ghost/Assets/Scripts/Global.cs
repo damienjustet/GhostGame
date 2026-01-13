@@ -15,6 +15,11 @@ public class Global : MonoBehaviour
 
     public bool gameplay = false;
 
+    public KeyPressVisualizer keyVisual;
+
+    public float canvasWidth;
+    public float canvasHeight;
+
     
     private void Awake()
     {
@@ -28,8 +33,7 @@ public class Global : MonoBehaviour
 
     void Update()
     {
-       
-
+        
     }
 
     public void StartGame()
@@ -38,24 +42,7 @@ public class Global : MonoBehaviour
         gameplay = false;
     }
 
-    // public void LoadAScene(string sceneName)
-    // {
-    //     asyncSceneLoading = SceneManager.LoadSceneAsync(sceneName);
-    //     if (sceneName != "LOBBY")
-    //     {
-    //         gameplay = true;
-    //     }
-    //     else
-    //     {
-    //         gameplay = false;
-    //     }
-    //     while (!asyncSceneLoading.isDone)
-    //     {
-    //         Debug.Log("Not yet");
-    //     }
-    //     GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
-    // }
-
+    
     public void LoadAScene(string sceneName)
     {
         StartCoroutine(LoadATheScene(sceneName));
@@ -97,6 +84,18 @@ public class Global : MonoBehaviour
         else
         {
             Debug.Log("No music played");
+        }
+    }
+
+    public void InteractKeyChange(string key)
+    {
+        if (key == "E")
+        {
+            keyVisual.ShowKey("E");
+        }
+        else
+        {
+            keyVisual.ShowKey("");
         }
     }
 }

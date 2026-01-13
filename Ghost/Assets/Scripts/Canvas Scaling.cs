@@ -45,6 +45,20 @@ public class CanvasScaling : MonoBehaviour
         rt.sizeDelta = new Vector2(Screen.width, Screen.height);
         
         rt.anchoredPosition = new Vector2(Screen.width, Screen.height) / 2;
+
+        GameObject keyPress = GameObject.Find("KeyPressVisualizer");
+        RectTransform kpr = keyPress.GetComponent<RectTransform>();
+        kpr.anchoredPosition = new Vector2(0, -Screen.height / 3);
+        kpr.localScale = new Vector3(1,1,1);
+
+        PositionOnCanvas[] uiToScale = FindObjectsByType<PositionOnCanvas>(FindObjectsSortMode.None);
+        foreach (PositionOnCanvas ui in uiToScale)
+        {
+            ui.rt.anchoredPosition = new Vector2(ui.canvasWidthPercent / 100 * thisWidth - thisWidth / 2, ui.canvasHeightPercent / 100 * thisHeight - thisHeight / 2);
+        }
+
+        Global.Instance.canvasHeight = thisHeight;
+        Global.Instance.canvasWidth = thisWidth;
     }
 
 }

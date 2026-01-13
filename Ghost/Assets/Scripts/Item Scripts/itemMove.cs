@@ -10,12 +10,15 @@ using Unity.Mathematics;
 public class itemMove : MonoBehaviour
 {
     public Rigidbody rb;
+    Collider col;
     CinemachineFreeLook cam;
     public float moveSpeed = 4;
     public float rotationSpeed = 2;
     float yValue;
     float maxVelocity = 0.01f;
     float height;
+
+    Vector3 goalMaxFloatation;
     public float maxFloatation;
     bool atMaxFloatation;
 
@@ -33,14 +36,17 @@ public class itemMove : MonoBehaviour
             if (collider.bounds.size.x > height)
             {
                 height = collider.bounds.size.x;
+                col = collider;
             }
             if (collider.bounds.size.y > height)
             {
                 height = collider.bounds.size.y;
+                col = collider;
             }
             if (collider.bounds.size.z > height)
             {
                 height = collider.bounds.size.z;
+                col = collider;
             }
         }
         height /= 2;
@@ -78,10 +84,14 @@ public class itemMove : MonoBehaviour
         movement.y = y_direction;
         movement *= moveSpeed;    
         CheckDown(maxFloatation);   
-        if (atMaxFloatation && movement.y > 0)
+        if (atMaxFloatation && goalMaxFloatation.y < transform.position.y)
         {
-            movement.y *= 0;
-        } 
+            movement.y = -5;
+        }
+        else if (atMaxFloatation && goalMaxFloatation.y >= transform.position.y)
+        {
+            movement.y = 0;
+        }
         
         Vector3.ClampMagnitude(movement, 1f);
         
@@ -127,11 +137,16 @@ public class itemMove : MonoBehaviour
     void CheckDown(float dist)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.GetMask("Default", "item", "ground")))
+        if (Physics.BoxCast(transform.position, col.bounds.size / 2, Vector3.down, out hit, Quaternion.identity, LayerMask.GetMask("Default", "item", "ground")))
         {
             if (transform.position.y - dist >= hit.point.y)
             {
-                transform.position = new Vector3(transform.position.x, hit.point.y + dist, transform.position.z);
+                goalMaxFloatation = new Vector3(transform.position.x, hit.point.y + dist, transform.position.z);
+                
+                if (transform.position.y - goalMaxFloatation.y < 0.2f)
+                {
+                    transform.position = goalMaxFloatation;
+                }
                 atMaxFloatation = true;
             }
             else

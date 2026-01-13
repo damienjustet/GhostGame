@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 1851401231054424057}
   - component: {fileID: 3176709062483490211}
   - component: {fileID: 3082837788736126349}
-  - component: {fileID: 5444946271060719579}
+  - component: {fileID: 5395418972779491790}
   m_Layer: 8
   m_Name: player
   m_TagString: Player
@@ -136,8 +136,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5668343797781053332}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.727283, y: 1.12, z: -5.1858463}
+  m_LocalRotation: {x: -0, y: 0.5593602, z: -0, w: 0.8289247}
+  m_LocalPosition: {x: -13.580383, y: 0.9710007, z: -28.068207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -219,7 +219,9 @@ MonoBehaviour:
   cam: {fileID: 0}
   player: {fileID: 5668343797781053332}
   target: {fileID: 0}
---- !u!114 &5444946271060719579
+  bobSpeed: 5
+  bobAmount: 0.1
+--- !u!114 &5395418972779491790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,8 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Size: {x: 1.165839, y: 1.7346143, z: 1.212358}
-  m_Center: {x: 0.049672723, y: 0.16900176, z: 0.046399355}
+  m_Size: {x: 1.0468059, y: 1.668122, z: 1.1992718}
+  m_Center: {x: -0.09370315, y: 0.019996762, z: -0.0016000867}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1001 &3258336598905909422

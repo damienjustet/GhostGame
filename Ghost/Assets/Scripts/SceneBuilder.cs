@@ -72,6 +72,7 @@ public class SceneBuilder : MonoBehaviour
 
         if (isGameplay)
         {
+           
             levelLogic = Instantiate(levelLogic);
         }
         mainCamera = Instantiate(mainCamera);
@@ -82,6 +83,7 @@ public class SceneBuilder : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.LookRotation(player.transform.position);
         
         player.GetComponent<Player>().cam = mainCamera.transform.Find("FreeLook Camera").GetComponent<CinemachineFreeLook>();
+        mainCamera.transform.Find("FreeLook Camera").GetComponent<CinemachineFreeLook>().m_XAxis.Value = player.transform.rotation.eulerAngles.y;
         player.GetComponent<Player>().target = mainCamera.transform.Find("FreeLook Camera").transform;
         
 
@@ -94,13 +96,6 @@ public class SceneBuilder : MonoBehaviour
         int layer = LayerMask.NameToLayer("item");
         GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
 
-        foreach (GameObject go in allGameObjects)
-        {
-            if (go.layer == layer && go.GetComponent<posseion>() != null)
-            {
-                go.GetComponent<posseion>().CreateShownValue();
-            }
-        }
     }
 
     void MakeSoundManager()

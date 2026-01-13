@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 
 public class RatTargetScript : MonoBehaviour
@@ -13,82 +15,81 @@ public class RatTargetScript : MonoBehaviour
 
     private NavMeshAgent agent;
     private float timer;
-    public GameObject[] item;
+    public GameObject[] items;
     public GameObject closestItem;
     public bool scurryAway = false;
-    
+    int waitTime;
     public Transform ratHole;
+    GameObject currentItem;
+    public List<GameObject> item = new List<GameObject>();
+    bool stuck = false;
+    Transform selfPos;
 
 
     void Start()
     {
-        closestItem = GameObject.FindGameObjectWithTag("Collectable");
+        
+        
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
         
         // Cache the collectable item at start
-        item = GameObject.FindGameObjectsWithTag("Collectable");
+        items = GameObject.FindGameObjectsWithTag("Collectable");
+        
+        item.AddRange(items);
+        
+        
+        
+        
+
         if (item == null)
         {
             Debug.LogWarning($"[RatTargetScript] No Collectable tagged object found on start for {gameObject.name}!");
         }
-        for(int i = 0; i <= item.Length; i++)
-        {
-             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
-            if(distanceToItem < distanceToClosestItem)
-            {
-                closestItem = item[i];
-            }
-        }
+        
     }
 
     void Update()
     {
-        // Only search for item if we don't have one
-        if (item == null)
-        {
-            item = GameObject.FindGameObjectsWithTag("Collectable");
-            if (item == null)
-            {
-                Debug.LogWarning("[RatTargetScript] Still no Collectable found!");
-                return;
-            }
-             }
-        for(int i = 0; i <= item.Length; i++)
-        {
-             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
-            if(distanceToItem < distanceToClosestItem)
-            {
-                closestItem = item[i];
-            }
-        }
         
         
-        float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
+            
+            
+        
+        
+        
         timer += Time.deltaTime;
-        Transform selfPos = transform;
+        selfPos = transform;
 
         if (!scurryAway)
         {
         if (timer >= wanderTimer)
         {
-            if (distanceToItem2 <= wanderRadius)
+
+            scanItems();
+            
+            if (closestItem != null)
+                {
+                    
+                    float distanceToItem2 = Vector3.Distance(transform.position, closestItem.transform.position);
+                     if (distanceToItem2 <= wanderRadius)
             {
-                agent.SetDestination(closestItem.transform.position);
                 
+                        
+                        print(closestItem + "closest item");
+                        agent.SetDestination(closestItem.transform.position);
+                        
+                   
 
             }
-            else
-            {
-
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
-                agent.SetDestination(newPos);
-                
-                
-
-            }
+                    else
+                    {
+                        agent.SetDestination(RandomNavSphere(transform.position, wanderRadius,0,selfPos));
+                    }
+                }
+            
+           
+            
             timer = 0;
         }
             
@@ -100,6 +101,8 @@ public class RatTargetScript : MonoBehaviour
             {
                 ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
+                GameObject.Find("ratHole").GetComponent<EnemyManager>().RatSpawn = false;
+                
             }
             else
             {
@@ -121,5 +124,67 @@ public class RatTargetScript : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
         return navHit.position;
     }
+
+  void scanItems(bool stuck = false)
+    {
+        
+            for(int i = 1; i < item.Count; i++)
+        {
+            
+            if(closestItem == null && item[i].transform.position.y <= (transform.position.y + 2))
+            {
+                closestItem = item[i];
+                
+            }
+            else if(closestItem == null)
+            {
+                continue;
+            }
+            
+                
+            
+             float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
+              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+            
+            
+            if(distanceToItem < distanceToClosestItem && item[i].transform.position.y <= (transform.position.y + 2))
+            {
+                    closestItem = item[i];
+                    
+            }
+               
+            if(agent.velocity.magnitude < 0.5f)
+                {
+                    
+                    waitTime += 1;
+                    if (waitTime >= 3)
+                    {
+                        stuck = true;
+                        waitTime = 0;
+                    }
+                }
+            
+                if (stuck && item.Count > 0)
+                {
+                    print("hi");
+                    item.Remove(item[i]);
+                    closestItem = null;
+                    
+                    
+                    
+                    
+                }
+                else if (stuck)
+            {
+                Destroy(this.gameObject);
+                print("destroyed");
+            }
+                
+            }
+            
+        }
+        
     
-}
+        
+    }
+

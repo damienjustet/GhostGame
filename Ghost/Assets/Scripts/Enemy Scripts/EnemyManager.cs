@@ -6,9 +6,13 @@ public class EnemyManager : MonoBehaviour
 {
     float time;
     public GameObject pope;
+    ThePOPE popeScript;
     public GameObject rat;
     public bool spawn = false;
     public bool RatSpawn = false;
+
+    public float spawnTimePope;
+    public float spawnTimeRat;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,18 +24,21 @@ public class EnemyManager : MonoBehaviour
     {
         
         time += Time.deltaTime;
-        if(time >= 45 && this.gameObject.name == "popeSpawn" && !spawn)
+        if(time >= spawnTimePope && this.gameObject.name == "popeSpawn" && !spawn)
         {
             Instantiate(pope, transform);
+            popeScript = pope.GetComponent<ThePOPE>();
             spawn = true;
         }
-        if(time >= 30 && this.gameObject.name == "ratHole" && !RatSpawn)
+        if(time >= spawnTimeRat && this.gameObject.name == "ratHole" && !RatSpawn)
         {
             Instantiate(rat, transform);
             RatSpawn = true;
             time = 0;
+            
         }
     }
+
 
 
 }

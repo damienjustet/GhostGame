@@ -15,12 +15,11 @@ using UnityEngine.UI;
 public class posseion : MonoBehaviour
 {
     public GameObject showValueText;
+    ShowValue valueScript;
     Text shownText;
     private bool interactable = false;
 
-    bool inArea;
-
-    RawImage rawImage;
+    public bool inArea;
 
     Vector2 textureCoord;
     [HideInInspector] public Vector3 depossessCoord;
@@ -53,18 +52,11 @@ public class posseion : MonoBehaviour
     {
         if (!thisIsPossessed && !LevelLogic.Instance.isPossessed && inArea == true)
         {
-            showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2, 0);
-            
-            shownText.text = "$" + Convert.ToString(itemCost.value);
             interactable = true;
             LevelLogic.Instance.interact = true;
         }
         else if (!inArea)
         {
-            if (shownText != null)
-            {
-                shownText.text = "";
-            }
             interactable = false;
         }
 
@@ -72,17 +64,14 @@ public class posseion : MonoBehaviour
     
     public void OnMouseExit1()
     {
-        if (shownText != null)
-        {
-            shownText.text = "";
-        }
-
         interactable = false;
         LevelLogic.Instance.interact = false;
         
     }
     private void Update()
     {
+        showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2 + 0.3F, 0);
+        
         if (LevelLogic.Instance.gameIsRunning && playerObj == null)
         {
             playerObj = GameObject.Find("player(Clone)");
@@ -108,19 +97,6 @@ public class posseion : MonoBehaviour
 
         if (interactable && Input.GetKeyDown(KeyCode.E))
         {
-            
-            if (playerObj == null)
-            {
-                Debug.LogError("[posseion] Player object 'player(Clone)' not found! Cannot possess.");
-                return;
-            }
-            
-            if (playerScript == null)
-            {
-                Debug.LogError("[posseion] Player component missing on player object!");
-                return;
-            }
-            
             maxFloatation = 3;
             itemMove moveComponent = gameObject.AddComponent<itemMove>();
             moveComponent.maxFloatation = maxFloatation;
@@ -148,6 +124,7 @@ public class posseion : MonoBehaviour
         {
             FindDepossessableCoord();
         }
+
     }
     private void OnTriggerEnter(Collider other) // if in area
     {
@@ -155,7 +132,7 @@ public class posseion : MonoBehaviour
         if (other.gameObject.name == "detectionArea")
         {
             inArea = true;
-            
+            valueScript.easeDirection = 1;
         }
 
     }
@@ -164,11 +141,12 @@ public class posseion : MonoBehaviour
         if (other.gameObject.name == "detectionArea")
         {
             inArea = false;
+            valueScript.easeDirection = -1;
             
         }
     }
 
-    public void Depossess()
+    public void Depossess(bool dead = false)
     {
         depossessCoord = FindDepossessableCoord();
         if (rb != null)
@@ -189,19 +167,13 @@ public class posseion : MonoBehaviour
                 playerScript.Depossess(depossessCoord);
             }
         }
+
+        if (dead)
+        {
+            Destroy(gameObject);
+        }
         
     }
-
-    public void CreateShownValue()
-    {
-        rawImage = GameObject.FindObjectOfType<RawImage>();
-        showValueText = (GameObject)Resources.Load("ShowValueText");
-        showValueText = Instantiate(showValueText, transform);
-        showValueText.GetComponent<Transform>().localScale = new Vector3(0.06f,0.06f,0.06f);
-        shownText = showValueText.GetComponent<Text>();
-        showValueText.GetComponent<ShowValue>().theirParent = gameObject;
-    }
-
 
     public Vector3 FindDepossessableCoord()
     {
@@ -281,6 +253,7 @@ public class posseion : MonoBehaviour
             {
                 if (itemCost.value <= 0)
                 {
+                    
                     ray = new Ray(transform.position, Vector3.down);
                     Physics.Raycast(ray, out hit);
                     boxCenter.y = boxSize.y / 2 + hit.point.y;
@@ -300,6 +273,7 @@ public class posseion : MonoBehaviour
             }
 
             boxCenter.x += boxSize.x;
+            
             
         }
         
@@ -408,6 +382,13 @@ public class posseion : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void CreateShownValue(GameObject theText)
+    {
+        showValueText = theText;
+        shownText = showValueText.GetComponent<Text>();
+        valueScript = showValueText.GetComponent<ShowValue>();
     }
 
 

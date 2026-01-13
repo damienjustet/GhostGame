@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 703.92914
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.263
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 377.2857
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_LocalRotation.w
@@ -68,6 +68,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9ac40d5102d2c9a41923ff1b4c6601e1, type: 2}
+    - target: {fileID: -4003092854873392710, guid: f6e08036e611cba47bb31458663b1502, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: -4003092854873392710, guid: f6e08036e611cba47bb31458663b1502, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0051
+      objectReference: {fileID: 0}
     - target: {fileID: -1439343627225473193, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -86,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9ac40d5102d2c9a41923ff1b4c6601e1, type: 2}
     - target: {fileID: 919132149155446097, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_Name
-      value: rat
+      value: ratPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 2455051597082542962, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -96,6 +104,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9ac40d5102d2c9a41923ff1b4c6601e1, type: 2}
+    - target: {fileID: 4758137610991119557, guid: f6e08036e611cba47bb31458663b1502, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758137610991119557, guid: f6e08036e611cba47bb31458663b1502, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758137610991119557, guid: f6e08036e611cba47bb31458663b1502, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4899486392329470165, guid: f6e08036e611cba47bb31458663b1502, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

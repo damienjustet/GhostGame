@@ -8,8 +8,12 @@ using UnityEngine;
 public enum SoundType
 {
     ITEMHIT,
+    DOOROPEN,
+    DOORCLOSE,
     POSSESS,
-    PLAYERMOVE
+    PLAYERMOVE,
+    POPECURIOUS,
+    POPEFIND
 }
 
 public enum MusicType
@@ -23,6 +27,7 @@ public enum MusicType
 [ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
+
     public static SoundManager instance;
     public bool canSound = false;
     public SoundList[] soundList;
@@ -64,6 +69,12 @@ public class SoundManager : MonoBehaviour
         {
             AudioClip[] clips = instance.soundList[(int)sound].clips;
             AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
+            float pitch = instance.soundList[(int)sound].volumeAndPitch.pitch;
+            float pitchOffset = instance.soundList[(int)sound].volumeAndPitch.randomPitchOffset;
+            if (pitchOffset > 0)
+            {
+                instance.soundList[(int)sound].volumeAndPitch.source.pitch = UnityEngine.Random.Range(pitch - pitchOffset,pitch + pitchOffset);
+            }
             instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume); 
         }
 
@@ -145,3 +156,16 @@ public struct SoundList
     public Sound volumeAndPitch;
 }
 
+[Serializable]
+public class Sound
+{
+
+    [SerializeField, Range(0f,1f)] public float volume = 1;
+    [SerializeField, Range(0f,2f)] public float pitch = 1;
+    [SerializeField] public float randomPitchOffset = 0;
+    [SerializeField] public bool loop;
+
+    [HideInInspector]
+    public AudioSource source;
+
+}

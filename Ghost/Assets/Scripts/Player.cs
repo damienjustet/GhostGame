@@ -114,14 +114,6 @@ public class Player : MonoBehaviour
             {
                 ghostRenderer.enabled = true;
             }
-            else
-            {
-                Debug.LogError("[Player] Depossess: GhostBoi has no Renderer component!");
-            }
-        }
-        else
-        {
-            Debug.LogError("[Player] Depossess: GhostBoi child not found!");
         }
         
         if (player != null)
@@ -133,23 +125,11 @@ public class Player : MonoBehaviour
             {
                 playerCollider.enabled = true;
             }
-            else
-            {
-                Debug.LogError("[Player] Depossess: Player Collider not found!");
-            }
             
             if (playerController != null)
             {
                 playerController.enabled = true;
             }
-            else
-            {
-                Debug.LogError("[Player] Depossess: Player CharacterController not found!");
-            }
-        }
-        else
-        {
-            Debug.LogError("[Player] Depossess: Player GameObject reference is null!");
         }
         
         if (detect != null)
@@ -159,18 +139,9 @@ public class Player : MonoBehaviour
             {
                 detectRenderer.enabled = true;
             }
-            else
-            {
-                Debug.LogError("[Player] Depossess: Detect has no Renderer component!");
-            }
-        }
-        else
-        {
-            Debug.LogError("[Player] Depossess: Detect GameObject reference is null!");
         }
         
         LevelLogic.Instance.isPossessed = false;
-        Debug.Log("[Player] Depossessed successfully");
     }
 
     public void Possess()
