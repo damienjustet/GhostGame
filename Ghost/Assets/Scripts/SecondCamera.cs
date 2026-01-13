@@ -9,6 +9,7 @@ public class SecondCamera : MonoBehaviour
     {
         transform.position = mainCam.position;
         transform.rotation = mainCam.rotation;
+        GetComponent<Camera>().targetTexture = Camera.main.GetComponent<Camera>().targetTexture;
     }
 
     // Update is called once per frame
