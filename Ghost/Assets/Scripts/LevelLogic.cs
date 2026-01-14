@@ -108,6 +108,7 @@ public class LevelLogic : MonoBehaviour
     {
         if (!goScreen.end && !playerLiving)
         {
+            SoundManager.StartSong(MusicType.DEAD);
             goScreen.GameOver();
         }
 

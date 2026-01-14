@@ -131,7 +131,6 @@ public class RatTargetScript : MonoBehaviour
         
             for(int i = 1; i < item.Count; i++)
         {
-            print(item[i] + "hi");
             if(closestItem == null && item[i].GetComponent<posseion>().isGrounded)
             {
                 closestItem = item[i];

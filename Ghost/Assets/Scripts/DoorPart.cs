@@ -18,7 +18,7 @@ public class DoorPart : MonoBehaviour
         }
         if (other.gameObject.name == "Pope(Clone)")
         {
-            GetComponentInParent<DoorHinge>().OpenDoor();
+            GetComponentInParent<DoorHinge>().DoorInteract();
             
         }
 

@@ -19,11 +19,15 @@ public class GameOverAnimation : MonoBehaviour
     }
     void Update()
     {
-        if (!(rt.anchoredPosition.y > 0) && animating && direction == 1)
+        if (!(rt.anchoredPosition.y >= 0) && animating && direction == 1)
         {
             rt.anchoredPosition += new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / -1200)) * 5000 * Time.unscaledDeltaTime;
         }
-        else if (!(rt.anchoredPosition.y < -600) && animating && direction == -1)
+        else if ((rt.anchoredPosition.y > 0) && animating && direction == 1)
+        {
+            rt.anchoredPosition = new Vector2(0,0);
+        }
+        else if (!(rt.anchoredPosition.y <= -600) && animating && direction == -1)
         {
             rt.anchoredPosition -= new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / -1200)) * 5000 * Time.unscaledDeltaTime;
         }

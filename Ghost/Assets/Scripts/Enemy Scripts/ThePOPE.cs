@@ -105,7 +105,6 @@ public class ThePOPE : MonoBehaviour
                 else if (!seePlayer && goingToLastSeenPlayer)
                 {
                     direction = agent.destination - transform.position;
-                    Debug.Log(Vector3.Distance(transform.position, agent.destination));
                     if (Physics.Raycast(transform.position, direction, Vector3.Distance(transform.position, agent.destination), LayerMask.GetMask("Door")) || Vector3.Distance(transform.position, agent.destination) <= 3f)
                     {
                         goingToLastSeenPlayer = false;
