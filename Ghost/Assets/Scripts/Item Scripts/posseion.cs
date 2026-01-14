@@ -29,10 +29,6 @@ public class posseion : MonoBehaviour
     [HideInInspector] public bool item;
     [HideInInspector] public int frame;
 
-    GameObject playerObj;
-    Player playerScript;
-    CapsuleCollider playerCollider;
-
     ItemCost itemCost;
     Collider thisCollider;
     Rigidbody rb;
@@ -48,6 +44,7 @@ public class posseion : MonoBehaviour
         itemCost = gameObject.GetComponent<ItemCost>();
         thisCollider = gameObject.GetComponent<Collider>();
         rb = gameObject.GetComponent<Rigidbody>();
+
     }
 
     public void OnMouseOver1()
@@ -73,13 +70,7 @@ public class posseion : MonoBehaviour
     private void Update()
     {
         showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2 + 0.3F, 0);
-        
-        if (LevelLogic.Instance.gameIsRunning && playerObj == null)
-        {
-            playerObj = GameObject.Find("player(Clone)");
-            playerScript = playerObj.GetComponent<Player>();
-            playerCollider = playerObj.GetComponent<CapsuleCollider>();
-        }
+       
 
         // I moved the raycast to the global script because it was running an error
         // It will set frame to 0 if it is in the raycast and so it checks here
@@ -106,7 +97,7 @@ public class posseion : MonoBehaviour
             LevelLogic.Instance.isPossessed = true;
             LevelLogic.Instance.interact = false;
             interactable = false;
-            playerScript.Possess();
+            Global.Instance.playerScript.Possess();
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
         {
@@ -122,7 +113,7 @@ public class posseion : MonoBehaviour
 
         Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
 
-        if (playerObj != null && thisIsPossessed)
+        if (Global.Instance.playerObj != null && thisIsPossessed)
         {
             FindDepossessableCoord();
         }
@@ -162,11 +153,11 @@ public class posseion : MonoBehaviour
         thisIsPossessed = false;
         LevelLogic.Instance.isPossessed = false;
 
-        if (playerObj != null)
+        if (Global.Instance.playerObj != null)
         {
-            if (playerScript != null)
+            if (Global.Instance.playerScript != null)
             {
-                playerScript.Depossess(depossessCoord);
+                Global.Instance.playerScript.Depossess(depossessCoord);
             }
         }
 
@@ -195,8 +186,8 @@ public class posseion : MonoBehaviour
     {
         depossessableCoords.Clear();
 
-        float playerRadius = playerCollider.radius;
-        float playerHeight = playerCollider.height;
+        float playerRadius = Global.Instance.playerCollider.radius;
+        float playerHeight = Global.Instance.playerCollider.height;
         float itemBoundsX = thisCollider.bounds.size.x;
         float itemBoundsZ = thisCollider.bounds.size.z;
 
@@ -316,8 +307,8 @@ public class posseion : MonoBehaviour
     public bool CanDepossess(bool force = false)
     {
         
-        float playerRad = playerCollider.radius;
-        float playerHeight = playerCollider.height;
+        float playerRad = Global.Instance.playerCollider.radius;
+        float playerHeight = Global.Instance.playerCollider.height;
         float itemWidth = thisCollider.bounds.size.x / 2;
         float itemLength = thisCollider.bounds.size.z / 2;
 

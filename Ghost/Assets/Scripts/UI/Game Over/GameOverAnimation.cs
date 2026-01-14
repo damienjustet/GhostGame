@@ -11,6 +11,11 @@ public class GameOverAnimation : MonoBehaviour
     void Start()
     {
         rt = GetComponent<RectTransform>();
+        if (gameObject.name == "Game Over Screen")
+        {
+            Global.Instance.gameOverAnimation = this;
+        }
+        
     }
     void Update()
     {

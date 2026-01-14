@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db26c8181d354c74780a6188f545c42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 6491322123501309349}
 --- !u!65 &1541428022320128506
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -243,6 +244,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1810405830261414474}
     m_Modifications:
+    - target: {fileID: 4315122730808197562, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2d8d90ee833c5c64a866a115e6f87f3c, type: 2}
     - target: {fileID: 8239954651611924183, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
       propertyPath: m_Name
       value: POPE 1
@@ -313,9 +318,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8239954651611924183, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1708384017602945344}
-    - targetCorrespondingSourceObject: {fileID: 8239954651611924183, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4320917200545527523}
   m_SourcePrefab: {fileID: 100100000, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
 --- !u!1 &1417958025616902856 stripped
 GameObject:
@@ -334,7 +336,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53fa27a487a3f25498f23f268e1bf6e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverScreen: {fileID: 0}
 --- !u!82 &1708384017602945344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -431,21 +432,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4320917200545527523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417958025616902856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53fa27a487a3f25498f23f268e1bf6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameOverScreen: {fileID: 0}
 --- !u!4 &1794202742437122162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8724004322609224813, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
+  m_PrefabInstance: {fileID: 7059298231328918559}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6491322123501309349 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4315122730808197562, guid: 64f7063bbecfa9744b598186d150cf4b, type: 3}
   m_PrefabInstance: {fileID: 7059298231328918559}
   m_PrefabAsset: {fileID: 0}

@@ -5,17 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class PopeAnimAttack : MonoBehaviour
 {
-    public GameOverAnimation gameOverScreen;
-
     public void AnimFinished()
     {
-        gameOverScreen.ComeHere();
+        Global.Instance.gameOverAnimation.ComeHere();
         GetComponent<AudioSource>().Play();
+        Camera.main.transform.Find("cameraLockTarget").GetComponent<CameraTarget>().player = gameObject.transform.parent.gameObject;
+        LevelLogic.Instance.playerLiving = false;
         StartCoroutine(wait());
-        
     }
     IEnumerator wait()
     {
         yield return new WaitForSeconds(1.6f);
     }
+    
 }

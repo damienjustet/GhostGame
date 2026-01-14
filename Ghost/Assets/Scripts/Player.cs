@@ -22,84 +22,88 @@ public class Player : MonoBehaviour
     public float bobAmount = 0.1f;
     private float bobTimer = 0f;
     private Vector3 originalPosition;
+    Transform ghostBoi;
+
+    [HideInInspector] public bool canMove;
 
     private void Awake()
     {
         rib = GetComponent<CharacterController>();// finds player
         Cursor.lockState = CursorLockMode.Confined; // confines cursor to window(Might need to click screen to get it to work)
         originalPosition = transform.localPosition;
+        ghostBoi = transform.Find("GhostBoi");
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
+        if (canMove)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            cam.m_XAxis.m_MaxSpeed = 300f;
-            cam.m_YAxis.m_MaxSpeed = 2f;
-        }
-        else // Unlocks Cursor
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            cam.m_XAxis.m_MaxSpeed = 0f;
-            cam.m_YAxis.m_MaxSpeed = 0f;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape)) //For Exiting Play to free Mouse
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-
-        float y_input = Input.GetAxis("Vertical");
-        float x_input = Input.GetAxis("Horizontal");
-        Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;// Make Camera forawrd the direction you move
-        Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input;//allows strafing
-
-        movement *= moveSpeed;
-
-        if (rib.enabled)
-        {
-            rib.SimpleMove(movement); // moves player
-        }
-        
-        // Ghost floating bob effect
-        if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
-        {
-            bobTimer += Time.deltaTime * bobSpeed;
-            float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
-            
-            // Apply bob to visual model (assuming GhostBoi is the visual)
-            Transform ghostBoi = transform.Find("GhostBoi");
-            if (ghostBoi != null)
+            if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
             {
-                Vector3 newPos = ghostBoi.localPosition;
-                newPos.y = bobOffset;
-                ghostBoi.localPosition = newPos;
+                cam.m_XAxis.m_MaxSpeed = 300f;
+                cam.m_YAxis.m_MaxSpeed = 2f;
+            }
+            else // Unlocks Cursor
+            {
+                cam.m_XAxis.m_MaxSpeed = 0f;
+                cam.m_YAxis.m_MaxSpeed = 0f;
+            }
+
+            float y_input = Input.GetAxis("Vertical");
+            float x_input = Input.GetAxis("Horizontal");
+            Vector3 cameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;// Make Camera forawrd the direction you move
+            Vector3 movement = cameraForward * y_input + Camera.main.transform.right * x_input;//allows strafing
+
+            movement *= moveSpeed;
+
+            if (rib.enabled)
+            {
+                rib.SimpleMove(movement); // moves player
             }
             
-            // rotates player
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
+            // Ghost floating bob effect
+            if (Mathf.Abs(y_input) > 0 || Mathf.Abs(x_input) > 0)
+            {
+                bobTimer += Time.deltaTime * bobSpeed;
+                float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
+                
+                // Apply bob to visual model (assuming GhostBoi is the visual)
+                if (ghostBoi != null)
+                {
+                    Vector3 newPos = ghostBoi.localPosition;
+                    newPos.y = bobOffset;
+                    ghostBoi.localPosition = newPos;
+                }
+                
+                // rotates player
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
 
-            // sound effect :)
-            SoundManager.StartSound(SoundType.PLAYERMOVE);
+                // sound effect :)
+                SoundManager.StartSound(SoundType.PLAYERMOVE);
+            }
+            else
+            {
+                // Reset bob when not moving
+                if (ghostBoi != null)
+                {
+                    Vector3 newPos = ghostBoi.localPosition;
+                    newPos.y = Mathf.Lerp(newPos.y, 0, Time.deltaTime * 5f);
+                    ghostBoi.localPosition = newPos;
+                }
+                
+                SoundManager.StopSound(SoundType.PLAYERMOVE);
+            }
         }
         else
         {
-            // Reset bob when not moving
-            Transform ghostBoi = transform.Find("GhostBoi");
-            if (ghostBoi != null)
-            {
-                Vector3 newPos = ghostBoi.localPosition;
-                newPos.y = Mathf.Lerp(newPos.y, 0, Time.deltaTime * 5f);
-                ghostBoi.localPosition = newPos;
-            }
-            
             SoundManager.StopSound(SoundType.PLAYERMOVE);
+            if (!LevelLogic.Instance.playerLiving)
+            {
+                DestroyImmediate(gameObject);
+            }
         }
-    
-
     }
 
     public void Depossess(Vector3 pos)

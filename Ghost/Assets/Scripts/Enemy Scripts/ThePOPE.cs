@@ -40,107 +40,121 @@ public class ThePOPE : MonoBehaviour
 
     void Update()
     {
-        // Clear cache if possession state changed
-        if (wasPossessed != LevelLogic.Instance.isPossessed)
+        if (LevelLogic.Instance.playerLiving)
         {
-            cachedItemMove = null;
-            wasPossessed = LevelLogic.Instance.isPossessed;
-        }
-        
-        // Update player reference based on possession state
-        if (!LevelLogic.Instance.isPossessed)
-        {
-            chaseObject = player;
-        }
-        else
-        {
-            // Cache itemMove to avoid repeated FindObjectOfType
-            if (cachedItemMove == null)
-            {
-                cachedItemMove = FindObjectOfType<itemMove>();
-            }
-            
-            if (cachedItemMove != null && chaseObject != cachedItemMove.gameObject)
-            {
-                chaseObject = cachedItemMove.gameObject;
-            }
-            else
+            // Clear cache if possession state changed
+            if (wasPossessed != LevelLogic.Instance.isPossessed)
             {
                 cachedItemMove = null;
-                return;
+                wasPossessed = LevelLogic.Instance.isPossessed;
             }
-        }
-        
-        Vector3 direction = chaseObject.transform.position - transform.position;
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, direction, Color.blue);
-        Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
-        if (hit.collider.gameObject == chaseObject)
-        {
-            seePlayer = true;
-        }
-        else if (seePlayer)
-        {
-            goingToLastSeenPlayer = true;
-            seePlayer = false;
-        }
-        float distanceToPlayer = Vector3.Distance(transform.position, chaseObject.transform.position);
-        
-        timer += Time.deltaTime;
-        Transform selfPos = transform;
-        
-        if (!tired)
-        {
-            if (distanceToPlayer <= wanderRadius && seePlayer)
+            
+            // Update player reference based on possession state
+            if (!LevelLogic.Instance.isPossessed && LevelLogic.Instance.playerLiving)
             {
-                if (!seePlayerSoundEffectPlayed)
+                chaseObject = player;
+            }
+            else if (LevelLogic.Instance.playerLiving)
+            {
+                // Cache itemMove to avoid repeated FindObjectOfType
+                if (cachedItemMove == null)
                 {
-                    SoundManager.PlaySound(SoundType.POPEFIND);
-                    seePlayerSoundEffectPlayed = true;
+                    cachedItemMove = FindObjectOfType<itemMove>();
                 }
-                agent.SetDestination(chaseObject.transform.position);
-            }
-            else if (!seePlayer && goingToLastSeenPlayer)
-            {
-                direction = agent.destination - transform.position;
-                Debug.Log(Vector3.Distance(transform.position, agent.destination));
-                if (Physics.Raycast(transform.position, direction, Vector3.Distance(transform.position, agent.destination), LayerMask.GetMask("Door")) || Vector3.Distance(transform.position, agent.destination) <= 3f)
+                
+                if (cachedItemMove != null && chaseObject != cachedItemMove.gameObject)
                 {
-                    goingToLastSeenPlayer = false;
-                    Debug.Log("Unstuck");
+                    chaseObject = cachedItemMove.gameObject;
+                }
+                else
+                {
+                    cachedItemMove = null;
+                    return;
                 }
             }
-            else if (timer >= wanderTimer)
+            
+            Vector3 direction = chaseObject.transform.position - transform.position;
+            RaycastHit hit;
+            Debug.DrawRay(transform.position, direction, Color.blue);
+            Physics.Raycast(transform.position, direction, out hit, Mathf.Infinity);
+            if (hit.collider.gameObject == chaseObject)
             {
+                seePlayer = true;
+            }
+            else if (seePlayer)
+            {
+                goingToLastSeenPlayer = true;
+                seePlayer = false;
+            }
+            float distanceToPlayer = Vector3.Distance(transform.position, chaseObject.transform.position);
+            
+            timer += Time.deltaTime;
+            Transform selfPos = transform;
+            
+            if (!tired)
+            {
+                if (distanceToPlayer <= wanderRadius && seePlayer)
                 {
+                    if (!seePlayerSoundEffectPlayed)
+                    {
+                        SoundManager.PlaySound(SoundType.POPEFIND);
+                        seePlayerSoundEffectPlayed = true;
+                    }
+                    agent.SetDestination(chaseObject.transform.position);
+                }
+                else if (!seePlayer && goingToLastSeenPlayer)
+                {
+                    direction = agent.destination - transform.position;
+                    Debug.Log(Vector3.Distance(transform.position, agent.destination));
+                    if (Physics.Raycast(transform.position, direction, Vector3.Distance(transform.position, agent.destination), LayerMask.GetMask("Door")) || Vector3.Distance(transform.position, agent.destination) <= 3f)
+                    {
+                        goingToLastSeenPlayer = false;
+                        Debug.Log("Unstuck");
+                    }
+                }
+                else if (timer >= wanderTimer)
+                {
+                    
                     Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, selfPos);
                     agent.SetDestination(newPos);
                     timer = 0;
+                    
                 }
+                else
+                {
+                    if (seePlayerSoundEffectPlayed)
+                    {
+                        SoundManager.PlaySound(SoundType.POPECURIOUS);
+                        seePlayerSoundEffectPlayed = false;
+                    }
+                }
+                
             }
             else
             {
-                if (seePlayerSoundEffectPlayed)
+                GameObject exitObj = GameObject.FindGameObjectWithTag("exit");
+                if (exitObj != null)
                 {
-                    SoundManager.PlaySound(SoundType.POPECURIOUS);
-                    seePlayerSoundEffectPlayed = false;
+                    exitDoor = exitObj.transform;
+                    agent.SetDestination(exitDoor.position);
+                }
+                else
+                {
+                    Debug.LogWarning("[ThePOPE] Exit door tagged object not found!");
                 }
             }
-            
+        }
+        else if (timer >= wanderTimer)
+        {
+            Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1, transform);
+            agent.SetDestination(newPos);
+            timer = 0;
         }
         else
         {
-            GameObject exitObj = GameObject.FindGameObjectWithTag("exit");
-            if (exitObj != null)
-            {
-                exitDoor = exitObj.transform;
-                agent.SetDestination(exitDoor.position);
-            }
-            else
-            {
-                Debug.LogWarning("[ThePOPE] Exit door tagged object not found!");
-            }
+            timer += Time.deltaTime;
         }
+            
         
     }
 
