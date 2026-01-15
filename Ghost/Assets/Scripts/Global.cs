@@ -48,10 +48,13 @@ public class Global : MonoBehaviour
         {
             gameplay = false;
         }
-
+        if(GameObject.Find("player(Clone)") != null)
+        {
         playerObj = GameObject.Find("player(Clone)");
         playerScript = playerObj.GetComponent<Player>();
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
+        }
+        
     }
 
     void Update()
