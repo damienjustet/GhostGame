@@ -131,9 +131,11 @@ public class RatTargetScript : MonoBehaviour
         
             for(int i = 1; i < item.Count; i++)
         {
+            print(item[i].GetComponent<posseion>().isGrounded);
             if(closestItem == null && item[i].GetComponent<posseion>().isGrounded)
             {
                 closestItem = item[i];
+                
                 
             }
             else if(closestItem == null)
@@ -157,7 +159,7 @@ public class RatTargetScript : MonoBehaviour
                 {
                     
                     waitTime += 1;
-                    if (waitTime >= 3)
+                    if (waitTime >= 2)
                     {
                         stuck = true;
                         waitTime = 0;
@@ -168,7 +170,7 @@ public class RatTargetScript : MonoBehaviour
                 {
                     print("hi");
                     item.Remove(item[i]);
-                    closestItem = null;
+                    
                     
                     
                     

@@ -8,6 +8,6 @@ public class ScreenSizeChangeNotifier : MonoBehaviour
 
     protected void OnRectTransformDimensionsChange()
     {
-        notifyScreenSizeChange.Invoke();
+        //notifyScreenSizeChange.Invoke();
     }
 }
