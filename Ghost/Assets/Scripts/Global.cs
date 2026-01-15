@@ -21,8 +21,14 @@ public class Global : MonoBehaviour
     public float canvasWidth;
     public float canvasHeight;
 
+    public GameOverAnimation gameOverAnimation;
+
     string[] gameplayScenes = {"LEVEL1", "TUTORIAL", "House"};
     string[] blankScenes = {"TITLESCREEN"};
+
+    public GameObject playerObj;
+    public Player playerScript;
+    public CapsuleCollider playerCollider;
 
     
     private void Awake()
@@ -42,11 +48,27 @@ public class Global : MonoBehaviour
         {
             gameplay = false;
         }
+
+        playerObj = GameObject.Find("player(Clone)");
+        playerScript = playerObj.GetComponent<Player>();
+        playerCollider = playerObj.GetComponent<CapsuleCollider>();
     }
 
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.Mouse1))// Locks Cursor for rotating
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else // Unlocks Cursor
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) //For Exiting Play to free Mouse
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     public void StartGame()

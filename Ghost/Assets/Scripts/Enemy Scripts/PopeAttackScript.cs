@@ -8,7 +8,9 @@ public class PopeAttackScript : MonoBehaviour
 {
     private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType
     private bool wasPossessed = false; // Track possession state changes
-    
+    public Animator anim;
+
+
     void Update()
     {
         // Clear cache if possession state changed
@@ -31,14 +33,9 @@ public class PopeAttackScript : MonoBehaviour
         {
             if (collider.gameObject.name == "player(Clone)")
             {
-                Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
-                collider.gameObject.GetComponent<Player>().moveSpeed = 0;
-                collider.gameObject.transform.position = transform.position;
+                collider.gameObject.GetComponent<Player>().canMove = false;
+                // collider.gameObject.transform.position = transform.position;
                 anim.SetTrigger("Clap");
-                
-                
-                
-                
             }
         }
         else
@@ -51,12 +48,9 @@ public class PopeAttackScript : MonoBehaviour
             
             if (cachedItemMove != null && collider.gameObject == cachedItemMove.gameObject)
             {
-                 Animator anim = GameObject.Find("POPE 1").GetComponent<Animator>();
                 collider.gameObject.GetComponent<itemMove>().moveSpeed = 0;
                 collider.gameObject.transform.position = transform.position;
                 anim.SetTrigger("Clap");
-                
-                
             }
         }
     }

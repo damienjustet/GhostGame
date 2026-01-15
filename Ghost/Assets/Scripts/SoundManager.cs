@@ -21,7 +21,8 @@ public enum MusicType
     LOBBY,
     TUTORIAL,
     LEVEL1,
-    TITLESCREEN
+    TITLESCREEN,
+    DEAD
 }
 
 public enum AudioType
