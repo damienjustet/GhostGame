@@ -36,6 +36,7 @@ public class ThePOPE : MonoBehaviour
         player = GameObject.Find("player(Clone)");
         chaseObject = player;
         playerLayer = LayerMask.GetMask("Player", "item");
+        Time.timeScale = 5;
     }
 
     void Update()
@@ -160,12 +161,19 @@ public class ThePOPE : MonoBehaviour
     // Function to find a random point on the NavMesh within a sphere
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask, Transform selfTransform)
     {
-
-        Vector3 randomDirection = Random.insideUnitSphere * dist;
-        randomDirection += origin;
-        NavMeshHit navHit;
-        NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
-        return navHit.position;
+        while (true)
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * dist;
+            randomDirection += origin;
+            NavMeshHit navHit;
+            NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
+            if (navHit.position != null)
+            {
+                return navHit.position;
+            }
+            
+        }
+        
     }
     
 }
