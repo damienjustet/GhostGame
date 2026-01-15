@@ -30,6 +30,8 @@ public class Global : MonoBehaviour
     public Player playerScript;
     public CapsuleCollider playerCollider;
 
+    bool firstTime = true;
+
     
     private void Awake()
     {
@@ -55,6 +57,10 @@ public class Global : MonoBehaviour
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
         }
         
+        if (SceneManager.GetActiveScene().name == "TUTORIAL" && firstTime)
+        {
+            CutsceneManager.Instance.StartCutscene(0);
+        }
     }
 
     void Update()
@@ -72,6 +78,11 @@ public class Global : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
+
+        if (Input.GetKeyDown(KeyCode.Q)) //For Exiting Play to free Mouse
+        {
+            CutsceneManager.Instance.StartCutscene(2);
+        }
     }
 
     public void StartGame()
@@ -87,6 +98,11 @@ public class Global : MonoBehaviour
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
+        }
+
+        if (sceneName == "TUTORIAL" && firstTime)
+        {
+            CutsceneManager.Instance.StartCutscene(0);
         }
     }
 
