@@ -178,7 +178,8 @@ public class posseion : MonoBehaviour
 
         //Raycast for Rat
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down,out hit, 1f))
+        Debug.DrawRay(transform.position, Vector3.down * 10f, Color.red, 1000f);
+        if (Physics.Raycast(transform.position, Vector3.down,out hit, 10f))
         {
             if(hit.collider.gameObject.layer == 10)
             {
