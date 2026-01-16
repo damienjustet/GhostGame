@@ -32,6 +32,10 @@ public class posseion : MonoBehaviour
     ItemCost itemCost;
     Collider thisCollider;
     Rigidbody rb;
+    GameObject playerObj;
+    Player playerScript;
+    CapsuleCollider playerCollider;
+
 
     public bool isGrounded;
 
@@ -44,7 +48,6 @@ public class posseion : MonoBehaviour
         itemCost = gameObject.GetComponent<ItemCost>();
         thisCollider = gameObject.GetComponent<Collider>();
         rb = gameObject.GetComponent<Rigidbody>();
-
     }
 
     public void OnMouseOver1()
@@ -70,7 +73,13 @@ public class posseion : MonoBehaviour
     private void Update()
     {
         showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2 + 0.3F, 0);
-       
+        
+        if (LevelLogic.Instance.gameIsRunning && playerObj == null)
+        {
+            playerObj = GameObject.Find("player(Clone)");
+            playerScript = playerObj.GetComponent<Player>();
+            playerCollider = playerObj.GetComponent<CapsuleCollider>();
+        }
 
         // I moved the raycast to the global script because it was running an error
         // It will set frame to 0 if it is in the raycast and so it checks here
@@ -97,7 +106,7 @@ public class posseion : MonoBehaviour
             LevelLogic.Instance.isPossessed = true;
             LevelLogic.Instance.interact = false;
             interactable = false;
-            Global.Instance.playerScript.Possess();
+            playerScript.Possess();
         }
         else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
         {
@@ -113,9 +122,24 @@ public class posseion : MonoBehaviour
 
         Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
 
-        if (Global.Instance.playerObj != null && thisIsPossessed)
+        if (playerObj != null && thisIsPossessed)
         {
             FindDepossessableCoord();
+        }
+        RaycastHit hit;
+         
+        Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.red, 1000f);
+        if (Physics.Raycast(transform.position, Vector3.down * 1.5f, out hit, 1.5f))
+        {
+            if(hit.collider.gameObject.layer == 10)
+            {
+                isGrounded = true;
+                
+            }
+        }
+        else
+        {
+            isGrounded = false;
         }
 
     }
@@ -153,11 +177,11 @@ public class posseion : MonoBehaviour
         thisIsPossessed = false;
         LevelLogic.Instance.isPossessed = false;
 
-        if (Global.Instance.playerObj != null)
+        if (playerObj != null)
         {
-            if (Global.Instance.playerScript != null)
+            if (playerScript != null)
             {
-                Global.Instance.playerScript.Depossess(depossessCoord);
+                playerScript.Depossess(depossessCoord);
             }
         }
 
@@ -168,27 +192,15 @@ public class posseion : MonoBehaviour
         
 
         //Raycast for Rat
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, Vector3.down * 10f, Color.red, 1000f);
-        if (Physics.Raycast(transform.position, Vector3.down,out hit, 10f))
-        {
-            if(hit.collider.gameObject.layer == 10)
-            {
-                isGrounded = true;
-            }
-        }
-        else
-        {
-            isGrounded = false;
-        }
+       
     }
 
     public Vector3 FindDepossessableCoord()
     {
         depossessableCoords.Clear();
 
-        float playerRadius = Global.Instance.playerCollider.radius;
-        float playerHeight = Global.Instance.playerCollider.height;
+        float playerRadius = playerCollider.radius;
+        float playerHeight = playerCollider.height;
         float itemBoundsX = thisCollider.bounds.size.x;
         float itemBoundsZ = thisCollider.bounds.size.z;
 
@@ -308,8 +320,8 @@ public class posseion : MonoBehaviour
     public bool CanDepossess(bool force = false)
     {
         
-        float playerRad = Global.Instance.playerCollider.radius;
-        float playerHeight = Global.Instance.playerCollider.height;
+        float playerRad = playerCollider.radius;
+        float playerHeight = playerCollider.height;
         float itemWidth = thisCollider.bounds.size.x / 2;
         float itemLength = thisCollider.bounds.size.z / 2;
 

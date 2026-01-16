@@ -92,6 +92,7 @@ public class RatTargetScript : MonoBehaviour
            
             
             timer = 0;
+            
         }
             
         }
@@ -131,7 +132,7 @@ public class RatTargetScript : MonoBehaviour
         
             for(int i = 1; i < item.Count; i++)
         {
-            print(item[i].GetComponent<posseion>().isGrounded);
+            
             if(closestItem == null && item[i].GetComponent<posseion>().isGrounded)
             {
                 closestItem = item[i];
@@ -146,7 +147,7 @@ public class RatTargetScript : MonoBehaviour
                 
             
              float distanceToItem = Vector3.Distance(transform.position, item[i].transform.position);
-              float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
+             float distanceToClosestItem = Vector3.Distance(transform.position, closestItem.transform.position);
             
             
             if(distanceToItem < distanceToClosestItem && item[i].GetComponent<posseion>().isGrounded)
@@ -154,33 +155,12 @@ public class RatTargetScript : MonoBehaviour
                     closestItem = item[i];
                     
             }
-               
-            if(agent.velocity.magnitude < 0.5f)
-                {
+           
+            
                     
-                    waitTime += 1;
-                    if (waitTime >= 2)
-                    {
-                        stuck = true;
-                        waitTime = 0;
-                    }
                 }
             
-                if (stuck && item.Count > 0)
-                {
-                    print("hi");
-                    item.Remove(item[i]);
-                    
-                    
-                    
-                    
-                    
-                }
-                else if (stuck)
-            {
-                Destroy(this.gameObject);
-                print("destroyed");
-            }
+                
                 
             }
             
@@ -188,5 +168,5 @@ public class RatTargetScript : MonoBehaviour
         
     
         
-    }
+    
 
