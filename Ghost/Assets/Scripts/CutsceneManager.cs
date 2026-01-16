@@ -11,7 +11,6 @@ public class CutsceneManager : MonoBehaviour
 {
     public static CutsceneManager Instance { get; private set; }
     public CinemachineBrain cm;
-    public CinemachineFreeLook cmf;
     public TextMeshProUGUI textBox;
     public GameObject boxBox;
     public Player player;
@@ -20,17 +19,15 @@ public class CutsceneManager : MonoBehaviour
     int cutsceneNumber = 0;
     int dialogInCutscene = 0;
 
-    float typeSpeed = 15;
+    float typeSpeed = 25;
     float typeTimer = 0;
 
     float coolDownTimer = 0;
     
-    Cutscene[] cutscenes =  new Cutscene[] 
-    {
-        new Cutscene(new string[] {"Hello, welcome", "how are you"}),
-        new Cutscene(new string[] {"Goodbye", "Mr ghost"}),
-        new Cutscene(new string[] {"I'm a kitchen sink you don;t know what that means because a kitchen sink to you is not a kitchen sink to me", "Mr ghost"})
-    };
+    public Cutscene[] cutscenes;
+
+    bool animationParameter;
+    
 
     void Awake()
     {
@@ -41,6 +38,7 @@ public class CutsceneManager : MonoBehaviour
         Instance = this;
 
         boxBox.SetActive(false);
+        cm.enabled = true;
     }
 
     // Update is called once per frame
@@ -48,12 +46,12 @@ public class CutsceneManager : MonoBehaviour
     {
         if (inCutscene && coolDownTimer > 0.2)
         {
-            if (Mathf.Floor(typeTimer * typeSpeed) < cutscenes[cutsceneNumber].dialog[dialogInCutscene].Length)
+            if (Mathf.Floor(typeTimer * typeSpeed) < cutscenes[cutsceneNumber].dialog[dialogInCutscene].words.Length)
             {
                 typeTimer += Time.deltaTime;
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    typeTimer = cutscenes[cutsceneNumber].dialog[dialogInCutscene].Length / typeSpeed;
+                    typeTimer = cutscenes[cutsceneNumber].dialog[dialogInCutscene].words.Length / typeSpeed;
                 }
             }
             else
@@ -64,13 +62,14 @@ public class CutsceneManager : MonoBehaviour
                     dialogInCutscene += 1;
                     typeTimer = 0;
                     eKey.SetActive(false);
+                    CameraToCurrent();
                 }
                 else if (Input.GetKeyDown(KeyCode.E) && dialogInCutscene == cutscenes[cutsceneNumber].dialog.Length - 1)
                 {
                     EndCutscene();
                 }
             }
-            textBox.text = cutscenes[cutsceneNumber].dialog[dialogInCutscene][0..Convert.ToInt32(Mathf.Floor(typeTimer * typeSpeed))];
+            textBox.text = cutscenes[cutsceneNumber].dialog[dialogInCutscene].words[0..Convert.ToInt32(Mathf.Floor(typeTimer * typeSpeed))];
             
         }
         else
@@ -81,6 +80,7 @@ public class CutsceneManager : MonoBehaviour
 
     public void StartCutscene(int cn)
     {
+        cm.enabled = false;
         player.canMove = false;
         textBox.text ="";
         coolDownTimer = 0;
@@ -89,40 +89,43 @@ public class CutsceneManager : MonoBehaviour
         dialogInCutscene = 0;
         typeTimer = 0;
         inCutscene = true;
-        // cm.enabled = false;
-        // Camera.main.transform.position = new Vector3(524.74f, 12.08f, 515.23f);
-
-        Vector3 directionPosition = Vector3.ClampMagnitude(- new Vector3(513.87f, 18.3f, 527.81f) + player.gameObject.transform.position, 1);
-        if (directionPosition.z < 0)
-        {
-            cmf.m_XAxis.Value = - Mathf.Rad2Deg * Mathf.Asin(directionPosition.x);
-            Debug.Log("negative x");
-        }
-        else
-        {
-            cmf.m_XAxis.Value = 180 + Mathf.Rad2Deg * Mathf.Asin(directionPosition.x);
-        }
-
-        print(-new Vector3(513.87f, 18.3f, 527.81f) + player.gameObject.transform.position);
-        
-        
+        cutscenes[cutsceneNumber].animation.SetBool(cutscenes[cutsceneNumber].animation.parameters[0].name, true);
+        CameraToCurrent();
     }
 
     public void EndCutscene()
     {
+        cutscenes[cutsceneNumber].animation.SetBool(cutscenes[cutsceneNumber].animation.parameters[0].name, false);
         player.canMove = true;
         boxBox.SetActive(false);
         inCutscene = false;
         cm.enabled = true;
         eKey.SetActive(false);
     }
-}
 
+    void CameraToCurrent()
+    {
+        Camera.main.transform.rotation = Quaternion.Euler(cutscenes[cutsceneNumber].dialog[dialogInCutscene].cameraRotation);
+        Camera.main.transform.position = cutscenes[cutsceneNumber].dialog[dialogInCutscene].cameraPosition;
+    }
+}
+[Serializable]
 public class Cutscene
 {
-    public string[] dialog;
-    public Cutscene(string[] words)
+    public Dialogue[] dialog;
+    public Animator animation;
+
+    public Cutscene(Dialogue[] words)
     {
         this.dialog = words;
     }
+}
+
+[Serializable]
+public class Dialogue
+{
+    public Vector3 cameraPosition;
+    public Vector3 cameraRotation;
+    [TextArea(3, 10)]
+    public string words;
 }
