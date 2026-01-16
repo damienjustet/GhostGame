@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class ThePOPE : MonoBehaviour
 {
-       public float wanderRadius = 20f; // Radius within which the character will wander
+    public float wanderRadius = 20f; // Radius within which the character will wander
     public float wanderTimer = 2f;   // Time before choosing a new destination
 
     private NavMeshAgent agent;
@@ -36,7 +36,6 @@ public class ThePOPE : MonoBehaviour
         player = GameObject.Find("player(Clone)");
         chaseObject = player;
         playerLayer = LayerMask.GetMask("Player", "item");
-        Time.timeScale = 5;
     }
 
     void Update()
