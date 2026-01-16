@@ -92,17 +92,18 @@ public class CutsceneManager : MonoBehaviour
         // cm.enabled = false;
         // Camera.main.transform.position = new Vector3(524.74f, 12.08f, 515.23f);
 
-        Vector3 directionPosition = Vector3.ClampMagnitude(new Vector3(513.87f, 18.3f, 527.81f) - player.gameObject.transform.position, 1);
+        Vector3 directionPosition = Vector3.ClampMagnitude(- new Vector3(513.87f, 18.3f, 527.81f) + player.gameObject.transform.position, 1);
         if (directionPosition.z < 0)
         {
-            cmf.m_XAxis.Value = Mathf.Rad2Deg * Mathf.Acos(Mathf.Deg2Rad * directionPosition.x * -1) * -1 + 90;
+            cmf.m_XAxis.Value = - Mathf.Rad2Deg * Mathf.Asin(directionPosition.x);
+            Debug.Log("negative x");
         }
         else
         {
-            cmf.m_XAxis.Value = Mathf.Rad2Deg * Mathf.Acos(Mathf.Deg2Rad * directionPosition.x * -1) - 90;
+            cmf.m_XAxis.Value = 180 + Mathf.Rad2Deg * Mathf.Asin(directionPosition.x);
         }
 
-        print(new Vector3(513.87f, 18.3f, 527.81f) - player.gameObject.transform.position);
+        print(-new Vector3(513.87f, 18.3f, 527.81f) + player.gameObject.transform.position);
         
         
     }
