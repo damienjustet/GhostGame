@@ -48,6 +48,10 @@ public class posseion : MonoBehaviour
         itemCost = gameObject.GetComponent<ItemCost>();
         thisCollider = gameObject.GetComponent<Collider>();
         rb = gameObject.GetComponent<Rigidbody>();
+
+        playerObj = GameObject.Find("player(Clone)");
+        playerScript = playerObj.GetComponent<Player>();
+        playerCollider = playerObj.GetComponent<CapsuleCollider>();
     }
 
     public void OnMouseOver1()
@@ -72,123 +76,115 @@ public class posseion : MonoBehaviour
     }
     private void Update()
     {
-        showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2 + 0.3F, 0);
-        
-        if (LevelLogic.Instance.gameIsRunning && playerObj == null)
+        if (!CutsceneManager.Instance.inCutscene)
         {
-            playerObj = GameObject.Find("player(Clone)");
-            playerScript = playerObj.GetComponent<Player>();
-            playerCollider = playerObj.GetComponent<CapsuleCollider>();
-        }
+            showValueText.transform.position = transform.position + new Vector3(0, thisCollider.bounds.size.y / 2 + 0.3F, 0);
 
-        // I moved the raycast to the global script because it was running an error
-        // It will set frame to 0 if it is in the raycast and so it checks here
-        // if mouse exits
-        
-
-        if (frame == 0)
-        {
-            frame = 1;
-        }
-        else if (frame == 1)
-        {
-            frame = 2;
-            item = false;
-            OnMouseExit1();
-        }
-
-        if (interactable && Input.GetKeyDown(KeyCode.E))
-        {
-            maxFloatation = 3;
-            itemMove moveComponent = gameObject.AddComponent<itemMove>();
-            moveComponent.maxFloatation = maxFloatation;
-            thisIsPossessed = true;
-            LevelLogic.Instance.isPossessed = true;
-            LevelLogic.Instance.interact = false;
-            interactable = false;
-            playerScript.Possess();
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
-        {
-            Depossess();
-            
-        }
-
-        // Set depossession coord to the last depossessable spot
-        // if (thisIsPossessed)
-        // {
-        //     CanDepossess();
-        // }
-
-        Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
-
-        if (playerObj != null && thisIsPossessed)
-        {
-            FindDepossessableCoord();
-        }
-        RaycastHit hit;
-         
-        Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.red, 1000f);
-        if (Physics.Raycast(transform.position, Vector3.down * 1.5f, out hit, 1.5f))
-        {
-            if(hit.collider.gameObject.layer == 10)
+            if (frame == 0)
             {
-                isGrounded = true;
+                frame = 1;
+            }
+            else if (frame == 1)
+            {
+                frame = 2;
+                item = false;
+                OnMouseExit1();
+            }
+
+            if (interactable && Input.GetKeyDown(KeyCode.E))
+            {
+                maxFloatation = 3;
+                itemMove moveComponent = gameObject.AddComponent<itemMove>();
+                moveComponent.maxFloatation = maxFloatation;
+                thisIsPossessed = true;
+                LevelLogic.Instance.isPossessed = true;
+                LevelLogic.Instance.interact = false;
+                interactable = false;
+                playerScript.Possess();
+            }
+            else if (Input.GetKeyDown(KeyCode.E) && thisIsPossessed) // depossess object
+            {
+                Depossess();
+                
+            }
+
+            // Set depossession coord to the last depossessable spot
+            // if (thisIsPossessed)
+            // {
+            //     CanDepossess();
+            // }
+
+            Debug.DrawLine(depossessCoord, depossessCoord + Vector3.up);
+
+            if (playerObj != null && thisIsPossessed)
+            {
+                FindDepossessableCoord();
+            }
+            RaycastHit hit;
+            
+            Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.red, 1000f);
+            if (Physics.Raycast(transform.position, Vector3.down * 1.5f, out hit, 1.5f))
+            {
+                if(hit.collider.gameObject.layer == 10)
+                {
+                    isGrounded = true;
+                    
+                }
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+            
+
+        }
+        private void OnTriggerEnter(Collider other) // if in area
+        {
+            
+            if (other.gameObject.name == "detectionArea")
+            {
+                inArea = true;
+                valueScript.easeDirection = 1;
+            }
+
+        }
+        private void OnTriggerExit(Collider other)// not in area
+        {
+            if (other.gameObject.name == "detectionArea")
+            {
+                inArea = false;
+                valueScript.easeDirection = -1;
                 
             }
         }
-        else
-        {
-            isGrounded = false;
-        }
 
-    }
-    private void OnTriggerEnter(Collider other) // if in area
-    {
-        
-        if (other.gameObject.name == "detectionArea")
+        public void Depossess(bool dead = false)
         {
-            inArea = true;
-            valueScript.easeDirection = 1;
-        }
-
-    }
-    private void OnTriggerExit(Collider other)// not in area
-    {
-        if (other.gameObject.name == "detectionArea")
-        {
-            inArea = false;
-            valueScript.easeDirection = -1;
-            
-        }
-    }
-
-    public void Depossess(bool dead = false)
-    {
-        depossessCoord = FindDepossessableCoord();
-        if (rb != null)
-        {
-            rb.useGravity = true;
-            rb.isKinematic = false;
-        }
-        
-        Destroy(gameObject.GetComponent<itemMove>());
-
-        thisIsPossessed = false;
-        LevelLogic.Instance.isPossessed = false;
-
-        if (playerObj != null)
-        {
-            if (playerScript != null)
+            depossessCoord = FindDepossessableCoord();
+            if (rb != null)
             {
-                playerScript.Depossess(depossessCoord);
+                rb.useGravity = true;
+                rb.isKinematic = false;
             }
-        }
+            
+            Destroy(gameObject.GetComponent<itemMove>());
 
-        if (dead)
-        {
-            Destroy(gameObject);
-        }
+            thisIsPossessed = false;
+            LevelLogic.Instance.isPossessed = false;
+
+            if (playerObj != null)
+            {
+                if (playerScript != null)
+                {
+                    playerScript.Depossess(depossessCoord);
+                }
+            }
+
+            if (dead)
+            {
+                Destroy(gameObject);
+            }
         
 
         //Raycast for Rat
@@ -315,93 +311,6 @@ public class posseion : MonoBehaviour
         }
 
         return depossessableCoords[0];
-    }
-
-    public bool CanDepossess(bool force = false)
-    {
-        
-        float playerRad = playerCollider.radius;
-        float playerHeight = playerCollider.height;
-        float itemWidth = thisCollider.bounds.size.x / 2;
-        float itemLength = thisCollider.bounds.size.z / 2;
-
-        Vector3 boxSize = new Vector3(playerRad, playerHeight, playerRad);
-        RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.down, out hit);
-
-        // Positive z side
-        for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (playerRad * 2)); i++)
-        {
-            Vector3 center = transform.position + new Vector3(i * 2 *playerRad, 0, itemLength / 2 + 2 * playerRad);
-            center.y = hit.point.y + boxSize.y / 2;
-            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
-            if (colliders.Length == 0)
-            {
-                depossessCoord = center;
-                return true;
-            }
-
-            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
-        }
-
-        //negative z side
-        for (float i = -Mathf.Floor(itemWidth / (2 * playerRad)); i <= Mathf.Floor(itemWidth / (2 * playerRad)); i++)
-        {
-            Vector3 center = transform.position + new Vector3(i * 2 * playerRad, 0, -(itemLength / 2) - (2 * playerRad));
-            center.y = hit.point.y + boxSize.y / 2;
-            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
-            if (colliders.Length == 0)
-            {
-                depossessCoord = center;
-                return true;
-            }
-
-            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
-        }
-
-        // Positive x side
-        for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
-        {
-            Vector3 center = transform.position + new Vector3(itemWidth / 2 + 2 * playerRad, 0, i * 2 *playerRad);
-            center.y = hit.point.y + boxSize.y / 2;
-            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
-            if (colliders.Length == 0)
-            {
-                depossessCoord = center;
-                return true;
-            }
-
-            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
-        }
-
-        //negative x side
-        for (float i = -Mathf.Floor(itemLength / (2 * playerRad)); i <= Mathf.Floor(itemLength / (2 * playerRad)); i++)
-        {
-            Vector3 center = transform.position + new Vector3(-(itemWidth / 2 + 2 * playerRad), 0, i * 2 *playerRad);
-            center.y = hit.point.y + boxSize.y / 2;
-            Collider[] colliders = Physics.OverlapBox(center, boxSize, quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
-            if (colliders.Length == 0)
-            {
-                depossessCoord = center;
-                return true;
-            }
-
-            Debug.DrawLine(center + Vector3.down, center + Vector3.up);
-        }
-
-        return true;
-    }
-
-    bool CollidersAreAll(Collider[] colliders, string name)
-    {
-        foreach (Collider col in colliders)
-        {
-            if (col.name != name)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void CreateShownValue(GameObject theText)

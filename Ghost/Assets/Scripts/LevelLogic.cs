@@ -11,9 +11,9 @@ public class LevelLogic : MonoBehaviour
 {
     public static LevelLogic Instance { get; private set; }
 
-    public bool gameIsRunning;
+    [HideInInspector] public bool gameIsRunning;
 
-    public float total_time;
+    [HideInInspector] public float total_time;
     float timer = 0;
     float finish_cooldown;
     public float quota = 5000.00f;
@@ -24,10 +24,10 @@ public class LevelLogic : MonoBehaviour
     RawImage rawImage;
     
     // MONEY
-    public float money;
-    public GameObject moneyText;
+    [HideInInspector] public float money;
+    [HideInInspector] public GameObject moneyText;
     Text moneyTextText;
-    public Vector2 normalizedPoint;
+    [HideInInspector] public Vector2 normalizedPoint;
 
     
     // checks if ghost is possessed
@@ -41,6 +41,9 @@ public class LevelLogic : MonoBehaviour
     public float health = 100;
 
     public bool canLeave = false;
+
+    // For GameOver screen
+    public bool canGameOver;
 
     GameOverScreen goScreen;
 
@@ -100,17 +103,25 @@ public class LevelLogic : MonoBehaviour
             extraQuotaText = "";
         }
         
-        goScreen = GameObject.Find("Game Over Canvas").GetComponent<GameOverScreen>();
+        if (canGameOver)
+        {
+            goScreen = GameObject.Find("Game Over Canvas").GetComponent<GameOverScreen>();
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!goScreen.end && !playerLiving)
+        if (canGameOver)
         {
-            SoundManager.StartSong(MusicType.DEAD);
-            goScreen.GameOver();
+            if (!goScreen.end && !playerLiving)
+            {
+                SoundManager.StartSong(MusicType.DEAD);
+                goScreen.GameOver();
+            }
         }
+        
 
         if (rawImage == null)
         {
@@ -181,6 +192,10 @@ public class LevelLogic : MonoBehaviour
                 Global.Instance.InteractKeyChange("");
             }
             
+        }
+        else
+        {
+            print("failure");
         }
 
         
