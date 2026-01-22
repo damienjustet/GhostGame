@@ -17,11 +17,14 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject player;
     public Transform target;
     
+    // SOUNDS
+    AudioSource floatSoundSource;
+    AudioSource possessSoundSource;
+
     // Ghost floating bob effect
     public float bobSpeed = 5f;
     public float bobAmount = 0.1f;
     private float bobTimer = 0f;
-    private Vector3 originalPosition;
     Transform ghostBoi;
 
     [HideInInspector] public bool canMove;
@@ -30,9 +33,22 @@ public class Player : MonoBehaviour
     {
         rib = GetComponent<CharacterController>();// finds player
         Cursor.lockState = CursorLockMode.Confined; // confines cursor to window(Might need to click screen to get it to work)
-        originalPosition = transform.localPosition;
+
+        // Initialize sound sources
+        floatSoundSource = gameObject.AddComponent<AudioSource>();
+        possessSoundSource = gameObject.AddComponent<AudioSource>();
+        SoundManager.environmentSources.Add(floatSoundSource);
+        SoundManager.environmentSources.Add(possessSoundSource);
+        
+
         ghostBoi = transform.Find("GhostBoi");
         canMove = true;
+    }
+
+    void Start()
+    {
+        // Get Floatation clip
+        floatSoundSource.clip = SoundManager.instance.soundList[(int)SoundType.PLAYERMOVE].clips[0];
     }
 
     // Update is called once per frame
@@ -81,7 +97,10 @@ public class Player : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), Mathf.Clamp01(Time.deltaTime * 8));
 
                 // sound effect :)
-                SoundManager.StartSound(SoundType.PLAYERMOVE);
+                if (!floatSoundSource.isPlaying)
+                {
+                    floatSoundSource.Play();
+                }
             }
             else
             {
@@ -93,12 +112,12 @@ public class Player : MonoBehaviour
                     ghostBoi.localPosition = newPos;
                 }
                 
-                SoundManager.StopSound(SoundType.PLAYERMOVE);
+                floatSoundSource.Stop();
             }
         }
         else
         {
-            SoundManager.StopSound(SoundType.PLAYERMOVE);
+            floatSoundSource.Stop();
             if (!LevelLogic.Instance.playerLiving)
             {
                 DestroyImmediate(gameObject);
@@ -150,7 +169,7 @@ public class Player : MonoBehaviour
 
     public void Possess()
     {
-        SoundManager.PlaySound(SoundType.POSSESS);
+        SoundManager.PlaySoundWithSource(possessSoundSource, SoundType.POSSESS);
         LevelLogic.Instance.isPossessed = true;
         
         GameObject ghostBoi = GameObject.Find("GhostBoi");

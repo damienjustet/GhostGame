@@ -10,10 +10,11 @@ public class ItemCost : MonoBehaviour
     public float value;
     [Range(0f, 1f)] public float fragility;
     [Range(0f, 1f)] public float sensitivity;
-    posseion possessionScript;
 
     public GameObject showValueText;
     Text shownValueText;
+
+    AudioSource hurtAudioSource;
 
     public GameObject loseValueText;
     public Text shownText;
@@ -21,6 +22,13 @@ public class ItemCost : MonoBehaviour
 
 
     float ogValue;
+
+    void Awake()
+    {
+        // initialize audio source
+        hurtAudioSource = gameObject.AddComponent<AudioSource>();
+        SoundManager.environmentSources.Add(hurtAudioSource);
+    }
 
     void Start()
     {
@@ -43,7 +51,7 @@ public class ItemCost : MonoBehaviour
     {
         if (SoundManager.instance.canSound)
         {
-            SoundManager.PlaySound(SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
+            SoundManager.PlaySoundWithSource(hurtAudioSource, SoundType.ITEMHIT, Mathf.Max(GetVelocityMagnitude(collision.relativeVelocity) / 4, 0.1f));
         }
         
         if (canDamage)

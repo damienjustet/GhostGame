@@ -29,6 +29,16 @@ public class ThePOPE : MonoBehaviour
     bool goingToLastSeenPlayer;
     public GameOverAnimation gameOverScreen;
 
+    // Source for pope sounds
+    AudioSource popeAudioSource;
+
+    void Awake()
+    {
+        // Initialize audio source
+        popeAudioSource = gameObject.AddComponent<AudioSource>();
+        SoundManager.environmentSources.Add(popeAudioSource);
+    }
+    
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -97,7 +107,7 @@ public class ThePOPE : MonoBehaviour
                 {
                     if (!seePlayerSoundEffectPlayed)
                     {
-                        SoundManager.PlaySound(SoundType.POPEFIND);
+                        SoundManager.PlaySoundWithSource(popeAudioSource, SoundType.POPEFIND);
                         seePlayerSoundEffectPlayed = true;
                     }
                     agent.SetDestination(chaseObject.transform.position);
@@ -123,7 +133,7 @@ public class ThePOPE : MonoBehaviour
                 {
                     if (seePlayerSoundEffectPlayed)
                     {
-                        SoundManager.PlaySound(SoundType.POPECURIOUS);
+                        SoundManager.PlaySoundWithSource(popeAudioSource, SoundType.POPECURIOUS);
                         seePlayerSoundEffectPlayed = false;
                     }
                 }

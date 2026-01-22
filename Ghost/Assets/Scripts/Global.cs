@@ -30,6 +30,10 @@ public class Global : MonoBehaviour
     public Player playerScript;
     public CapsuleCollider playerCollider;
 
+    // Volume
+    public float musicVolume;
+    public float soundVolume;
+
     bool firstTime = true;
 
     
@@ -37,6 +41,8 @@ public class Global : MonoBehaviour
     {
         if (Instance != null)
         {
+            musicVolume = Instance.musicVolume;
+            soundVolume = Instance.soundVolume;
             Destroy(Instance);
         }
         Instance = this;
@@ -95,6 +101,7 @@ public class Global : MonoBehaviour
     public void LoadAScene(string sceneName)
     {
         StartCoroutine(LoadATheScene(sceneName));
+        SoundManager.environmentSources.Clear();
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
@@ -119,7 +126,6 @@ public class Global : MonoBehaviour
             Debug.Log("Loading Progress: " + asyncSceneLoading.progress);
             yield return null; // Wait for the next frame
         }
-        GameObject.Find("Scene Builder").GetComponent<SceneBuilder>().StartScene();
         
         if (gameplayScenes.Contains(sceneName))
         {

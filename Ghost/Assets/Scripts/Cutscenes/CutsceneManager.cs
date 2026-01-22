@@ -88,13 +88,14 @@ public class CutsceneManager : MonoBehaviour
         dialogInCutscene = 0;
         typeTimer = 0;
         inCutscene = true;
-        cutscenes[cutsceneNumber].animation.SetBool(cutscenes[cutsceneNumber].parameterName, true);
+        cutscenes[cutsceneNumber].animation.SetTrigger(cutscenes[cutsceneNumber].parameterName);
         CameraToCurrent();
     }
 
     public void EndCutscene()
     {
-        cutscenes[cutsceneNumber].animation.SetBool(cutscenes[cutsceneNumber].parameterName, false);
+        cutscenes[cutsceneNumber].animation.ResetTrigger(cutscenes[cutsceneNumber].parameterName);
+        cutscenes[cutsceneNumber].animation.SetTrigger("Rest");
         player.canMove = true;
         boxBox.SetActive(false);
         inCutscene = false;

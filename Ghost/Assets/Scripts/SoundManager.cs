@@ -42,8 +42,11 @@ public class SoundManager : MonoBehaviour
     [HideInInspector] public AudioSource musicSource;
     [Range(0f,1f)] public float musicVolume;
 
+    [HideInInspector] public static List<AudioSource> environmentSources = new List<AudioSource>();
+
     void Awake()
     {
+        // environmentSources = new List<AudioSource>();
         canSound = false;
         AudioSource[] sources = GetComponents<AudioSource>();
         foreach (AudioSource s in sources)
@@ -51,13 +54,8 @@ public class SoundManager : MonoBehaviour
             DestroyImmediate(s);
         }
         instance = this;
-        foreach (SoundList sList in soundList)
-        {
-            sList.volumeAndPitch.source = gameObject.AddComponent<AudioSource>();
-            sList.volumeAndPitch.source.volume = sList.volumeAndPitch.volume;
-            sList.volumeAndPitch.source.pitch = sList.volumeAndPitch.pitch;
-            sList.volumeAndPitch.source.loop = sList.volumeAndPitch.loop;
-        }
+    
+        // Music
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.volume = musicVolume;
         musicSource.loop = true;
@@ -67,10 +65,13 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
+        EnableDistanceVolume();
+        ChangeVolume(AudioType.MUSIC);
+        ChangeVolume(AudioType.ENVIRONMENT);
         Global.Instance.StartMusic();
     }
 
-    public static void PlaySound(SoundType sound, float volume = 1)
+    public static void PlaySoundWithSource(AudioSource audioSource, SoundType sound, float volume = 1)
     {
         if (instance.canSound)
         {
@@ -80,44 +81,12 @@ public class SoundManager : MonoBehaviour
             float pitchOffset = instance.soundList[(int)sound].volumeAndPitch.randomPitchOffset;
             if (pitchOffset > 0)
             {
-                instance.soundList[(int)sound].volumeAndPitch.source.pitch = UnityEngine.Random.Range(pitch - pitchOffset,pitch + pitchOffset);
+                audioSource.pitch = UnityEngine.Random.Range(pitch - pitchOffset,pitch + pitchOffset);
             }
-            instance.soundList[(int)sound].volumeAndPitch.source.PlayOneShot(randomClip, volume); 
+            audioSource.PlayOneShot(randomClip, volume); 
         }
+    }
 
-    }
-
-    public static void StartSound(SoundType sound)
-    {
-        if (!instance.soundList[(int)sound].volumeAndPitch.source.isPlaying)
-        {
-            AudioClip[] clips = instance.soundList[(int)sound].clips;
-            AudioClip randomClip = clips[UnityEngine.Random.Range(0,clips.Length)];
-            instance.soundList[(int)sound].volumeAndPitch.source.clip = randomClip;
-            instance.soundList[(int)sound].volumeAndPitch.source.Play();
-            instance.soundList[(int)sound].volumeAndPitch.source.volume = 0;
-        }
-        if (instance.soundList[(int)sound].volumeAndPitch.source.volume < instance.soundList[(int)sound].volumeAndPitch.volume)
-        {
-            instance.soundList[(int)sound].volumeAndPitch.source.volume += 5 * Time.deltaTime;
-        }
-        else
-        {
-            instance.soundList[(int)sound].volumeAndPitch.source.volume = instance.soundList[(int)sound].volumeAndPitch.volume;
-        }
-        
-    }
-    public static void StopSound(SoundType sound)
-    {
-        if (instance.soundList[(int)sound].volumeAndPitch.source.isPlaying)
-        {
-            instance.soundList[(int)sound].volumeAndPitch.source.volume -= 5 * Time.deltaTime;
-            if (instance.soundList[(int)sound].volumeAndPitch.source.volume <= 0)
-            {
-                instance.soundList[(int)sound].volumeAndPitch.source.Stop();
-            }
-        }
-    }
     public static void StartSong(MusicType song, float volume = 1)
     {
         AudioClip clip = instance.songList[(int)song].song;
@@ -126,19 +95,24 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    public void ChangeVolume(AudioType audioType, float volume)
+    public void ChangeVolume(AudioType audioType)
     {
         if (audioType == AudioType.MUSIC)
         {
-            instance.musicSource.volume = volume;
+            instance.musicSource.volume = Global.Instance.musicVolume;
         }
         else
         {
-            foreach (SoundList soundy in soundList)
+            foreach (AudioSource source in environmentSources)
             {
-                soundy.volumeAndPitch.source.volume = volume;
+                source.volume = Global.Instance.soundVolume;
             }
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        DestroyImmediate(instance.musicSource);
     }
 
 #if UNITY_EDITOR
@@ -160,6 +134,15 @@ public class SoundManager : MonoBehaviour
     }
 #endif
 
+    void EnableDistanceVolume()
+    {
+        foreach (AudioSource source in environmentSources)
+        {
+            source.spatialBlend = 1;
+            source.rolloffMode = AudioRolloffMode.Logarithmic;
+            source.maxDistance = 35;
+        }
+    }
 }
 
 [Serializable]

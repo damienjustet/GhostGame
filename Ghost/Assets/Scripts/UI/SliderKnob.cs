@@ -51,7 +51,17 @@ public class SliderKnob : MonoBehaviour
                     rt.anchoredPosition = new Vector2(mouseX, rt.anchoredPosition.y);
                 }
                 print((rt.anchoredPosition.x - minX) / (maxX - minX));
-                SoundManager.instance.ChangeVolume(audioType, (rt.anchoredPosition.x - minX) / (maxX - minX));
+
+                // Changes the volume
+                if (audioType == AudioType.ENVIRONMENT)
+                {
+                    Global.Instance.soundVolume = (rt.anchoredPosition.x - minX) / (maxX - minX);
+                }
+                else
+                {
+                    Global.Instance.musicVolume = (rt.anchoredPosition.x - minX) / (maxX - minX);
+                }
+                SoundManager.instance.ChangeVolume(audioType);
             }
             else if (dragging)
             {

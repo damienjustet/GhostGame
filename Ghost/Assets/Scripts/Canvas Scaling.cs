@@ -12,12 +12,13 @@ public class CanvasScaling : MonoBehaviour
     void Start()
     {
         ResizeScreen();   
+        rt = GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
     public void ResizeScreen()
     {
-        GameObject mainCamera = GameObject.Find("Main Camera(Clone)");
+        GameObject mainCamera = Camera.main.gameObject;
         if (mainCamera != null)
         {
             PixelArtCamera pixelCam = mainCamera.GetComponent<PixelArtCamera>();
