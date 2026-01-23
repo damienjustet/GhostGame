@@ -8,6 +8,10 @@ public class CanvasScaling : MonoBehaviour
     float thisWidth;
     float thisHeight;
     RectTransform rt;
+
+    // Get ui elements for positioning
+    public List<PositionOnCanvas> uiElementsToPosition = new List<PositionOnCanvas>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,14 +56,16 @@ public class CanvasScaling : MonoBehaviour
         kpr.anchoredPosition = new Vector2(0, -Screen.height / 3);
         kpr.localScale = new Vector3(1,1,1);
 
-        PositionOnCanvas[] uiToScale = FindObjectsByType<PositionOnCanvas>(FindObjectsSortMode.None);
-        foreach (PositionOnCanvas ui in uiToScale)
+        if (Global.Instance != null)
         {
-            ui.rt.anchoredPosition = new Vector2(ui.canvasWidthPercent / 100 * thisWidth - thisWidth / 2, ui.canvasHeightPercent / 100 * thisHeight - thisHeight / 2);
+            Global.Instance.canvasHeight = thisHeight;
+            Global.Instance.canvasWidth = thisWidth;
         }
 
-        Global.Instance.canvasHeight = thisHeight;
-        Global.Instance.canvasWidth = thisWidth;
+        foreach (PositionOnCanvas ui in uiElementsToPosition)
+        {
+            ui.PositionUI();
+        }
     }
 
 }

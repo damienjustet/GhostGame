@@ -34,7 +34,7 @@ public class Global : MonoBehaviour
     public float musicVolume;
     public float soundVolume;
 
-    bool firstTime = true;
+    public bool firstTime = true;
 
     
     private void Awake()

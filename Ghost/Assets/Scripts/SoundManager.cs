@@ -105,14 +105,12 @@ public class SoundManager : MonoBehaviour
         {
             foreach (AudioSource source in environmentSources)
             {
-                source.volume = Global.Instance.soundVolume;
+                if (source != null)
+                {
+                    source.volume = Global.Instance.soundVolume;
+                }
             }
         }
-    }
-
-    void OnApplicationQuit()
-    {
-        DestroyImmediate(instance.musicSource);
     }
 
 #if UNITY_EDITOR
@@ -138,9 +136,12 @@ public class SoundManager : MonoBehaviour
     {
         foreach (AudioSource source in environmentSources)
         {
-            source.spatialBlend = 1;
-            source.rolloffMode = AudioRolloffMode.Logarithmic;
-            source.maxDistance = 35;
+            if (source != null)
+            {
+                source.spatialBlend = 1;
+                source.rolloffMode = AudioRolloffMode.Logarithmic;
+                source.maxDistance = 35;
+            }
         }
     }
 }

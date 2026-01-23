@@ -7,6 +7,14 @@ public class TutorialUpAndDownTrigger : MonoBehaviour
     public int cutsceneIndex;
     bool canPlayCutscene = false;
 
+    void Start()
+    {
+        if (!Global.Instance.firstTime)
+        {
+            Destroy(this);
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "player(Clone)")

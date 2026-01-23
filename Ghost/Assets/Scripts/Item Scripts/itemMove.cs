@@ -22,6 +22,11 @@ public class itemMove : MonoBehaviour
     public float maxFloatation;
     bool atMaxFloatation;
 
+    // Axis inputs
+    float y_input = 0;
+    float x_input = 0;
+    float y_direction = 0;
+
     private void Awake()
     {
         //references
@@ -64,16 +69,25 @@ public class itemMove : MonoBehaviour
     void Update()
     {
         //Handles movement
-        float y_input = Input.GetAxis("Vertical");
-        float x_input = Input.GetAxis("Horizontal");
-        float y_direction = 0;
-        if (Input.GetKey(KeyCode.Space))
+        if (!CutsceneManager.Instance.inCutscene)
         {
-            y_direction = 1;
+            y_input = Input.GetAxis("Vertical");
+            x_input = Input.GetAxis("Horizontal");
+            y_direction = 0;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                y_direction = 1;
+            }
+            else if (Input.GetKey(KeyCode.LeftShift))
+            {
+                y_direction = -1;
+            }
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else
         {
-            y_direction = -1;
+            y_input = 0;
+            x_input = 0;
+            y_direction = 0; 
         }
 
         rb.angularVelocity = new Vector3(0,0,0);

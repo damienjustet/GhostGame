@@ -15,7 +15,7 @@ public class CutsceneManager : MonoBehaviour
     public GameObject boxBox;
     public Player player;
     public GameObject eKey;
-    [HideInInspector] public bool inCutscene = false;
+    [HideInInspector] public bool inCutscene;
     int cutsceneNumber = 0;
     int dialogInCutscene = 0;
 
@@ -38,6 +38,7 @@ public class CutsceneManager : MonoBehaviour
 
         boxBox.SetActive(false);
         cm.enabled = true;
+        inCutscene = false;
     }
 
     // Update is called once per frame
