@@ -63,10 +63,6 @@ public class Global : MonoBehaviour
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
         }
         
-        if (SceneManager.GetActiveScene().name == "TUTORIAL" && firstTime)
-        {
-            CutsceneManager.Instance.StartCutscene(0);
-        }
     }
 
     void Update()
