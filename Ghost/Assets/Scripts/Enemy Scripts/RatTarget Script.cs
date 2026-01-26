@@ -119,9 +119,7 @@ public class RatTargetScript : MonoBehaviour
     {
 
         Vector3 randomDirection = Random.insideUnitSphere * dist;
-       //Vector3 playerToItem = item1.transform.position - selfTransform.position;
         randomDirection += origin;
-        //randomDirection -= playerToItem;
         NavMeshHit navHit;
         NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
         return navHit.position;
@@ -129,7 +127,7 @@ public class RatTargetScript : MonoBehaviour
 
   void scanItems(bool stuck = false)
     {
-        
+        print(closestItem);
             for(int i = 1; i < item.Count; i++)
         {
             
