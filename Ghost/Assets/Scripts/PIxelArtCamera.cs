@@ -59,6 +59,7 @@ public class PixelArtCamera : MonoBehaviour
             {
                 Debug.LogWarning("[PixelArtCamera] Main Camera GameObject not found!");
             }
+
         }
     }
     

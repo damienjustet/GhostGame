@@ -190,52 +190,19 @@ public class Player : MonoBehaviour
             Debug.LogError("[Player] Possess: GhostBoi GameObject not found!");
         }
         
-        if (player != null)
-        {
-            Collider playerCollider = player.GetComponent<Collider>();
-            CharacterController playerController = player.GetComponent<CharacterController>();
+        Collider playerCollider = player.GetComponent<Collider>();
+        CharacterController playerController = player.GetComponent<CharacterController>();
+        playerCollider.enabled = false;
+        playerController.enabled = false;
             
-            if (playerCollider != null)
-            {
-                playerCollider.enabled = false;
-            }
-            else
-            {
-                Debug.LogError("[Player] Possess: Player Collider not found!");
-            }
             
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
-            else
-            {
-                Debug.LogError("[Player] Possess: Player CharacterController not found!");
-            }
-        }
-        else
+        Renderer detectRenderer = detect.GetComponent<Renderer>();
+        if (detectRenderer != null)
         {
-            Debug.LogError("[Player] Possess: Player GameObject reference is null!");
+            detectRenderer.enabled = false;
         }
+            
         
-        if (detect != null)
-        {
-            Renderer detectRenderer = detect.GetComponent<Renderer>();
-            if (detectRenderer != null)
-            {
-                detectRenderer.enabled = false;
-            }
-            else
-            {
-                Debug.LogError("[Player] Possess: Detect has no Renderer component!");
-            }
-        }
-        else
-        {
-            Debug.LogError("[Player] Possess: Detect GameObject reference is null!");
-        }
-        
-        Debug.Log("[Player] Possessed successfully");
     }
 
 }
