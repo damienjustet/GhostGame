@@ -122,7 +122,7 @@ public class posseion : MonoBehaviour
             }
             RaycastHit hit;
             
-            Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.red, 1000f);
+            Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.red);
             if (Physics.Raycast(transform.position, Vector3.down * 1.5f, out hit, 1.5f))
             {
                 if(hit.collider.gameObject.layer == 10)
