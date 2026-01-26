@@ -122,8 +122,6 @@ public class Global : MonoBehaviour
         // Wait until the asynchronous scene fully loads
         while (!asyncSceneLoading.isDone)
         {
-            // Optional: Update a loading bar or display progress
-            Debug.Log("Loading Progress: " + asyncSceneLoading.progress);
             yield return null; // Wait for the next frame
         }
         

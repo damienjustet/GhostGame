@@ -64,7 +64,7 @@ public class CanvasScaling : MonoBehaviour
 
         foreach (PositionOnCanvas ui in uiElementsToPosition)
         {
-            ui.PositionUI();
+            ui.PositionUI(thisHeight, thisWidth);
         }
     }
 

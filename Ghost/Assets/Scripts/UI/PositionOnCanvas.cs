@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PositionOnCanvas : MonoBehaviour
 {
-    [Range(0f,100f)] public float canvasWidthPercent;
-    [Range(0f,100f)] public float canvasHeightPercent;
-
     // Canvas scaling object for positioning
     public CanvasScaling scaler;
 
@@ -44,15 +41,15 @@ public class PositionOnCanvas : MonoBehaviour
         scaler.uiElementsToPosition.Add(this);
     }
 
-    public void PositionUI()
+    public void PositionUI(float height, float width)
     {
         if (xAxisAlignment == PositionsX.Left)
         {
-            xPos = - Global.Instance.canvasWidth / 2 + xAxisPadding;
+            xPos = - width / 2 + xAxisPadding;
         }
         else if (xAxisAlignment == PositionsX.Right)
         {
-            xPos = Global.Instance.canvasWidth / 2 - xAxisPadding;
+            xPos = width / 2 - xAxisPadding;
         }
         else
         {
@@ -61,11 +58,11 @@ public class PositionOnCanvas : MonoBehaviour
 
         if (yAxisAlignment == PositionsY.Bottom)
         {
-            yPos = - Global.Instance.canvasHeight / 2 + yAxisPadding;
+            yPos = - height / 2 + yAxisPadding;
         }
         else if (yAxisAlignment == PositionsY.Top)
         {
-            yPos = Global.Instance.canvasHeight / 2 - yAxisPadding;
+            yPos = height / 2 - yAxisPadding;
         }
         else
         {
@@ -75,12 +72,5 @@ public class PositionOnCanvas : MonoBehaviour
         rt.anchoredPosition = new Vector2(xPos, yPos);
     }
 
-#if UNITY_EDITOR
-
-    void OnEnable()
-    {
-        PositionUI();
-    }
-#endif
 
 }
