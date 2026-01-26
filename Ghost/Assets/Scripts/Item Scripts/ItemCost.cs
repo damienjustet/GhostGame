@@ -23,6 +23,12 @@ public class ItemCost : MonoBehaviour
 
     float ogValue;
 
+    // For collection event
+    bool collected = false;
+    Vector3 ogScale;
+    float shrinkTimer;
+
+
     void Awake()
     {
         // initialize audio source
@@ -36,6 +42,7 @@ public class ItemCost : MonoBehaviour
         shownText = loseValueText.GetComponent<Text>();
         ogValue = value;
         CreateShownValue();
+        ogScale = gameObject.transform.localScale;
     }
 
 
@@ -86,6 +93,18 @@ public class ItemCost : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (collected)
+        {
+            shrinkTimer += Time.deltaTime;
+            if (shrinkTimer >= 2)
+            {
+                gameObject.transform.localScale = ogScale - ogScale * (shrinkTimer - 2);
+            }
+            if (shrinkTimer >= 3)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     public void Collect(Vector3 depossessCoord)
@@ -98,6 +117,7 @@ public class ItemCost : MonoBehaviour
             gameObject.GetComponent<posseion>().Depossess();
             Destroy(gameObject.GetComponent<itemMove>());
         }
+        collected = true;
 
     }
 

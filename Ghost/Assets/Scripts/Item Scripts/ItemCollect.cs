@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemCollect : MonoBehaviour
 {
+    
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Collectable")
@@ -12,6 +13,8 @@ public class ItemCollect : MonoBehaviour
             
             collider.GetComponent<ItemCost>().Collect(transform.position + Vector3.right);
             
+            
         }
     }
+
 }
