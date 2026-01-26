@@ -26,7 +26,6 @@ public class CutsceneManager : MonoBehaviour
     
     public Cutscene[] cutscenes;
 
-    
 
     void Awake()
     {
@@ -130,4 +129,5 @@ public class Dialogue
     public Vector3 cameraRotation;
     [TextArea(3, 10)]
     public string words;
+
 }
