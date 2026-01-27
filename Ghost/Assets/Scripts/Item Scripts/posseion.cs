@@ -185,10 +185,6 @@ public class posseion : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-
-            Debug.Break();
-        
-
         //Raycast for Rat
        
     }
