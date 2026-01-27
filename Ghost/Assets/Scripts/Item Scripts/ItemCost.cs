@@ -110,13 +110,12 @@ public class ItemCost : MonoBehaviour
     public void Collect(Vector3 depossessCoord)
     {
         canDamage = false;
-        value = 0;
-        gameObject.layer = LayerMask.NameToLayer("Collected Item");
         if (gameObject.GetComponent<itemMove>() != null)
         {
             gameObject.GetComponent<posseion>().Depossess();
-            Destroy(gameObject.GetComponent<itemMove>());
         }
+        gameObject.layer = LayerMask.NameToLayer("Collected Item");
+        value = 0;
         collected = true;
 
     }

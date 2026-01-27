@@ -222,7 +222,7 @@ public class posseion : MonoBehaviour
                         ray = new Ray(boxCenter, Vector3.down);
                         Physics.Raycast(ray, out hit);
                         boxCenter.y = boxSize.y / 2 + hit.point.y + 0.1f;
-                        colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                        colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default", "Collected Item"));
                         if (colliders.Length == 0)
                         {
                             boxCenter.y = hit.point.y;
@@ -246,7 +246,7 @@ public class posseion : MonoBehaviour
                     ray = new Ray(boxCenter, Vector3.down);
                     Physics.Raycast(ray, out hit);
                     boxCenter.y = boxSize.y / 2 + hit.point.y + 0.1f;
-                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default", "Collected Item"));
                     if (colliders.Length == 0)
                     {
                         boxCenter.y = hit.point.y;
@@ -275,7 +275,7 @@ public class posseion : MonoBehaviour
                     ray = new Ray(transform.position, Vector3.down);
                     Physics.Raycast(ray, out hit);
                     boxCenter.y = boxSize.y / 2 + hit.point.y;
-                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default"));
+                    colliders = Physics.OverlapBox(boxCenter, boxSize / 2, Quaternion.identity, LayerMask.GetMask("Walls", "item", "Default", "Collected Item"));
                     if (colliders.Length == 1)
                     {
                         boxCenter.y = hit.point.y;
@@ -301,7 +301,7 @@ public class posseion : MonoBehaviour
             target = coord - transform.position;   
             target.y = 0;
             float dist = Mathf.Sqrt(Mathf.Pow(target.x, 2) + Mathf.Pow(target.z, 2));
-            if (!Physics.Raycast(transform.position, target, out hit, dist, LayerMask.GetMask("Walls", "Default", "CameraPassthrough")))
+            if (!Physics.Raycast(transform.position, target, out hit, dist, LayerMask.GetMask("Walls", "Default", "CameraPassthrough", "Collected Item")))
             {
                 Debug.DrawRay(transform.position, target, Color.blue);
             }
