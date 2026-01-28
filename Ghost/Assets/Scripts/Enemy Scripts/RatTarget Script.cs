@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -23,10 +24,11 @@ public class RatTargetScript : MonoBehaviour
     GameObject currentItem;
     public List<GameObject> item = new List<GameObject>();
     bool stuck = false;
+    bool inSight;
     Transform selfPos;
 
 
-    void Start()
+    void Awake()
     {
         
         
@@ -41,7 +43,6 @@ public class RatTargetScript : MonoBehaviour
         
         
         
-        
 
         if (item == null)
         {
@@ -51,9 +52,11 @@ public class RatTargetScript : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
         
-        
+       
+            
+            
             
             
         
@@ -83,11 +86,13 @@ public class RatTargetScript : MonoBehaviour
                    
 
             }
-                    else
-                    {
-                        agent.SetDestination(RandomNavSphere(transform.position, wanderRadius,0,selfPos));
-                    }
+                   
                 }
+                 else
+                    {
+                        
+                        agent.SetDestination(RandomNavSphere(transform.position, wanderRadius,-1,selfPos));
+                    }
             
            
             
@@ -113,6 +118,7 @@ public class RatTargetScript : MonoBehaviour
         }
         
     }
+    
 
     // Function to find a random point on the NavMesh within a sphere
     public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask, Transform selfTransform)
@@ -122,16 +128,34 @@ public class RatTargetScript : MonoBehaviour
         randomDirection += origin;
         NavMeshHit navHit;
         NavMesh.SamplePosition(randomDirection, out navHit, dist, layermask);
+        
         return navHit.position;
     }
 
   void scanItems(bool stuck = false)
     {
+        items = GameObject.FindGameObjectsWithTag("Collectable");
+        item.Clear();
+        item.AddRange(items);
         print(closestItem);
             for(int i = 1; i < item.Count; i++)
         {
+             Vector3 dir = (transform.position - item[i].transform.position).normalized;
             
-            if(closestItem == null && item[i].GetComponent<posseion>().isGrounded)
+            Debug.DrawRay(transform.position, dir * 10, Color.magenta, 1f);
+            if(Physics.Raycast(transform.position, dir ,out RaycastHit hit, 50f, 7))
+            {
+                if(hit.collider.gameObject == item[i])
+                {
+                    inSight = true;
+                    print("hi");
+                }
+                else
+                {
+                    inSight = false;
+                }
+            
+            if(closestItem == null && item[i].GetComponent<posseion>().isGrounded && inSight)
             {
                 closestItem = item[i];
                 
@@ -162,7 +186,8 @@ public class RatTargetScript : MonoBehaviour
                 
             }
             
-        }
+    }}
+        
         
     
         
