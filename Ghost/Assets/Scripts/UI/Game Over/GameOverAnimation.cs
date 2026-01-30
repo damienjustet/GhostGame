@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameOverAnimation : MonoBehaviour
 {
     RectTransform rt;
     public int direction;
     bool animating = false;
+    PositionOnCanvas positionOnCanvas;
 
     void Start()
     {
@@ -15,6 +17,8 @@ public class GameOverAnimation : MonoBehaviour
         {
             Global.Instance.gameOverAnimation = this;
         }
+
+        positionOnCanvas = GetComponent<PositionOnCanvas>();
         
     }
     void Update()
@@ -27,7 +31,7 @@ public class GameOverAnimation : MonoBehaviour
         {
             rt.anchoredPosition = new Vector2(0,0);
         }
-        else if (!(rt.anchoredPosition.y <= -600) && animating && direction == -1)
+        else if (!(rt.anchoredPosition.y <= -(Global.Instance.canvasHeight / 2) + positionOnCanvas.yAxisPadding) && animating && direction == -1)
         {
             rt.anchoredPosition -= new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / -1200)) * 5000 * Time.unscaledDeltaTime;
         }

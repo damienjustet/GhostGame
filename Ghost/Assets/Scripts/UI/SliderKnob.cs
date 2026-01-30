@@ -28,6 +28,16 @@ public class SliderKnob : MonoBehaviour
 
         maxX = gameObject.transform.Find("SliderMax").GetComponent<RectTransform>().anchoredPosition.x;
         minX = gameObject.transform.Find("SliderMin").GetComponent<RectTransform>().anchoredPosition.x;
+
+        if (audioType == AudioType.ENVIRONMENT)
+        {
+            rt.anchoredPosition = new Vector2((Global.Instance.soundVolume * (maxX - minX)) + minX, rt.anchoredPosition.y);
+        }
+        else
+        {
+            rt.anchoredPosition = new Vector2((Global.Instance.musicVolume * (maxX - minX)) + minX, rt.anchoredPosition.y);
+        }
+        
     }
 
     void Update()

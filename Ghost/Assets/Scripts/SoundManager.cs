@@ -139,8 +139,8 @@ public class SoundManager : MonoBehaviour
             if (source != null)
             {
                 source.spatialBlend = 1;
-                source.rolloffMode = AudioRolloffMode.Logarithmic;
-                source.maxDistance = 35;
+                source.rolloffMode = AudioRolloffMode.Linear;
+                source.maxDistance = 100;
             }
         }
     }
