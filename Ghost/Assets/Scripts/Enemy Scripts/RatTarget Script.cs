@@ -14,7 +14,7 @@ public class RatTargetScript : MonoBehaviour
     public float wanderRadius = 10f; // Radius within which the character will wander
     public float wanderTimer = 2f;   // Time before choosing a new destination
 
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     private float timer;
     public GameObject[] items;
     public GameObject closestItem;
@@ -109,7 +109,7 @@ public class RatTargetScript : MonoBehaviour
                 ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
                 GameObject.Find("ratHole").GetComponent<EnemyManager>().RatSpawn = false;
-                
+                Debug.Log($"[RatEatScript] Rat {gameObject.name} scurrying away after 4 attacks.");
             }
             else
             {
@@ -140,15 +140,15 @@ public class RatTargetScript : MonoBehaviour
         print(closestItem);
             for(int i = 1; i < item.Count; i++)
         {
-             Vector3 dir = (transform.position - item[i].transform.position).normalized;
+             Vector3 dir = (item[i].transform.position - transform.position).normalized;
             
             Debug.DrawRay(transform.position, dir * 10, Color.magenta, 1f);
-            if(Physics.Raycast(transform.position, dir ,out RaycastHit hit, 50f, 7))
+            if(Physics.Raycast(transform.position, dir ,out RaycastHit hit, 50f))
             {
                 if(hit.collider.gameObject == item[i])
                 {
                     inSight = true;
-                    print("hi");
+                    
                 }
                 else
                 {
