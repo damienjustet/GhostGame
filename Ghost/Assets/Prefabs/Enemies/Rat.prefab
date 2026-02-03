@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8623815134008398847}
   - component: {fileID: 1137361519964567787}
   - component: {fileID: 503221563122793790}
-  - component: {fileID: 4251593591737499315}
   - component: {fileID: 6637939149335153932}
   - component: {fileID: -7149153507801527031}
   - component: {fileID: 7391291060500796791}
@@ -102,27 +101,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &4251593591737499315
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5954477478188483450}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 9.348876
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &6637939149335153932
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -159,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wanderRadius: 20
   wanderTimer: 1
+  agent: {fileID: 0}
   items: []
   closestItem: {fileID: 0}
   scurryAway: 0

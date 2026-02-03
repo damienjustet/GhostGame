@@ -11,6 +11,7 @@ public class RatDespawner : MonoBehaviour
         if (other.gameObject.name == "Rat(Clone)" && GetComponent<EnemyManager>().RatSpawn == false){
 
             Destroy(other.gameObject);
+            
            
         }
     }
