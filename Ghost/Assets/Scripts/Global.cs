@@ -36,6 +36,11 @@ public class Global : MonoBehaviour
 
     public bool firstTime = true;
 
+
+    // Transitioning
+    public Transition transition;
+    string sceneToLoad = "";
+
     
     private void Awake()
     {
@@ -82,21 +87,17 @@ public class Global : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void SceneLoadReady()
     {
-        LoadAScene("LOBBY");
-        gameplay = false;
+        StartCoroutine(LoadATheScene(sceneToLoad));
+        SoundManager.environmentSources.Clear();
     }
-
     
     public void LoadAScene(string sceneName)
     {
-        StartCoroutine(LoadATheScene(sceneName));
-        SoundManager.environmentSources.Clear();
-        if (Time.timeScale == 0)
-        {
-            Time.timeScale = 1;
-        }
+        Debug.Log("h");
+        sceneToLoad = sceneName;
+        transition.StartTransition();
     }
 
     IEnumerator LoadATheScene(string sceneName)

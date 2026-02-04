@@ -9,6 +9,7 @@ public class GameOverAnimation : MonoBehaviour
     public int direction;
     bool animating = false;
     PositionOnCanvas positionOnCanvas;
+    
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class GameOverAnimation : MonoBehaviour
     {
         if (!(rt.anchoredPosition.y >= 0) && animating && direction == 1)
         {
-            rt.anchoredPosition += new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / -1200)) * 5000 * Time.unscaledDeltaTime;
+            rt.anchoredPosition += new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / (-Global.Instance.canvasHeight + positionOnCanvas.yAxisPadding))) * 5000 * Time.unscaledDeltaTime;
         }
         else if ((rt.anchoredPosition.y > 0) && animating && direction == 1)
         {
@@ -33,7 +34,7 @@ public class GameOverAnimation : MonoBehaviour
         }
         else if (!(rt.anchoredPosition.y <= -(Global.Instance.canvasHeight / 2) + positionOnCanvas.yAxisPadding) && animating && direction == -1)
         {
-            rt.anchoredPosition -= new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / -1200)) * 5000 * Time.unscaledDeltaTime;
+            rt.anchoredPosition -= new Vector2(0, Mathf.Sin(Mathf.PI  * (rt.anchoredPosition.y - 5) / (-Global.Instance.canvasHeight + positionOnCanvas.yAxisPadding))) * 5000 * Time.unscaledDeltaTime;
         }
         else
         {

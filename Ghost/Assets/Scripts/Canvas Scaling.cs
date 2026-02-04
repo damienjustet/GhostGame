@@ -60,12 +60,15 @@ public class CanvasScaling : MonoBehaviour
         {
             Global.Instance.canvasHeight = thisHeight;
             Global.Instance.canvasWidth = thisWidth;
+
+            Debug.Log(thisHeight + " " + thisWidth);
         }
 
         foreach (PositionOnCanvas ui in uiElementsToPosition)
         {
             ui.PositionUI(thisHeight, thisWidth);
         }
+
     }
 
 }
