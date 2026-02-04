@@ -10,11 +10,17 @@ public class Transition : MonoBehaviour
     public void StartTransition()
     {
         animator.SetTrigger("Start Transition");
+        Time.timeScale = 0;
     }
 
     public void SceneCanLoad()
     {
         Global.Instance.SceneLoadReady();
+    }
+    
+    public void SceneLoaded()
+    {
+        Time.timeScale = 1;
     }
 
 }
