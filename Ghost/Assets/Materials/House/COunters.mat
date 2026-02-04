@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: COunters
+  m_Name: Counters
   m_Shader: {fileID: -6465566751694194690, guid: ed9e723f0f368f6479d8ab5063d3d657, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
