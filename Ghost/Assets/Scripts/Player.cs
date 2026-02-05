@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
         possessSoundSource = gameObject.AddComponent<AudioSource>();
         SoundManager.environmentSources.Add(floatSoundSource);
         SoundManager.environmentSources.Add(possessSoundSource);
+
+        floatSoundSource.pitch = 0.7f;
         
 
         ghostBoi = transform.Find("GhostBoi");

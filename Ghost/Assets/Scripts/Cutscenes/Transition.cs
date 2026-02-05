@@ -15,7 +15,13 @@ public class Transition : MonoBehaviour
 
     public void SceneCanLoad()
     {
+        print("YAR");
         Global.Instance.SceneLoadReady();
+    }
+
+    public void UnTransition()
+    {
+        animator.SetTrigger("Untransition");
     }
     
     public void SceneLoaded()

@@ -67,7 +67,8 @@ public class Global : MonoBehaviour
         playerScript = playerObj.GetComponent<Player>();
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
         }
-        
+
+        transition.UnTransition();
     }
 
     void Update()
@@ -85,17 +86,20 @@ public class Global : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
+
     }
 
     public void SceneLoadReady()
     {
+        print("hello");
         StartCoroutine(LoadATheScene(sceneToLoad));
         SoundManager.environmentSources.Clear();
+        
+        transition.UnTransition();
     }
     
     public void LoadAScene(string sceneName)
     {
-        Debug.Log("h");
         sceneToLoad = sceneName;
         transition.StartTransition();
     }
