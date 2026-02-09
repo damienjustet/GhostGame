@@ -18,6 +18,7 @@ public class LevelLogic : MonoBehaviour
     float finish_cooldown;
     public float quota = 5000.00f;
     string extraQuotaText;
+    public float totalMoneys = 0;
 
     
     SoundManager sm;

@@ -45,6 +45,8 @@ public class LobbySceneSelector : MonoBehaviour
     {
         if(interact == true && Input.GetKeyDown(KeyCode.E))
         {
+            LevelLogic.Instance.totalMoneys += LevelLogic.Instance.money;
+            SaveAndLoadScript.SaveGame(LevelLogic.Instance.totalMoneys);
             Global.Instance.LoadAScene(scene);
         }
     }
