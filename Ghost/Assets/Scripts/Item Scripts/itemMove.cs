@@ -97,6 +97,8 @@ public class itemMove : MonoBehaviour
 
         movement.y = y_direction;
         movement *= moveSpeed;    
+
+        // No flying off into the distance
         CheckDown(maxFloatation);   
         if (atMaxFloatation && goalMaxFloatation.y < transform.position.y)
         {
@@ -160,8 +162,13 @@ public class itemMove : MonoBehaviour
                 if (transform.position.y - goalMaxFloatation.y < 0.2f)
                 {
                     transform.position = goalMaxFloatation;
+                    atMaxFloatation = false;
                 }
-                atMaxFloatation = true;
+                else
+                {
+                    atMaxFloatation = true;
+                }
+                
             }
             else
             {

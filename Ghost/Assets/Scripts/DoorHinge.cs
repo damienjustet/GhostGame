@@ -38,12 +38,12 @@ public class DoorHinge : MonoBehaviour
         if (isOpen)
         {
             CloseDoor();
-            SoundManager.PlaySoundWithSource(doorSoundSource, SoundType.DOORCLOSE);
+            
         }
         else
         {
             OpenDoor();
-            SoundManager.PlaySoundWithSource(doorSoundSource, SoundType.DOOROPEN);
+            
         }
     }
 
@@ -53,6 +53,7 @@ public class DoorHinge : MonoBehaviour
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.y += 90 * direction;
         transform.rotation = Quaternion.Euler(rotation);
+        SoundManager.PlaySoundWithSource(doorSoundSource, SoundType.DOOROPEN);
     }
 
     void CloseDoor()
@@ -61,6 +62,7 @@ public class DoorHinge : MonoBehaviour
         Vector3 rotation = transform.rotation.eulerAngles;
         rotation.y -= 90 * direction;
         transform.rotation = Quaternion.Euler(rotation);
+        SoundManager.PlaySoundWithSource(doorSoundSource, SoundType.DOORCLOSE);
     }
 
     public void MouseOver()
