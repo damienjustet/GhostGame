@@ -4,29 +4,37 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.InteropServices;
 [System.Serializable]
-public class SaveAndLoadScript
+public class SaveAndLoadScript : MonoBehaviour
 {
     
     public float Money;
    public static void SaveGame(float Money)
     {
-        string json = JsonUtility.ToJson(Money, true);
+       SaveLoadData data = new SaveLoadData();
+       data.moneys = Money;
+        string json = JsonUtility.ToJson(data, true);
         string path = Path.Combine(Application.persistentDataPath, "savefile.json");
         File.WriteAllText(path, json);
+        print("Save: " + Money);
     }
     public static float LoadGame()
     {
+        
          string path = Path.Combine(Application.persistentDataPath, "savefile.json");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            float moneyLoad = JsonUtility.FromJson<float>(json);
-            return moneyLoad;
+            SaveLoadData moneyLoad = JsonUtility.FromJson<SaveLoadData>(json);
+            print("load: " + moneyLoad);
+            return moneyLoad.moneys;
+            
+
         }
         else
         {
-            Debug.Log("File Not Found");
+            print("file not found");
             return 0.0f;
+            
         }
     }
 }

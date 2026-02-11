@@ -6,13 +6,17 @@ using UnityEngine.UI;
 public class MoneyLoad : MonoBehaviour
 {
     public Text text;
+    public float money;
+
+    void Awake(){
+        money = SaveAndLoadScript.LoadGame();
+    }
     // Start is called before the first frame update
    
 
     // Update is called once per frame
     void Update()
     {
-        float money = SaveAndLoadScript.LoadGame();
         text.text = "$" + money;
     }
 }
