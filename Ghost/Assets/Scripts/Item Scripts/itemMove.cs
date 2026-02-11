@@ -33,7 +33,7 @@ public class itemMove : MonoBehaviour
     private void Awake()
     {
         //references
-        cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
+        cam = Global.Instance.freelookScript;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.useGravity = false;
         LevelLogic.Instance.floatyPopeTarget = this;

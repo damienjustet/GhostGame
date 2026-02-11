@@ -32,15 +32,7 @@ public class CanvasScaling : MonoBehaviour
             }
         }
         
-        GameObject levelLogic = GameObject.Find("Level Logic(Clone)");
-        if (levelLogic != null)
-        {
-            LevelLogic logic = levelLogic.GetComponent<LevelLogic>();
-            if (logic != null)
-            {
-                logic.UpdateTextPos();
-            }
-        }
+        LevelLogic.Instance.UpdateTextPos();
         
         rt = GetComponent<RectTransform>();
         thisHeight = rt.localScale.x * rt.rect.height;
@@ -51,7 +43,7 @@ public class CanvasScaling : MonoBehaviour
         
         rt.anchoredPosition = new Vector2(Screen.width, Screen.height) / 2;
 
-        GameObject keyPress = GameObject.Find("KeyPressVisualizer");
+        GameObject keyPress = Global.Instance.keyVisual.gameObject;
         RectTransform kpr = keyPress.GetComponent<RectTransform>();
         kpr.anchoredPosition = new Vector2(0, -Screen.height / 3);
         kpr.localScale = new Vector3(1,1,1);

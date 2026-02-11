@@ -24,22 +24,21 @@ public class CameraTarget : MonoBehaviour
     
     void Update()
     {
-        script = FindObjectOfType<itemMove>(); // finds script - Consider caching this in the future
+        if (LevelLogic.Instance != null)
+        {
+            if (LevelLogic.Instance.isPossessed)
+            {
+                script = LevelLogic.Instance.floatyPopeTarget;
+            }
+        }
         if (script != null)
         {
             item = script.gameObject; //finds objects that have script
             transform.position = item.transform.position; // sets position to item that is possessed
         }
-        else
+        else if (player != null)
         {
-            if (player != null)
-            {
-                transform.position = player.transform.position;
-            }
-            else
-            {
-                Debug.LogWarning("[CameraTarget] Player reference is null and no possessed item found!");
-            }
+            transform.position = player.transform.position;
         }
     }
 }

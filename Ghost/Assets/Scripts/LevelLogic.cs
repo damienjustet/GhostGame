@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.SceneManagement;
@@ -15,14 +16,12 @@ public class LevelLogic : MonoBehaviour
 
     [HideInInspector] public float total_time;
     float timer = 0;
-    float finish_cooldown;
     public float quota = 5000.00f;
     string extraQuotaText;
     public float totalMoneys = 0;
 
-    
-    SoundManager sm;
-    RawImage rawImage;
+    public GameObject canvas;
+    public RawImage rawImage;
     
     // MONEY
     [HideInInspector] public float money;
@@ -46,17 +45,20 @@ public class LevelLogic : MonoBehaviour
     // For GameOver screen
     public bool canGameOver;
 
-    GameOverScreen goScreen;
+    public GameOverScreen goScreen;
 
     // For pope targeting so no GameObject.Find() :)
     public itemMove floatyPopeTarget;
 
+    // Items in scene
+    [HideInInspector] public List<GameObject> items = new List<GameObject>();
+    
+    // Clear text canvas
+    public GameObject textCanvas;
+
     // Start is called before the first frame update
     void Awake()
     {
-        rawImage = GameObject.Find("Camera Display").GetComponent<RawImage>();
-        sm = GameObject.Find("SoundEffects(Clone)").GetComponent<SoundManager>();
-        
         if (Instance != null)
         {
             Destroy(Instance.gameObject);
@@ -66,32 +68,16 @@ public class LevelLogic : MonoBehaviour
 
         if (moneyText != null)
         {
-            GameObject canvas = GameObject.Find("Canvas(Clone)");
             if (canvas != null)
             {
                 moneyText.transform.SetParent(canvas.transform);
                 moneyTextText = moneyText.GetComponent<Text>();
-                if (moneyTextText != null)
-                {
-                    moneyTextText.text = "$0.00";
-                }
-                else
-                {
-                    Debug.LogError("[LevelLogic] MoneyText doesn't have a Text component!");
-                }
+                moneyTextText.text = "$0.00";
+                
                 
                 RectTransform rt = moneyText.GetComponent<RectTransform>();
-                if (rt != null)
-                {
-                    rt.anchoredPosition = new Vector3(290, 150, 0);
-                }
+                rt.anchoredPosition = new Vector3(290, 150, 0);
             }
-            else
-            {
-                Debug.LogError("[LevelLogic] Canvas(Clone) GameObject not found!");
-            }
-
-
         }
 
         if (quota % 1 == 0)
@@ -107,10 +93,6 @@ public class LevelLogic : MonoBehaviour
             extraQuotaText = "";
         }
         
-        if (canGameOver)
-        {
-            goScreen = GameObject.Find("Game Over Canvas").GetComponent<GameOverScreen>();
-        }
         
     }
 

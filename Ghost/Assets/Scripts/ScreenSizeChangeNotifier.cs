@@ -8,7 +8,7 @@ public class ScreenSizeChangeNotifier : MonoBehaviour
 
     protected void OnRectTransformDimensionsChange()
     {
-        if (notifyScreenSizeChange != null)
+        if (notifyScreenSizeChange != null && LevelLogic.Instance != null)
         {
             notifyScreenSizeChange.Invoke();
         }
