@@ -67,8 +67,10 @@ public class Global : MonoBehaviour
         playerScript = playerObj.GetComponent<Player>();
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
         }
-
-        transition.UnTransition();
+       
+            transition.UnTransition();
+        
+        
     }
 
     void Update()
