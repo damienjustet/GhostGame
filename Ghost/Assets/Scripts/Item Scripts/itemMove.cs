@@ -27,12 +27,16 @@ public class itemMove : MonoBehaviour
     float x_input = 0;
     float y_direction = 0;
 
+    // MOVE
+    public bool canMove = true;
+
     private void Awake()
     {
         //references
         cam = GameObject.FindFirstObjectByType<CinemachineFreeLook>();
         rb = gameObject.GetComponent<Rigidbody>();
         rb.useGravity = false;
+        LevelLogic.Instance.floatyPopeTarget = this;
         
         Collider[] colliders = gameObject.GetComponents<Collider>();
         height = 0;
@@ -69,7 +73,7 @@ public class itemMove : MonoBehaviour
     void Update()
     {
         //Handles movement
-        if (!CutsceneManager.Instance.inCutscene)
+        if (!CutsceneManager.Instance.inCutscene && canMove)
         {
             y_input = Input.GetAxis("Vertical");
             x_input = Input.GetAxis("Horizontal");
@@ -147,7 +151,11 @@ public class itemMove : MonoBehaviour
             UnityEngine.Cursor.visible = true;
         }
 
-        
+        if (!canMove && !LevelLogic.Instance.playerLiving)
+        {
+            LevelLogic.Instance.floatyPopeTarget = null;
+            DestroyImmediate(gameObject);
+        }
     }
 
     void CheckDown(float dist)

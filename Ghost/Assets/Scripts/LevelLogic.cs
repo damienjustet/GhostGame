@@ -48,6 +48,9 @@ public class LevelLogic : MonoBehaviour
 
     GameOverScreen goScreen;
 
+    // For pope targeting so no GameObject.Find() :)
+    public itemMove floatyPopeTarget;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -226,10 +229,6 @@ public class LevelLogic : MonoBehaviour
             if (money >= quota){
                 canLeave = true;
             }
-        }
-        if (health <= 0)
-        {
-            Debug.Log("[LevelLogic] Player health reached 0 - You Lose!");
         }
         
     }

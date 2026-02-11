@@ -9,7 +9,7 @@ public class PopeAnimAttack : MonoBehaviour
     {
         Global.Instance.gameOverAnimation.ComeHere();
         GetComponent<AudioSource>().Play();
-        Camera.main.transform.Find("cameraLockTarget").GetComponent<CameraTarget>().player = gameObject.transform.parent.gameObject;
+        Camera.main.transform.Find("cameraLockTarget").GetComponent<CameraTarget>().player = transform.parent.gameObject;
         LevelLogic.Instance.playerLiving = false;
         StartCoroutine(wait());
     }

@@ -63,23 +63,19 @@ public class ThePOPE : MonoBehaviour
             if (!LevelLogic.Instance.isPossessed && LevelLogic.Instance.playerLiving)
             {
                 chaseObject = player;
+                if (cachedItemMove != null) cachedItemMove = null;
             }
             else if (LevelLogic.Instance.playerLiving)
             {
                 // Cache itemMove to avoid repeated FindObjectOfType
                 if (cachedItemMove == null)
                 {
-                    cachedItemMove = FindObjectOfType<itemMove>();
+                    cachedItemMove = LevelLogic.Instance.floatyPopeTarget;
                 }
                 
-                if (cachedItemMove != null && chaseObject != cachedItemMove.gameObject)
+                if (chaseObject != cachedItemMove.gameObject)
                 {
                     chaseObject = cachedItemMove.gameObject;
-                }
-                else
-                {
-                    cachedItemMove = null;
-                    return;
                 }
             }
             

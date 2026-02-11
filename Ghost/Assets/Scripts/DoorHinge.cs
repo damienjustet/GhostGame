@@ -6,7 +6,7 @@ using UnityEngine;
 public class DoorHinge : MonoBehaviour
 {
     [Range(-1,1)] public int direction;
-    bool isOpen = false;
+    public bool isOpen = false;
     [HideInInspector] public bool inArea = false;
 
     AudioSource doorSoundSource;

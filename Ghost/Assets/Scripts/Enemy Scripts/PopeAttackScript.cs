@@ -23,11 +23,6 @@ public class PopeAttackScript : MonoBehaviour
     
     void OnTriggerEnter(Collider collider)
     {
-        if (LevelLogic.Instance == null)
-        {
-            Debug.LogError("[PopeAttackScript] LevelLogic.Instance is null!");
-            return;
-        }
         
         if (!LevelLogic.Instance.isPossessed)
         {
@@ -40,15 +35,10 @@ public class PopeAttackScript : MonoBehaviour
         }
         else
         {
-            // Update cache if needed
-            if (cachedItemMove == null)
-            {
-                cachedItemMove = FindObjectOfType<itemMove>();
-            }
             
-            if (cachedItemMove != null && collider.gameObject == cachedItemMove.gameObject)
+            if (LevelLogic.Instance.floatyPopeTarget != null && LevelLogic.Instance.floatyPopeTarget.gameObject == collider.gameObject)
             {
-                collider.gameObject.GetComponent<itemMove>().moveSpeed = 0;
+                LevelLogic.Instance.floatyPopeTarget.canMove = false;
                 collider.gameObject.transform.position = transform.position;
                 anim.SetTrigger("Clap");
             }
