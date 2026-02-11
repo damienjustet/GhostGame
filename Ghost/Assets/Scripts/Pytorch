@@ -1,0 +1,30 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.optim import SGD
+
+import matplotlib.pylot as plt 
+import seaborn as sns
+
+
+
+
+class BasicNN(nn.Module):
+    
+    def_init_(self)
+
+    super()._init_()
+
+    self.w00 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+    self.b00 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+    self.w01 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+
+    self.w10 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+    self.b10 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+    self.w11 = nn.Parameter(torch.tensor(1.7), requiregrad=False)
+
+
+
+
+    
+
