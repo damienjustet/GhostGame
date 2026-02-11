@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using System.Runtime.CompilerServices;
+using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -36,7 +37,7 @@ public class RatTargetScript : MonoBehaviour
         timer = wanderTimer; // Initialize timer
         
         // Cache the collectable item at start
-        items = GameObject.FindGameObjectsWithTag("Collectable");
+        items = LevelLogic.Instance.items.ToArray();
         
         item.AddRange(items);
         
@@ -103,12 +104,12 @@ public class RatTargetScript : MonoBehaviour
         }
         else
         {
-            GameObject ratHoleObj = GameObject.FindGameObjectWithTag("ratHole");
+            GameObject ratHoleObj = transform.parent.gameObject;
             if (ratHoleObj != null)
             {
                 ratHole = ratHoleObj.transform;
                 agent.SetDestination(ratHole.position);
-                GameObject.Find("ratHole").GetComponent<EnemyManager>().RatSpawn = false;
+                ratHoleObj.GetComponent<EnemyManager>().RatSpawn = false;
                 Debug.Log($"[RatEatScript] Rat {gameObject.name} scurrying away after 4 attacks.");
             }
             else
@@ -134,7 +135,7 @@ public class RatTargetScript : MonoBehaviour
 
   void scanItems(bool stuck = false)
     {
-        items = GameObject.FindGameObjectsWithTag("Collectable");
+        items = LevelLogic.Instance.items.ToArray();
         item.Clear();
         item.AddRange(items);
         print(closestItem);

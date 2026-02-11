@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,8 +28,6 @@ public class Global : MonoBehaviour
     string[] blankScenes = {"TITLESCREEN"};
 
     public GameObject playerObj;
-    public Player playerScript;
-    public CapsuleCollider playerCollider;
 
     // Volume
     public float musicVolume;
@@ -40,6 +39,9 @@ public class Global : MonoBehaviour
     // Transitioning
     public Transition transition;
     string sceneToLoad = "";
+
+    // Objects for replacing Find function
+    public CinemachineFreeLook freelookScript;
 
     
     private void Awake()
@@ -61,16 +63,8 @@ public class Global : MonoBehaviour
         {
             gameplay = false;
         }
-        if(GameObject.Find("player(Clone)") != null)
-        {
-        playerObj = GameObject.Find("player(Clone)");
-        playerScript = playerObj.GetComponent<Player>();
-        playerCollider = playerObj.GetComponent<CapsuleCollider>();
-        }
-       
-            transition.UnTransition();
-        
-        
+
+        transition.UnTransition();
     }
 
     void Update()

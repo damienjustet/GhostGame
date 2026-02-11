@@ -48,8 +48,13 @@ public class posseion : MonoBehaviour
         itemCost = gameObject.GetComponent<ItemCost>();
         thisCollider = gameObject.GetComponent<Collider>();
         rb = gameObject.GetComponent<Rigidbody>();
+    }
 
-        playerObj = GameObject.Find("player(Clone)");
+    void Start()
+    {
+        LevelLogic.Instance.items.Add(gameObject);
+
+        playerObj = Global.Instance.playerObj;
         playerScript = playerObj.GetComponent<Player>();
         playerCollider = playerObj.GetComponent<CapsuleCollider>();
     }
@@ -138,54 +143,53 @@ public class posseion : MonoBehaviour
         }
             
 
-        }
-        private void OnTriggerEnter(Collider other) // if in area
+    }
+    private void OnTriggerEnter(Collider other) // if in area
+    {
+        
+        if (other.gameObject.name == "detectionArea")
         {
+            inArea = true;
+            valueScript.easeDirection = 1;
+        }
+
+    }
+    private void OnTriggerExit(Collider other)// not in area
+    {
+        if (other.gameObject.name == "detectionArea")
+        {
+            inArea = false;
+            valueScript.easeDirection = -1;
             
-            if (other.gameObject.name == "detectionArea")
-            {
-                inArea = true;
-                valueScript.easeDirection = 1;
-            }
-
         }
-        private void OnTriggerExit(Collider other)// not in area
+    }
+
+    public void Depossess(bool dead = false)
+    {
+        depossessCoord = FindDepossessableCoord();
+        if (rb != null)
         {
-            if (other.gameObject.name == "detectionArea")
+            rb.useGravity = true;
+            rb.isKinematic = false;
+        }
+        
+        Destroy(gameObject.GetComponent<itemMove>());
+
+        thisIsPossessed = false;
+        LevelLogic.Instance.isPossessed = false;
+
+        if (playerObj != null)
+        {
+            if (playerScript != null)
             {
-                inArea = false;
-                valueScript.easeDirection = -1;
-                
+                playerScript.Depossess(depossessCoord);
             }
         }
 
-        public void Depossess(bool dead = false)
+        if (dead)
         {
-            depossessCoord = FindDepossessableCoord();
-            if (rb != null)
-            {
-                rb.useGravity = true;
-                rb.isKinematic = false;
-            }
-            
-            Destroy(gameObject.GetComponent<itemMove>());
-
-            thisIsPossessed = false;
-            LevelLogic.Instance.isPossessed = false;
-
-            if (playerObj != null)
-            {
-                if (playerScript != null)
-                {
-                    playerScript.Depossess(depossessCoord);
-                }
-            }
-
-            if (dead)
-            {
-                Destroy(gameObject);
-            }
-        //Raycast for Rat
+            Destroy(gameObject);
+        }
        
     }
 

@@ -16,11 +16,8 @@ public class LoseValue : MonoBehaviour
     void Awake()
     {
         transform.localScale = new Vector3(0.06f,0.06f,0.06f);
-        if (GameObject.Find("Main Camera(Clone)") != null)
-        {
-            mainCam = GameObject.Find("Main Camera(Clone)").transform;
-        }
-        canvas = GameObject.Find("Floating Text Canvas").transform;
+        mainCam = Camera.main.transform;
+        canvas = LevelLogic.Instance.textCanvas.transform;
 
         transform.SetParent(canvas);
         thisText = gameObject.GetComponent<Text>();
@@ -30,11 +27,8 @@ public class LoseValue : MonoBehaviour
     void Update()
     {
         transform.localScale = new Vector3(0.06f,0.06f,0.06f);
-        if (GameObject.Find("Main Camera(Clone)") != null && mainCam != null)
-        {
-            mainCam = GameObject.Find("Main Camera(Clone)").transform;
-            transform.rotation = mainCam.transform.rotation;
-        }
+        transform.rotation = mainCam.transform.rotation;
+        
         if (aliveTime <= timer)
         {
             Destroy(gameObject);

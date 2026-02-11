@@ -22,12 +22,9 @@ public class ShowValue : MonoBehaviour
     void Awake()
     {
         ps = gameObject.GetComponentInParent<posseion>();
-        player = GameObject.Find("player(Clone)");
-        if (GameObject.Find("Main Camera(Clone)") != null)
-        {
-            mainCam = GameObject.Find("Main Camera(Clone)").transform;
-        }
-        canvas = GameObject.Find("Floating Text Canvas").transform;
+        player = Global.Instance.playerObj;
+        mainCam = Camera.main.transform;
+        canvas = LevelLogic.Instance.textCanvas.transform;
 
         transform.SetParent(canvas);
 
@@ -37,15 +34,8 @@ public class ShowValue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mainCam != null)
-        {
-            mainCam = GameObject.Find("Main Camera(Clone)").transform;
-            transform.rotation = mainCam.transform.rotation;
-        }
-        else if (GameObject.Find("Main Camera(Clone)") != null)
-        {
-            mainCam = GameObject.Find("Main Camera(Clone)").transform;
-        }
+        transform.rotation = mainCam.transform.rotation;
+        
         if (theirParent == null)
         {
             Destroy(gameObject);

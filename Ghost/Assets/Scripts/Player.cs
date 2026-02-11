@@ -130,8 +130,6 @@ public class Player : MonoBehaviour
     public void Depossess(Vector3 pos)
     {
         rib.transform.position = pos;
-        
-        Transform ghostBoi = gameObject.transform.Find("GhostBoi");
         if (ghostBoi != null)
         {
             Renderer ghostRenderer = ghostBoi.GetComponent<Renderer>();
@@ -173,8 +171,6 @@ public class Player : MonoBehaviour
     {
         SoundManager.PlaySoundWithSource(possessSoundSource, SoundType.POSSESS);
         LevelLogic.Instance.isPossessed = true;
-        
-        GameObject ghostBoi = GameObject.Find("GhostBoi");
         if (ghostBoi != null)
         {
             Renderer ghostRenderer = ghostBoi.GetComponent<Renderer>();

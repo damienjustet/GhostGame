@@ -9,7 +9,7 @@ public class ItemPriceCalc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        items = GameObject.FindGameObjectsWithTag("Collectable");
+        items = LevelLogic.Instance.items.ToArray();
         for(int i = 0; i < items.Length; i++)
         {
             if (items[i].GetComponent<ItemCost>() != null)

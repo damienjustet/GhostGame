@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour
     public float spawnTimeRat;
     public Transform RatSpawnPos;
 
+    // Exit
+    public GameObject exit;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -21,7 +21,6 @@ public class ThePOPE : MonoBehaviour
 
     bool seePlayerSoundEffectPlayed = false;
     bool seePlayer;
-    private itemMove cachedItemMove; // Cache to avoid repeated FindObjectOfType calls
     private bool wasPossessed = false; // Track possession state changes
 
     int playerLayer;
@@ -43,7 +42,7 @@ public class ThePOPE : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         timer = wanderTimer; // Initialize timer
-        player = GameObject.Find("player(Clone)");
+        player = Global.Instance.playerObj;
         chaseObject = player;
         playerLayer = LayerMask.GetMask("Player", "item");
     }
@@ -55,7 +54,6 @@ public class ThePOPE : MonoBehaviour
             // Clear cache if possession state changed
             if (wasPossessed != LevelLogic.Instance.isPossessed)
             {
-                cachedItemMove = null;
                 wasPossessed = LevelLogic.Instance.isPossessed;
             }
             
@@ -63,19 +61,12 @@ public class ThePOPE : MonoBehaviour
             if (!LevelLogic.Instance.isPossessed && LevelLogic.Instance.playerLiving)
             {
                 chaseObject = player;
-                if (cachedItemMove != null) cachedItemMove = null;
             }
             else if (LevelLogic.Instance.playerLiving)
             {
-                // Cache itemMove to avoid repeated FindObjectOfType
-                if (cachedItemMove == null)
+                if (chaseObject != LevelLogic.Instance.floatyPopeTarget.gameObject) 
                 {
-                    cachedItemMove = LevelLogic.Instance.floatyPopeTarget;
-                }
-                
-                if (chaseObject != cachedItemMove.gameObject)
-                {
-                    chaseObject = cachedItemMove.gameObject;
+                    chaseObject = LevelLogic.Instance.floatyPopeTarget.gameObject;
                 }
             }
             
@@ -137,7 +128,7 @@ public class ThePOPE : MonoBehaviour
             }
             else
             {
-                GameObject exitObj = GameObject.FindGameObjectWithTag("exit");
+                GameObject exitObj = transform.parent.GetComponent<EnemyManager>().exit;
                 if (exitObj != null)
                 {
                     exitDoor = exitObj.transform;
