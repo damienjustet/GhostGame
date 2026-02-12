@@ -201,6 +201,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "dev.klebersilva.tools.bitmapfontcreator": {
+      "version": "https://github.com/kleber-swf/unity-bitmap-font-creator.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ad4a91a3b2e259cc4718b7520799c07a232d5b7f"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dev.klebersilva.tools.bitmapfontcreator": "https://github.com/kleber-swf/unity-bitmap-font-creator.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "1.1.7",
     "com.unity.cinemachine": "2.10.5",
