@@ -88,10 +88,8 @@ public class SceneBuilder : MonoBehaviour
         
 
         mainCamera.GetComponent<PixelArtCamera>()._rawImage = canvas.transform.Find("Camera Display").GetComponent<RawImage>();
-        mainCamera.transform.Find("In-Game Text Camera").GetComponent<PixelArtCamera>()._rawImage = canvas.transform.Find("Camera Display").GetComponent<RawImage>();
         mainCamera.transform.Find("cameraLockTarget").GetComponent<CameraTarget>().player = player;
         mainCamera.GetComponent<PixelArtCamera>().UpdateRenderTexture();
-        mainCamera.transform.Find("In-Game Text Camera").GetComponent<Camera>().targetTexture = mainCamera.GetComponent<Camera>().targetTexture;
     }
 
     void MakeSoundManager()

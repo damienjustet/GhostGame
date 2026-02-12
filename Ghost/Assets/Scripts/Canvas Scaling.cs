@@ -32,7 +32,7 @@ public class CanvasScaling : MonoBehaviour
             }
         }
         
-        LevelLogic.Instance.UpdateTextPos();
+        LevelLogic.Instance?.UpdateTextPos();
         
         rt = GetComponent<RectTransform>();
         thisHeight = rt.localScale.x * rt.rect.height;

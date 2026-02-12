@@ -182,8 +182,7 @@ GameObject:
   - component: {fileID: 8411706540832253492}
   - component: {fileID: 5986651479185159304}
   - component: {fileID: 3268058062144874919}
-  - component: {fileID: 7980470582923012946}
-  - component: {fileID: 431145822678912990}
+  - component: {fileID: 4772206322236901936}
   m_Layer: 0
   m_Name: In-Game Text Camera
   m_TagString: Untagged
@@ -215,8 +214,8 @@ Camera:
   m_GameObject: {fileID: 2102614916726816010}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -269,10 +268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 1
+  m_CameraType: 0
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -301,7 +300,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &7980470582923012946
+--- !u!114 &4772206322236901936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,26 +309,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2102614916726816010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bb848a184ca9054999ec85cf188d32f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b6cf4800945e45499e607a45f810a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 5986651479185159304}
-  _rawImage: {fileID: 2288300419329608162, guid: c7e9a60de824d0541bd12befa97c967c, type: 3}
-  _cameraHeight: 300
-  _renderTexture: {fileID: 0}
---- !u!114 &431145822678912990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102614916726816010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c879e8a8ef4e8f84ba89e6b5cee8a38e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCam: {fileID: 5967219465283573289}
+  _rawImage: {fileID: 0}
 --- !u!1 &2523083079126543595
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +647,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4055
+    m_Bits: 4023
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -699,8 +683,7 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras:
-  - {fileID: 5986651479185159304}
+  m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2

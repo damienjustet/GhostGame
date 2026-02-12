@@ -63,6 +63,14 @@ public class SoundManager : MonoBehaviour
         
     }
 
+    void OnDestroy()
+    {
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+        }
+    }
+
     void Start()
     {
         EnableDistanceVolume();
